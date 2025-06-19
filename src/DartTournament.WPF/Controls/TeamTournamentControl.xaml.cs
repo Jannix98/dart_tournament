@@ -21,11 +21,19 @@ namespace DartTournament.WPF
     /// </summary>
     public partial class TeamTournamentControl : UserControl
     {
-        public TeamTournamentControl(TeamTournament teamTournament)
+        //public TeamTournamentControl(TeamTournament teamTournament)
+        //{
+        //    InitializeComponent();
+        //    teamName.Content = teamTournament?.Team?.Name;
+        //    teamScore.Content = teamTournament?.Score;
+        //}
+
+        public TeamTournamentControl()
         {
             InitializeComponent();
-            teamName.Content = teamTournament?.Team?.Name;
-            teamScore.Content = teamTournament?.Score;
+            // TODO: fix
+            teamName.Content = "ABC";
+            teamScore.Content = 4711;
         }
     }
 }

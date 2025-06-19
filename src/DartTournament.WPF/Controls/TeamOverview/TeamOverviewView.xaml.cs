@@ -1,15 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using DartTournament.Application.UseCases.Teams.Services.Interfaces;
+using DartTournament.Application.UseCases.Player.Services.Interfaces;
 
-namespace DartTournament.WPF.Controls.TeamOverview
+namespace DartTournament.WPF.Controls.PlayerOverview
 {
     /// <summary>
     /// Interaction logic for TeamOverviewView.xaml
     /// </summary>
-    public partial class TeamOverviewView : UserControl
+    public partial class PlayerOverviewView : UserControl
     {
-        public TeamOverviewView()
+        public PlayerOverviewView()
         {
             InitializeComponent();
             this.Loaded += TeamOverviewView_Loaded;
@@ -18,7 +18,7 @@ namespace DartTournament.WPF.Controls.TeamOverview
 
         private async void TeamOverviewView_Loaded(object sender, RoutedEventArgs e)
         {
-            if (this.DataContext is TeamOverviewVM vm)
+            if (this.DataContext is PlayerOverviewVM vm)
             {
                 await vm.LoadTeamsAsync();
             }

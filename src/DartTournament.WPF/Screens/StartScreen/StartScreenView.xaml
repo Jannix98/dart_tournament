@@ -32,27 +32,56 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp2"
+                                 >
+                <StackPanel>
+                    <ListBox ItemsSource="{Binding MenueItems}"
+                             SelectedItem="{Binding SelectedMenuItem}">
+                        <ListBox.ItemContainerStyle>
+
+                            <Style TargetType="ListBoxItem"
+                                   BasedOn="{StaticResource MaterialDesign3.NavigationRailPrimaryListBoxItem}">
+
+                                <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
+                                        Value="{Binding SelectedIcon}" />
+                                <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
+                                        Value="{Binding UnselectedIcon}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle >
+                        <ListBox.Resources>
+                            <DataTemplate DataType="{x:Type local:ApplicationMenueItem}">
+                                <TextBlock Text="{Binding Text}"
+                                           FontSize="16" />
+                            </DataTemplate>
+                        </ListBox.Resources>
+                    </ListBox>
+
+                    <!-- TODO: add later-->
+                    <!--<ListBox ItemsSource="{Binding BottomMenueItems}"
+                             SelectedItem="{Binding SelectedMenuItem}">
+                        <ListBox.ItemContainerStyle>
+
+                            <Style TargetType="ListBoxItem"
+                                   BasedOn="{StaticResource MaterialDesign3.NavigationRailPrimaryListBoxItem}">
+
+                                <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
+                                        Value="{Binding SelectedIcon}" />
+                                <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
+                                        Value="{Binding UnselectedIcon}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle >
+                        <ListBox.Resources>
+                            <DataTemplate DataType="{x:Type local:ApplicationMenueItem}">
+                                <TextBlock Text="{Binding Text}"
+                                           FontSize="16" />
+                            </DataTemplate>
+                        </ListBox.Resources>
+                    </ListBox>-->
+                </StackPanel>
+            </materialDesign:Card>
+
             <!-- Sidebar ListBox -->
-            <ListBox ItemsSource="{Binding MenueItems}"
-                     SelectedItem="{Binding SelectedMenuItem}">
-                <ListBox.ItemContainerStyle>
-
-                    <Style TargetType="ListBoxItem"
-                           BasedOn="{StaticResource MaterialDesign3.NavigationRailPrimaryListBoxItem}">
-
-                        <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
-                                Value="{Binding SelectedIcon}" />
-                        <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
-                                Value="{Binding UnselectedIcon}" />
-                    </Style>
-                </ListBox.ItemContainerStyle >
-                <ListBox.Resources>
-                    <DataTemplate DataType="{x:Type local:ApplicationMenueItem}">
-                        <TextBlock Text="{Binding Text}"
-                                   FontSize="16" />
-                    </DataTemplate>
-                </ListBox.Resources>
-            </ListBox>
+            
 
             <!-- Content Display -->
             <ContentControl Grid.Column="1"

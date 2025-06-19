@@ -19,7 +19,7 @@ namespace DartTournament.WPF.Dialogs.AddTeam
     /// <summary>
     /// Interaction logic for AddTeamView.xaml
     /// </summary>
-    public partial class AddTeamView : BaseDialog, IAddTeamView
+    public partial class AddTeamView : BaseDialog, IAddPlayerView
     {
         public AddTeamView(IDialogOwner dialogOwner) : base(dialogOwner)
         {
@@ -33,26 +33,26 @@ namespace DartTournament.WPF.Dialogs.AddTeam
             {
                 if (this.DataContext is AddTeamVM vm)
                 {
-                    return new AddTeamResult(true, vm.Team);
+                    return new AddPlayerResult(true, vm.Team);
                 }
             }
-            return new AddTeamResult(false, null);
+            return new AddPlayerResult(false, null);
         }
     }
 
-    public class AddTeamResult : BaseDialogResult
+    public class AddPlayerResult : BaseDialogResult
     {
-        public Team _team;
+        public DartPlayer _team;
 
-        public AddTeamResult(bool? dialogResult, Team team) : base(dialogResult)
+        public AddPlayerResult(bool? dialogResult, DartPlayer team) : base(dialogResult)
         {
             _team = team;
         }
 
-        public Team Team { get => _team; set => _team = value; }
+        public DartPlayer Team { get => _team; set => _team = value; }
     }
 
-    public interface IAddTeamView
+    public interface IAddPlayerView
     {
 
     }

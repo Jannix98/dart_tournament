@@ -10,4 +10,8 @@
     <ProjectReference Include="..\DartTournament.Domain\DartTournament.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Teams\Queries\" />
+  </ItemGroup>
+
 </Project>

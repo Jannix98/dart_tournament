@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DartTournament.Domain.Interfaces
 {
-    public interface ITeamRepository
+    public interface IDartPlayerRepository
     {
-        Task AddAsync(Team team);
-        Task<List<Team>> GetAllAsync();
+        Task AddAsync(DartPlayer team);
+        Task<List<DartPlayer>> GetAllAsync();
     }
 }

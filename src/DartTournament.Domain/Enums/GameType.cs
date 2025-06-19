@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DartTournament.Application.UseCases.Teams.Queries
+namespace DartTournament.Domain.Enums
 {
-    internal class GetTeamsQuery
+    public enum GameType
     {
+        PlayerGame = 0, 
     }
 }

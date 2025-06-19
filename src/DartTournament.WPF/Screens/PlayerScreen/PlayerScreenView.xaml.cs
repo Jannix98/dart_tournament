@@ -15,14 +15,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DartTournament.WPF.Screens.TeamScreen
+namespace DartTournament.WPF.Screens.PlayerScreen
 {
     /// <summary>
     /// Interaction logic for TeamScreenView.xaml
     /// </summary>
-    public partial class TeamScreenView : ScreenBase
+    public partial class PlayerScreenView : ScreenBase
     {
-        public TeamScreenView(IScreenNavigator navigator) : base(navigator)
+        public PlayerScreenView(IScreenNavigator navigator) : base(navigator)
         {
             InitializeComponent();
         }

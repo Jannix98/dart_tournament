@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using DartTournament.Application.UseCases.Teams.Services.Interfaces;
+using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.WPF.NotifyPropertyChange;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 {
     internal class CreateGameVM : NotifyPropertyChanged
     {
-        private readonly ITeamService _teamService;
+        private readonly IPlayerService _teamService;
         private ObservableCollection<TeamInSelection> _teamsInSelection;
         private bool _selectAllIsSelected;
         private TournamentSize _selectedTournamentSize = TournamentSize.X16;
@@ -47,7 +47,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 
         public CreateGameVM()
         {
-            _teamService = ServiceManager.ServiceManager.Instance.GetRequiredService<ITeamService>();
+            _teamService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerService>();
 
             ConfirmCommand = new RelayCommand(ConfirmSelection);
             CancelCommand = new RelayCommand(CancelSelection);
@@ -59,7 +59,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
         {
             TeamsInSelection =
                 new ObservableCollection<TeamInSelection>();
-            var teams = await _teamService.GetTeamsAsync();
+            var teams = await _teamService.GetPlayerAsync();
             foreach (var team in teams)
             {
                 var selectionTeam = new TeamInSelection(team);
@@ -111,7 +111,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
             }
         }
 
-        public List<Team> GetSelectedTeams()
+        public List<DartPlayer> GetSelectedTeams()
         {
             var selectedTeams = TeamsInSelection.Where(t => t.IsChecked).Select(t => t.Team).ToList();
             return selectedTeams;

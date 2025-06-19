@@ -54,9 +54,10 @@ namespace DartTournament.WPF.Controls.TournamentTree
         private TeamTournamentControl CreateTeamTournamentControl(int i, int score)
         {
             // TODO: replace with some kind of team source
-            Team team1 = new Team($"Team {i + 1}");
-            TeamTournament teamTournament1 = new TeamTournament(team1, score);
-            TeamTournamentControl control1 = new TeamTournamentControl(teamTournament1);
+            DartPlayer team1 = new DartPlayer($"Team {i + 1}");
+            // TODO: implement when DTO is ready
+            //TeamTournament teamTournament1 = new TeamTournament(team1, score);
+            TeamTournamentControl control1 = new TeamTournamentControl();
             return control1;
         }
     }

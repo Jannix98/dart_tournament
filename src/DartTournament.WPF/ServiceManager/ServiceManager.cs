@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using DartTournament.Application.UseCases.Teams.Services;
-using DartTournament.Application.UseCases.Teams.Services.Interfaces;
+using DartTournament.Application.UseCases.Player.Services;
+using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Infrastructure.JSON.Persistence;
-using DartTournament.WPF.Controls.TeamOverview;
+using DartTournament.WPF.Controls.PlayerOverview;
 using DartTournament.WPF.Dialogs.AddTeam;
 using DartTournament.WPF.Dialogs.DialogManagement;
 using DartTournament.WPF.Navigator;
@@ -39,11 +39,11 @@ namespace DartTournament.WPF.ServiceManager
 
         private void ConfigureServices(ServiceCollection services)
         {
-            services.AddSingleton<ITeamRepository, TeamRepository>();
-            services.AddSingleton<ITeamService, TeamService>();
+            services.AddSingleton<IDartPlayerRepository, PlayerRepository>();
+            services.AddSingleton<IPlayerService, PlayerService>();
             services.AddSingleton<IDialogManager, DialogManager>();
             // TODO: Dialog Factory to pass the "Application.Current.MainWindow"
-            services.AddTransient<IAddTeamView, AddTeamView>();
+            services.AddTransient<IAddPlayerView, AddTeamView>();
             services.AddTransient<IDialogOwner, DialogOwner>();
         }
 

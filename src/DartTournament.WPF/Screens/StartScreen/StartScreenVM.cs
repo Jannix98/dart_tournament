@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using DartTournament.WPF.Controls.Game;
-using DartTournament.WPF.Controls.TeamOverview;
+using DartTournament.WPF.Controls.PlayerOverview;
 using MaterialDesignThemes.Wpf;
 
 namespace DartTournament.WPF.Screens.StartScreen
@@ -19,12 +19,18 @@ namespace DartTournament.WPF.Screens.StartScreen
             MenueItems = new ObservableCollection<ApplicationMenueItem>
             {
                 new ApplicationMenueItem("Games", new GameView(), PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic),
-                new ApplicationMenueItem("Team", new TeamOverviewView(), PackIconKind.AccountGroupOutline, PackIconKind.AccountGroup),
+                new ApplicationMenueItem("Player", new PlayerOverviewView(), PackIconKind.AccountOutline, PackIconKind.Account),
                 new ApplicationMenueItem("Settings", new UserControl(), PackIconKind.CogOutline, PackIconKind.Cog),
+            };
+
+            // TODO: add later
+            BottomMenueItems = new ObservableCollection<ApplicationMenueItem>()
+            {
             };
         }
 
         public ObservableCollection<ApplicationMenueItem> MenueItems { get; set; }
+        public ObservableCollection<ApplicationMenueItem> BottomMenueItems { get; set; }
 
         private ApplicationMenueItem _selectedMenuItem;
 

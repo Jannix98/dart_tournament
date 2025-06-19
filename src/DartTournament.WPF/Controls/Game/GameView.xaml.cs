@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DartTournament.WPF.Controls.Game.GameMenue;
-using DartTournament.WPF.Controls.TeamOverview;
+using DartTournament.WPF.Controls.PlayerOverview;
 using DartTournament.WPF.Navigator;
 
 namespace DartTournament.WPF.Controls.Game

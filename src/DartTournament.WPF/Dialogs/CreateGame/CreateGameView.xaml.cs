@@ -31,7 +31,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
         public override CreateGameViewResult ShowDialog()
         {
             var baseResult = base.ShowDialog();
-            List<Team> selectedTeams = new List<Team>();
+            List<DartPlayer> selectedTeams = new List<DartPlayer>();
             if (baseResult.DialogResult == true && this.DataContext is CreateGameVM vm)
                 selectedTeams = vm.GetSelectedTeams();
 
@@ -41,9 +41,9 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 
     public class CreateGameViewResult : BaseDialogResult
     {
-        public List<Team> SelectedTeams { get; private set;  }
+        public List<DartPlayer> SelectedTeams { get; private set;  }
 
-        public CreateGameViewResult(BaseDialogResult baseDialogResult, List<Team> selectedTeams) : base(baseDialogResult)
+        public CreateGameViewResult(BaseDialogResult baseDialogResult, List<DartPlayer> selectedTeams) : base(baseDialogResult)
         {
             SelectedTeams = selectedTeams;
         }

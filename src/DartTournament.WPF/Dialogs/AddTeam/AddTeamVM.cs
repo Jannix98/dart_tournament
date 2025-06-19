@@ -31,7 +31,7 @@ namespace DartTournament.WPF.Dialogs.AddTeam
         private void OnConfirm()
         {
             // Rückgabe der Team-Instanz
-            Team = new Team(TeamName);
+            Team = new DartPlayer(TeamName);
             CloseDialog(true);
         }
 
@@ -40,7 +40,7 @@ namespace DartTournament.WPF.Dialogs.AddTeam
             CloseDialog(false);
         }
 
-        public Team Team { get; private set; }
+        public DartPlayer Team { get; private set; }
 
         private void CloseDialog(bool dialogResult)
         {

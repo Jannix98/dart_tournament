@@ -12,7 +12,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
     {
         private bool _isChecked;
 
-        public Team Team { get; set; }
+        public DartPlayer Team { get; set; }
 
         public bool IsChecked
         {
@@ -20,7 +20,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
             set => SetProperty(ref _isChecked, value);
         }
 
-        public TeamInSelection(Team team)
+        public TeamInSelection(DartPlayer team)
         {
             Team = team;
             IsChecked = false; // Standardmäßig nicht ausgewählt
