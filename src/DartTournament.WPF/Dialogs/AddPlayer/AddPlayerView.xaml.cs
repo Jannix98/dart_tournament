@@ -14,14 +14,14 @@ using System.Windows.Shapes;
 using DartTournament.Domain.Entities;
 using DartTournament.WPF.Dialogs.DialogManagement;
 
-namespace DartTournament.WPF.Dialogs.AddTeam
+namespace DartTournament.WPF.Dialogs.AddPlayer
 {
     /// <summary>
     /// Interaction logic for AddTeamView.xaml
     /// </summary>
-    public partial class AddTeamView : BaseDialog, IAddPlayerView
+    public partial class AddPlayerView : BaseDialog, IAddPlayerView
     {
-        public AddTeamView(IDialogOwner dialogOwner) : base(dialogOwner)
+        public AddPlayerView(IDialogOwner dialogOwner) : base(dialogOwner)
         {
             InitializeComponent();
         }
@@ -31,9 +31,9 @@ namespace DartTournament.WPF.Dialogs.AddTeam
             var baseResult = base.ShowDialog();
             if (baseResult.DialogResult == true)
             {
-                if (this.DataContext is AddTeamVM vm)
+                if (this.DataContext is AddPlayerVM vm)
                 {
-                    return new AddPlayerResult(true, vm.Team);
+                    return new AddPlayerResult(true, vm.Player);
                 }
             }
             return new AddPlayerResult(false, null);

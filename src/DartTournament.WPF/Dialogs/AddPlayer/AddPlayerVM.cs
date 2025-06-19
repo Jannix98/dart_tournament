@@ -10,19 +10,19 @@ using System.Windows.Input;
 using System.Windows;
 using DartTournament.WPF.NotifyPropertyChange;
 
-namespace DartTournament.WPF.Dialogs.AddTeam
+namespace DartTournament.WPF.Dialogs.AddPlayer
 {
-    internal class AddTeamVM : NotifyPropertyChanged
+    internal class AddPlayerVM : NotifyPropertyChanged
     {
-        private string _teamName;
-        public string TeamName { get => _teamName; set => SetProperty(ref _teamName, value); }
+        private string _playerName;
+        public string PlayerName { get => _playerName; set => SetProperty(ref _playerName, value); }
     
         
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
 
 
-        public AddTeamVM()
+        public AddPlayerVM()
         {
             ConfirmCommand = new RelayCommand(OnConfirm);
             CancelCommand = new RelayCommand(OnCancel);
@@ -31,7 +31,7 @@ namespace DartTournament.WPF.Dialogs.AddTeam
         private void OnConfirm()
         {
             // Rückgabe der Team-Instanz
-            Team = new DartPlayer(TeamName);
+            Player = new DartPlayer(PlayerName);
             CloseDialog(true);
         }
 
@@ -40,7 +40,7 @@ namespace DartTournament.WPF.Dialogs.AddTeam
             CloseDialog(false);
         }
 
-        public DartPlayer Team { get; private set; }
+        public DartPlayer Player { get; private set; }
 
         private void CloseDialog(bool dialogResult)
         {

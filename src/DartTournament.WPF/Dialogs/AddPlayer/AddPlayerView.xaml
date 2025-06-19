@@ -1,9 +1,9 @@
-﻿<dialogManagement:BaseDialog x:Class="DartTournament.WPF.Dialogs.AddTeam.AddTeamView"
+﻿<dialogManagement:BaseDialog x:Class="DartTournament.WPF.Dialogs.AddPlayer.AddPlayerView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DartTournament.WPF.Dialogs.AddTeam"
+        xmlns:local="clr-namespace:DartTournament.WPF.Dialogs.AddPlayer"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dialogManagement="clr-namespace:DartTournament.WPF.Dialogs.DialogManagement"
         mc:Ignorable="d"
@@ -21,14 +21,14 @@
         </Style>
     </Window.Resources>
     <Window.DataContext>
-        <local:AddTeamVM></local:AddTeamVM>
+        <local:AddPlayerVM></local:AddPlayerVM>
     </Window.DataContext>
 
     <StackPanel Margin="16, 16, 16, 0">
-        <TextBlock Text="Teamname"
+        <TextBlock Text="Spielername"
                    Style="{StaticResource MaterialDesignBody1TextBlock}"
                    Margin="0 0 0 8" />
-        <TextBox Text="{Binding TeamName, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
                  materialDesign:TextFieldAssist.HasClearButton="True" />
 
         <StackPanel Orientation="Horizontal"

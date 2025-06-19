@@ -25,6 +25,11 @@ namespace DartTournament.Infrastructure.JSON.Persistence
             var players = await GetAllAsync();
             players.Add(player);
 
+            await SaveInFile(players);
+        }
+
+        private async Task SaveInFile(List<DartPlayer> players)
+        {
             var json = JsonSerializer.Serialize(players, new JsonSerializerOptions { WriteIndented = true });
             await File.WriteAllTextAsync(FilePath, json);
         }
@@ -38,6 +43,15 @@ namespace DartTournament.Infrastructure.JSON.Persistence
                 return new List<DartPlayer>();
 
             return JsonSerializer.Deserialize<List<DartPlayer>>(json) ?? new List<DartPlayer>();
+        }
+
+        public async Task Update(DartPlayer player)
+        {
+            var players = await GetAllAsync();
+            int index = players.FindIndex(x => x.Id == player.Id);
+            players[index] = player;
+
+            await SaveInFile(players);
         }
     }
 }

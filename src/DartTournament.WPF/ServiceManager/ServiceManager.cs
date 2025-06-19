@@ -9,7 +9,7 @@ using DartTournament.Application.UseCases.Player.Services;
 using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Infrastructure.JSON.Persistence;
 using DartTournament.WPF.Controls.PlayerOverview;
-using DartTournament.WPF.Dialogs.AddTeam;
+using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.WPF.Dialogs.DialogManagement;
 using DartTournament.WPF.Navigator;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,7 +43,7 @@ namespace DartTournament.WPF.ServiceManager
             services.AddSingleton<IPlayerService, PlayerService>();
             services.AddSingleton<IDialogManager, DialogManager>();
             // TODO: Dialog Factory to pass the "Application.Current.MainWindow"
-            services.AddTransient<IAddPlayerView, AddTeamView>();
+            services.AddTransient<IAddPlayerView, AddPlayerView>();
             services.AddTransient<IDialogOwner, DialogOwner>();
         }
 

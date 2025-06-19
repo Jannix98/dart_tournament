@@ -9,7 +9,7 @@ namespace DartTournament.Domain.Entities
     public class DartPlayer
     {
         public Guid Id { get; private set; }
-        public string Name { get; private set; }
+        public string Name { get; set; } // TODO: change back to private when DTO is implemented
 
         public DartPlayer(string name)
         {

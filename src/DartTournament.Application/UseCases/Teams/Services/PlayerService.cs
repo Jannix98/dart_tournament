@@ -29,5 +29,10 @@ namespace DartTournament.Application.UseCases.Player.Services
         {
             return await _playerRepository.GetAllAsync();
         }
+
+        public async Task UpdatePlayerAsync(DartPlayer dartPlayer)
+        {
+            await _playerRepository.Update(dartPlayer);
+        }
     }
 }

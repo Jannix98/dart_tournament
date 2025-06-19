@@ -10,6 +10,7 @@ namespace DartTournament.Application.UseCases.Player.Services.Interfaces
     public interface IPlayerService
     {
         Task<DartPlayer> CreatePlayerAsync(string name);
+        Task UpdatePlayerAsync(DartPlayer dartPlayer);
         Task<List<DartPlayer>> GetPlayerAsync();
     }
 }

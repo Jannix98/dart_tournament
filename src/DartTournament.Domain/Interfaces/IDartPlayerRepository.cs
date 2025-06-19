@@ -9,7 +9,8 @@ namespace DartTournament.Domain.Interfaces
 {
     public interface IDartPlayerRepository
     {
-        Task AddAsync(DartPlayer team);
+        Task AddAsync(DartPlayer player);
         Task<List<DartPlayer>> GetAllAsync();
+        Task Update(DartPlayer player);
     }
 }

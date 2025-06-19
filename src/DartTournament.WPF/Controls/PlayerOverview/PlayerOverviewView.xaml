@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="DartTournament.WPF.Controls.PlayerOverview.PlayerOverviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DartTournament.WPF.Controls.PlayerOverview"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:valueConverter="clr-namespace:DartTournament.WPF.ValueConverter"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <local:PlayerOverviewVM/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <valueConverter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- AppBar -->
+        <ToolBar Background="{DynamicResource MaterialDesignPaper}">
+            <TextBlock Text="Spieler verwalten"
+                       FontSize="20"
+                       FontWeight="Bold" />
+        </ToolBar>
+
+        <Grid Grid.Row="1" VerticalAlignment="Top" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+            <ProgressBar IsIndeterminate="True"></ProgressBar>
+        </Grid>
+        <Grid Grid.Row="1"
+              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert, FallbackValue=Visible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <!-- Team Liste -->
+            <ListBox Grid.Column="0"
+                     ItemsSource="{Binding PlayerCollection}"
+                     SelectedItem="{Binding SelectedPlayer}"
+                     Margin="10">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem"
+                           BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Stretch" />
+                        <!-- ListBoxItem auf volle Breite -->
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" FontSize="16" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+            </ListBox>
+
+            <!-- Floating Action Button -->
+            <Button Grid.Column="0"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    Margin="20"
+                    Command="{Binding AddPlayerCommand}"
+                    Style="{StaticResource MaterialDesignFloatingActionButton}">
+                <materialDesign:PackIcon Kind="Plus" />
+            </Button>
+
+            <GridSplitter Grid.Column="1"
+                          Width="2"
+                          VerticalAlignment="Stretch"
+                          Background="Gray" />
+
+            <Grid Grid.Column="2">
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Text="{Binding SelectedPlayer.Name}" FontSize="16" IsEnabled="{Binding EditIsEnabled}" />
+                    <Button Grid.Column="1" Content="Bearbeiten" Width="100" Command="{Binding EditPlayerCommand}" />
+
+                </Grid>
+                
+                <Button Margin="24, 0, 24, 24" Content="Speichern" VerticalAlignment="Bottom" Command="{Binding SavePlayerCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
