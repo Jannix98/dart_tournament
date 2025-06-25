@@ -24,21 +24,9 @@ namespace DartTournament.WPF.ServiceManager
 
     public class ServiceManager : IServiceManager
     {
-        //private static readonly Lazy<ServiceManager> _instance = new Lazy<ServiceManager>(() => new ServiceManager());
+        private static readonly Lazy<ServiceManager> _instance = new Lazy<ServiceManager>(() => new ServiceManager());
 
-        private static ServiceManager _instance;
-
-        public static ServiceManager Instance 
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new ServiceManager();
-                }
-                return _instance;
-            }
-        }
+        public static ServiceManager Instance => _instance.Value;
 
         private readonly ServiceProvider _serviceProvider;
 
@@ -46,10 +34,12 @@ namespace DartTournament.WPF.ServiceManager
         {
             var services = new ServiceCollection();
             ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
-            var initService = _serviceProvider.GetRequiredService<IInitializePresentationService>();
-            Console.WriteLine("Initializing Presentation Services...");
+
+            // Let the presentation layer register its own services
+            var initService = new InitializePresentationService();
             initService.Initialize(services);
+
+            _serviceProvider = services.BuildServiceProvider();
         }
 
         private void ConfigureServices(ServiceCollection services)
@@ -61,8 +51,8 @@ namespace DartTournament.WPF.ServiceManager
             services.AddTransient<IDialogOwner, DialogOwner>();
 
             // Register PlayerPresentationService
-            services.AddSingleton<IInitializePresentationService, InitializePresentationService>();
-            services.AddSingleton<IPlayerPresentationService, PlayerPresentationService>();
+            //services.AddSingleton<IInitializePresentationService, InitializePresentationService>();
+            //services.AddSingleton<IPlayerPresentationService, PlayerPresentationService>();
         }
 
         public T GetRequiredService<T>()

@@ -14,25 +14,11 @@ namespace DartTournament.Presentation.Services
 {
     public class InitializePresentationService : IInitializePresentationService
     {
-        private ServiceProvider _serviceProvider;
-
-        public void Initialize(object services)
-        {
-            //var services = new ServiceCollection();
-            if (!(services is ServiceCollection serviceCollection))
-                return; // TODO can be better
-
-            ConfigureServices(serviceCollection);
-            _serviceProvider = serviceCollection.BuildServiceProvider();
-        }
-
-        private void ConfigureServices(ServiceCollection services)
+        public void Initialize(IServiceCollection services)
         {
             services.AddSingleton<IDartPlayerRepository, DartPlayerRepository>();
             services.AddSingleton<IPlayerService, PlayerService>();
-
-            // Register PlayerPresentationService
-            //services.AddSingleton<IPlayerPresentationService, PlayerPresentationService>();
+            services.AddSingleton<IPlayerPresentationService, PlayerPresentationService>();
         }
     }
 }
