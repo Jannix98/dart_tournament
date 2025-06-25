@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using DartTournament.WPF.NotifyPropertyChange;
+using DartTournament.WPF.Models;
 
 namespace DartTournament.WPF.Dialogs.AddPlayer
 {
@@ -31,7 +32,7 @@ namespace DartTournament.WPF.Dialogs.AddPlayer
         private void OnConfirm()
         {
             // Rückgabe der Team-Instanz
-            Player = new DartPlayer(PlayerName);
+            Player = new DartPlayerUI(PlayerName);
             CloseDialog(true);
         }
 
@@ -40,7 +41,7 @@ namespace DartTournament.WPF.Dialogs.AddPlayer
             CloseDialog(false);
         }
 
-        public DartPlayer Player { get; private set; }
+        public DartPlayerUI Player { get; private set; }
 
         private void CloseDialog(bool dialogResult)
         {

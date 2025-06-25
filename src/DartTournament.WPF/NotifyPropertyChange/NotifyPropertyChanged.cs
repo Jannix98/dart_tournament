@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace DartTournament.WPF.NotifyPropertyChange
 {
-    // TODO: maybe move to different layer? 
     internal class NotifyPropertyChanged : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;

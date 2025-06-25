@@ -1,4 +1,5 @@
 ﻿using DartTournament.Domain.Entities;
+using DartTournament.Application.DTO.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace DartTournament.Application.UseCases.Player.Services.Interfaces
 {
     public interface IPlayerService
     {
-        Task<DartPlayer> CreatePlayerAsync(string name);
-        Task UpdatePlayerAsync(DartPlayer dartPlayer);
-        Task<List<DartPlayer>> GetPlayerAsync();
+        Task<DartPlayerGetDto> CreatePlayerAsync(DartPlayerInsertDto insertDto);
+        Task UpdatePlayerAsync(DartPlayerUpdateDto updateDto);
+        Task<List<DartPlayerGetDto>> GetPlayerAsync();
     }
 }

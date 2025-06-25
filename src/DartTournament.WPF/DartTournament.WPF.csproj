@@ -16,8 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DartTournament.Application\DartTournament.Application.csproj" />
-    <ProjectReference Include="..\DartTournament.Domain\DartTournament.Domain.csproj" />
-    <ProjectReference Include="..\DartTournament.Infrastructure.JSON\DartTournament.Infrastructure.JSON.csproj" />
+    <ProjectReference Include="..\DartTournament.Presentation.Base\DartTournament.Presentation.Base.csproj" />
+    <ProjectReference Include="..\DartTournament.Presentation\DartTournament.Presentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

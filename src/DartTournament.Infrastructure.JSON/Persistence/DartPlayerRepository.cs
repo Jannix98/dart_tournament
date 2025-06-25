@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace DartTournament.Infrastructure.JSON.Persistence
 {
-    public class PlayerRepository : IDartPlayerRepository
+    public class DartPlayerRepository : IDartPlayerRepository
     {
         private readonly string FilePath = null;
         private const string FileName = "player.json";
 
-        public PlayerRepository()
+        public DartPlayerRepository()
         {
             FilePath = PathManager.GetAndCreatePath(FileName);
         }
@@ -52,6 +52,12 @@ namespace DartTournament.Infrastructure.JSON.Persistence
             players[index] = player;
 
             await SaveInFile(players);
+        }
+
+        public async Task<DartPlayer?> GetByIdAsync(Guid id)
+        {
+            var players = await GetAllAsync();
+            return players.FirstOrDefault(p => p.Id == id);
         }
     }
 }

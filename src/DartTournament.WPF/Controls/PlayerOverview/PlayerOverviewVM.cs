@@ -1,5 +1,5 @@
 ﻿using DartTournament.Application.UseCases.Player.Services.Interfaces;
-using DartTournament.Domain.Entities;
+using DartTournament.WPF.Models; // Updated namespace import
 using DartTournament.WPF.NotifyPropertyChange;
 using System;
 using System.Collections.Generic;
@@ -12,15 +12,17 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DartTournament.WPF.Dialogs.DialogManagement;
 using DartTournament.WPF.Dialogs.AddPlayer;
+using DartTournament.Presentation.Base.Services;
+using DartTournament.Application.DTO.Player;
 
 namespace DartTournament.WPF.Controls.PlayerOverview
 {
     internal class PlayerOverviewVM : NotifyPropertyChanged
     {
-        IPlayerService _playerService;
+        IPlayerPresentationService _playerService;
         IDialogManager _dialogManager;
-        DartPlayer _selectedPlayer;
-        ObservableCollection<DartPlayer> _playerCollection = new ObservableCollection<DartPlayer>();
+        DartPlayerUI _selectedPlayer;
+        ObservableCollection<DartPlayerUI> _playerCollection = new ObservableCollection<DartPlayerUI>();
         private bool _isLoading = true;
         ICommand _addPlayerCommand;
         private ICommand _editPlayerCommand;
@@ -29,7 +31,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
 
         public PlayerOverviewVM()
         {
-            _playerService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerService>();
+            _playerService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
             _dialogManager = ServiceManager.ServiceManager.Instance.GetRequiredService<IDialogManager>();
             AddPlayerCommand = new RelayCommand(() => AddPlayer());
             EditPlayerCommand = new RelayCommand(() => EditPlayer());
@@ -37,11 +39,29 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             EditIsEnabled = false;
         }
 
-        private void SavePlayer()
+        private async void SavePlayer()
         {
-            // TODO: fix when DTO is implemented
-            _playerService.UpdatePlayerAsync(SelectedPlayer);
-            EditIsEnabled = false;
+            if (SelectedPlayer == null)
+                return;
+
+            var updateDto = new DartPlayerUpdateDto
+            {
+                Id = SelectedPlayer.Id,
+                Name = SelectedPlayer.Name
+            };
+
+            try
+            {
+                await _playerService.UpdatePlayerAsync(updateDto);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., logging, displaying a message)
+            }
+            finally
+            {
+                EditIsEnabled = false;
+            }
         }
 
         private void EditPlayer()
@@ -52,14 +72,28 @@ namespace DartTournament.WPF.Controls.PlayerOverview
         private async void AddPlayer()
         {
             AddPlayerResult? result = _dialogManager.ShowDialog<IAddPlayerView>() as AddPlayerResult;
-            if (result?.DialogResult != true)
+            if (result?.DialogResult != true || result.Player == null)
                 return;
-            var player = await _playerService.CreatePlayerAsync(result.Team.Name);
-            PlayerCollection.Add(player);
+
+            var insertDto = new DartPlayerInsertDto
+            {
+                Name = result.Player.Name
+            };
+
+            try
+            {
+                var playerDto = await _playerService.CreatePlayerAsync(insertDto);
+                var playerUI = new DartPlayerUI(playerDto.Id, playerDto.Name);
+                PlayerCollection.Add(playerUI);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., logging, displaying a message)
+            }
         }
 
-        public DartPlayer SelectedPlayer { get => _selectedPlayer; set => SetProperty(ref _selectedPlayer, value); }
-        public ObservableCollection<DartPlayer> PlayerCollection { get => _playerCollection; set => SetProperty(ref _playerCollection, value); }
+        public DartPlayerUI SelectedPlayer { get => _selectedPlayer; set => SetProperty(ref _selectedPlayer, value); }
+        public ObservableCollection<DartPlayerUI> PlayerCollection { get => _playerCollection; set => SetProperty(ref _playerCollection, value); }
         public bool IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
         public ICommand AddPlayerCommand { get => _addPlayerCommand; set => _addPlayerCommand = value; }
         public ICommand EditPlayerCommand { get => _editPlayerCommand; set => _editPlayerCommand = value; }
@@ -70,10 +104,10 @@ namespace DartTournament.WPF.Controls.PlayerOverview
         {
             try
             {
-                // TODO this async shit is not working. Fix it
                 IsLoading = true;
                 var data = await _playerService.GetPlayerAsync();
-                PlayerCollection = new ObservableCollection<DartPlayer>(data);
+                var players = data.Select(dto => new DartPlayerUI(dto.Id, dto.Name)).ToList();
+                PlayerCollection = new ObservableCollection<DartPlayerUI>(players);
             }
             catch (Exception ex)
             {
@@ -84,6 +118,5 @@ namespace DartTournament.WPF.Controls.PlayerOverview
                 IsLoading = false;
             }
         }
-
     }
 }

@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DartTournament.Domain.Entities;
 using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.Presentation.Base.Services;
+using DartTournament.WPF.Models;
 
 namespace DartTournament.WPF.Dialogs.CreateGame
 {
     internal class CreateGameVM : NotifyPropertyChanged
     {
-        private readonly IPlayerService _teamService;
+        private readonly IPlayerPresentationService _playerService;
         private ObservableCollection<TeamInSelection> _teamsInSelection;
         private bool _selectAllIsSelected;
         private TournamentSize _selectedTournamentSize = TournamentSize.X16;
@@ -47,7 +49,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 
         public CreateGameVM()
         {
-            _teamService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerService>();
+            _playerService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
 
             ConfirmCommand = new RelayCommand(ConfirmSelection);
             CancelCommand = new RelayCommand(CancelSelection);
@@ -59,10 +61,10 @@ namespace DartTournament.WPF.Dialogs.CreateGame
         {
             TeamsInSelection =
                 new ObservableCollection<TeamInSelection>();
-            var teams = await _teamService.GetPlayerAsync();
-            foreach (var team in teams)
+            var players = await _playerService.GetPlayerAsync();
+            foreach (var player in players)
             {
-                var selectionTeam = new TeamInSelection(team);
+                var selectionTeam = new TeamInSelection(DartPlayerUIMapper.FromGetDto(player));
                 TeamsInSelection.Add(selectionTeam);
                 selectionTeam.PropertyChanged += SelectionTeam_PropertyChanged;
             }
@@ -111,7 +113,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
             }
         }
 
-        public List<DartPlayer> GetSelectedTeams()
+        public List<DartPlayerUI> GetSelectedTeams()
         {
             var selectedTeams = TeamsInSelection.Where(t => t.IsChecked).Select(t => t.Team).ToList();
             return selectedTeams;

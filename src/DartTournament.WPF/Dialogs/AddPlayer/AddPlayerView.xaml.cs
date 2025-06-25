@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DartTournament.Domain.Entities;
 using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.WPF.Models;
 
 namespace DartTournament.WPF.Dialogs.AddPlayer
 {
@@ -26,7 +27,7 @@ namespace DartTournament.WPF.Dialogs.AddPlayer
             InitializeComponent();
         }
 
-        public override BaseDialogResult ShowDialog()
+        internal override BaseDialogResult ShowDialog()
         {
             var baseResult = base.ShowDialog();
             if (baseResult.DialogResult == true)
@@ -40,16 +41,16 @@ namespace DartTournament.WPF.Dialogs.AddPlayer
         }
     }
 
-    public class AddPlayerResult : BaseDialogResult
+    internal class AddPlayerResult : BaseDialogResult
     {
-        public DartPlayer _team;
+        public DartPlayerUI _player;
 
-        public AddPlayerResult(bool? dialogResult, DartPlayer team) : base(dialogResult)
+        public AddPlayerResult(bool? dialogResult, DartPlayerUI player) : base(dialogResult)
         {
-            _team = team;
+            _player = player;
         }
 
-        public DartPlayer Team { get => _team; set => _team = value; }
+        public DartPlayerUI Player { get => _player; set => _player = value; }
     }
 
     public interface IAddPlayerView

@@ -1,4 +1,4 @@
-﻿using DartTournament.Domain.Entities;
+﻿using DartTournament.WPF.Models;
 using DartTournament.WPF.NotifyPropertyChange;
 using System;
 using System.Collections.Generic;
@@ -16,14 +16,14 @@ namespace DartTournament.WPF.Screens.PlayerScreen
             int count = 16;
             for (int i = 0; i < count; i++) 
             {
-                PlayerCollection.Add(new DartPlayer($"Team {i + 1}"));
+                PlayerCollection.Add(new DartPlayerUI($"Team {i + 1}"));
             }
         }
 
-        DartPlayer selectedPlayer;
-        ObservableCollection<DartPlayer> teams = new ObservableCollection<DartPlayer>();
+        DartPlayerUI selectedPlayer;
+        ObservableCollection<DartPlayerUI> teams = new ObservableCollection<DartPlayerUI>();
 
-        public DartPlayer SelectedPlayer { get => selectedPlayer; set => SetProperty(ref selectedPlayer, value); }
-        public ObservableCollection<DartPlayer> PlayerCollection { get => teams; set => SetProperty(ref teams, value); }
+        public DartPlayerUI SelectedPlayer { get => selectedPlayer; set => SetProperty(ref selectedPlayer, value); }
+        public ObservableCollection<DartPlayerUI> PlayerCollection { get => teams; set => SetProperty(ref teams, value); }
     }
 }

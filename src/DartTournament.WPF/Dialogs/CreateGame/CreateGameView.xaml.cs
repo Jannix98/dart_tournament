@@ -11,8 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using DartTournament.Domain.Entities;
 using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.WPF.Models;
 
 namespace DartTournament.WPF.Dialogs.CreateGame
 {
@@ -28,10 +28,10 @@ namespace DartTournament.WPF.Dialogs.CreateGame
                 vm.Dialog = this;
         }
 
-        public override CreateGameViewResult ShowDialog()
+        internal override CreateGameViewResult ShowDialog()
         {
             var baseResult = base.ShowDialog();
-            List<DartPlayer> selectedTeams = new List<DartPlayer>();
+            List<DartPlayerUI> selectedTeams = new List<DartPlayerUI>();
             if (baseResult.DialogResult == true && this.DataContext is CreateGameVM vm)
                 selectedTeams = vm.GetSelectedTeams();
 
@@ -39,11 +39,11 @@ namespace DartTournament.WPF.Dialogs.CreateGame
         }
     }
 
-    public class CreateGameViewResult : BaseDialogResult
+    internal class CreateGameViewResult : BaseDialogResult
     {
-        public List<DartPlayer> SelectedTeams { get; private set;  }
+        public List<DartPlayerUI> SelectedTeams { get; private set;  }
 
-        public CreateGameViewResult(BaseDialogResult baseDialogResult, List<DartPlayer> selectedTeams) : base(baseDialogResult)
+        public CreateGameViewResult(BaseDialogResult baseDialogResult, List<DartPlayerUI> selectedTeams) : base(baseDialogResult)
         {
             SelectedTeams = selectedTeams;
         }

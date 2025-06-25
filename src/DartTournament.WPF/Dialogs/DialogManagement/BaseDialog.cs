@@ -16,7 +16,7 @@ namespace DartTournament.WPF.Dialogs.DialogManagement
         }
 
 
-        public virtual new BaseDialogResult ShowDialog()
+        internal virtual new BaseDialogResult ShowDialog()
         {
             bool? result = base.ShowDialog();
             return new BaseDialogResult(result);
