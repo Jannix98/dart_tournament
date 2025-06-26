@@ -59,5 +59,16 @@ namespace DartTournament.Infrastructure.JSON.Persistence
             var players = await GetAllAsync();
             return players.FirstOrDefault(p => p.Id == id);
         }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var players = await GetAllAsync();
+            var player = players.FirstOrDefault(p => p.Id == id);
+            if (player != null)
+            {
+                players.Remove(player);
+                await SaveInFile(players);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 using DartTournament.Application.DTO.Player;
 using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Presentation.Base.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,5 +24,11 @@ namespace DartTournament.Presentation.Services
 
         public Task<List<DartPlayerGetDto>> GetPlayerAsync()
             => _playerService.GetPlayerAsync();
+
+        public async Task DeletePlayerAsync(Guid id)
+        {
+            // Call the underlying service/repository to delete the player by Id
+            await _playerService.DeleteAsync(id);
+        }
     }
 }

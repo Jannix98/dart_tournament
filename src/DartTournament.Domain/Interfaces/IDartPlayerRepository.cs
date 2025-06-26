@@ -13,5 +13,6 @@ namespace DartTournament.Domain.Interfaces
         Task<List<DartPlayer>> GetAllAsync();
         Task Update(DartPlayer player);
         Task<DartPlayer?> GetByIdAsync(Guid id);
+        Task DeleteAsync(Guid id);
     }
 }

@@ -37,10 +37,16 @@ namespace DartTournament.Application.UseCases.Player.Services
             var player = await _playerRepository.GetByIdAsync(updateDto.Id);
             if (player != null)
             {
-                DartPlayerMapper.UpdateEntity(player, updateDto);
-                await _playerRepository.Update(player);
+                // TODO: with an SQL / Entity Framework, this would not work
+                var convertedPlayer = DartPlayerMapper.UpdateEntity(updateDto);
+                await _playerRepository.Update(convertedPlayer);
             }
-            // Optionally handle not found case
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            // Call repository to delete
+            await _playerRepository.DeleteAsync(id);
         }
     }
 }

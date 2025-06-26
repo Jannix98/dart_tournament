@@ -1,6 +1,4 @@
-﻿using DartTournament.WPF.Navigator;
-using DartTournament.WPF.Screens.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DartTournament.WPF.Screens.PlayerScreen
+namespace DartTournament.WPF.Dialogs.CreateGame
 {
     /// <summary>
-    /// Interaction logic for TeamScreenView.xaml
+    /// Interaction logic for CreateTournamentSessionControl.xaml
     /// </summary>
-    public partial class PlayerScreenView : ScreenBase
+    public partial class CreateTournamentSessionControl : UserControl
     {
-        public PlayerScreenView(IScreenNavigator navigator) : base(navigator)
+        public CreateTournamentSessionControl()
         {
             InitializeComponent();
         }

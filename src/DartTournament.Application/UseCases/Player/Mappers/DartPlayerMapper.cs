@@ -11,9 +11,9 @@ namespace DartTournament.Application.UseCases.Player.Mappers
         public static DartPlayer ToEntity(DartPlayerInsertDto dto) =>
             new DartPlayer(dto.Name);
 
-        public static void UpdateEntity(DartPlayer player, DartPlayerUpdateDto dto)
+        public static DartPlayer UpdateEntity(DartPlayerUpdateDto dto)
         {
-            player.Name = dto.Name;
+            return new DartPlayer(dto.Id, dto.Name);
         }
 
         public static DartPlayerGetDto MapAndReturn(DartPlayerInsertDto insertDto)

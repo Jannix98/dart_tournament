@@ -10,5 +10,6 @@ namespace DartTournament.Presentation.Base.Services
         Task<DartPlayerGetDto> CreatePlayerAsync(DartPlayerInsertDto insertDto);
         Task UpdatePlayerAsync(DartPlayerUpdateDto updateDto);
         Task<List<DartPlayerGetDto>> GetPlayerAsync();
+        Task DeletePlayerAsync(Guid id); 
     }
 }

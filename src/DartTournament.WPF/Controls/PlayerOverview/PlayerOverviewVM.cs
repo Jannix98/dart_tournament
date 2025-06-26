@@ -14,6 +14,7 @@ using DartTournament.WPF.Dialogs.DialogManagement;
 using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.Presentation.Base.Services;
 using DartTournament.Application.DTO.Player;
+using System.Text.Json.Serialization;
 
 namespace DartTournament.WPF.Controls.PlayerOverview
 {
@@ -27,6 +28,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
         ICommand _addPlayerCommand;
         private ICommand _editPlayerCommand;
         private ICommand _savePlayerCommand;
+        private ICommand _deletePlayerCommand; // Add this line
         private bool _editIsEnabled;
 
         public PlayerOverviewVM()
@@ -36,6 +38,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             AddPlayerCommand = new RelayCommand(() => AddPlayer());
             EditPlayerCommand = new RelayCommand(() => EditPlayer());
             SavePlayerCommand = new RelayCommand(() => SavePlayer());
+            DeletePlayerCommand = new RelayCommand<Guid>(async id => await DeletePlayerAsync(id)); // Add this line
             EditIsEnabled = false;
         }
 
@@ -92,12 +95,28 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             }
         }
 
+        private async Task DeletePlayerAsync(Guid id)
+        {
+            try
+            {
+                await _playerService.DeletePlayerAsync(id);
+                var playerToRemove = PlayerCollection.FirstOrDefault(p => p.Id == id);
+                if (playerToRemove != null)
+                    PlayerCollection.Remove(playerToRemove);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., logging, displaying a message)
+            }
+        }
+
         public DartPlayerUI SelectedPlayer { get => _selectedPlayer; set => SetProperty(ref _selectedPlayer, value); }
         public ObservableCollection<DartPlayerUI> PlayerCollection { get => _playerCollection; set => SetProperty(ref _playerCollection, value); }
         public bool IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
         public ICommand AddPlayerCommand { get => _addPlayerCommand; set => _addPlayerCommand = value; }
         public ICommand EditPlayerCommand { get => _editPlayerCommand; set => _editPlayerCommand = value; }
         public ICommand SavePlayerCommand { get => _savePlayerCommand; set => _savePlayerCommand = value; }
+        public ICommand DeletePlayerCommand { get => _deletePlayerCommand; set => _deletePlayerCommand = value; }
         public bool EditIsEnabled { get => _editIsEnabled; set => SetProperty(ref _editIsEnabled, value); }
 
         public async Task LoadTeamsAsync()

@@ -38,12 +38,15 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
-            CreateGameView createGameView = new CreateGameView(owner);
-            var result = createGameView.ShowDialog();
+            Window1 window1 = new Window1();
+            window1.ShowDialog();
 
-            if (result.DialogResult == false)
-                return;
+            //IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
+            //CreateGameView createGameView = new CreateGameView(owner);
+            //var result = createGameView.ShowDialog();
+
+            //if (result.DialogResult == false)
+            //    return;
 
             // Create Game!
         }

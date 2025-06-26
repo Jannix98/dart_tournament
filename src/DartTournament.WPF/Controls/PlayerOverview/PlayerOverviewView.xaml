@@ -47,15 +47,38 @@
                            BasedOn="{StaticResource MaterialDesignListBoxItem}">
                         <Setter Property="HorizontalContentAlignment"
                                 Value="Stretch" />
-                        <!-- ListBoxItem auf volle Breite -->
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" FontSize="16" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" FontSize="16" VerticalAlignment="Center" />
+                            <Button Grid.Column="1" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    Style="{StaticResource MaterialDesignIconButton}"
+                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding DataContext.DeletePlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    ToolTip="MaterialDesignIconButton">
+                                <materialDesign:PackIcon
+                                    Kind="Delete" />
+                            </Button>
+                            <!--<Button Grid.Column="1"
+                                    Content="🗑"
+                                    Height="20"
+                                    Width="20"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding DataContext.DeletePlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    CommandParameter="{Binding Id}"
+                                    ToolTip="Delete player"
+                                    
+                            </Button>-->
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                
             </ListBox>
 
             <!-- Floating Action Button -->
@@ -81,9 +104,8 @@
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" Text="{Binding SelectedPlayer.Name}" FontSize="16" IsEnabled="{Binding EditIsEnabled}" />
                     <Button Grid.Column="1" Content="Bearbeiten" Width="100" Command="{Binding EditPlayerCommand}" />
-
                 </Grid>
-                
+
                 <Button Margin="24, 0, 24, 24" Content="Speichern" VerticalAlignment="Bottom" Command="{Binding SavePlayerCommand}"/>
             </Grid>
         </Grid>
