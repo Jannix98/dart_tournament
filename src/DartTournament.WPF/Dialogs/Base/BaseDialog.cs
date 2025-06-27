@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DartTournament.WPF.Dialogs.DialogManagement
+namespace DartTournament.WPF.Dialogs.Base
 {
     public class BaseDialog : Window, IBaseDialog
     {
@@ -13,6 +13,7 @@ namespace DartTournament.WPF.Dialogs.DialogManagement
         {
             this.Owner = dialogOwner?.GetApplicationMainWindow();
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            this.WindowStyle = WindowStyle.None;
         }
 
 

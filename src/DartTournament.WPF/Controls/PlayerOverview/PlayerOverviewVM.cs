@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.Presentation.Base.Services;
 using DartTournament.Application.DTO.Player;

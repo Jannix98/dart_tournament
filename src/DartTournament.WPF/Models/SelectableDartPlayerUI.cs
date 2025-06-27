@@ -1,7 +1,7 @@
 using DartTournament.WPF.Models;
 using DartTournament.WPF.NotifyPropertyChange;
 
-namespace DartTournament.WPF.Dialogs.CreateGame;
+namespace DartTournament.WPF.Models;
 
 internal class SelectableDartPlayerUI : NotifyPropertyChanged
 {

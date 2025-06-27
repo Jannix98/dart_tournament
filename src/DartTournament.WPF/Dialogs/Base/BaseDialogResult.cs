@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DartTournament.WPF.Dialogs.DialogManagement
+namespace DartTournament.WPF.Dialogs.Base
 {
     public class BaseDialogResult
     {

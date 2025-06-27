@@ -1,122 +1,128 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using DartTournament.Application.UseCases.Player.Services.Interfaces;
-using DartTournament.WPF.NotifyPropertyChange;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using DartTournament.Domain.Entities;
-using DartTournament.WPF.Dialogs.DialogManagement;
-using DartTournament.Presentation.Base.Services;
+using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Models;
+using DartTournament.WPF.Models.Enums;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace DartTournament.WPF.Dialogs.CreateGame
 {
-    internal class CreateGameVM : NotifyPropertyChanged
+    internal class CreateGameVM : BaseDialogVM
     {
-        private readonly IPlayerPresentationService _playerService;
-        private ObservableCollection<TeamInSelection> _teamsInSelection;
-        private bool _selectAllIsSelected;
-        private TournamentSize _selectedTournamentSize = TournamentSize.X16;
-        private IBaseDialog _dialog;
-
-        public ObservableCollection<TeamInSelection> TeamsInSelection
-        {
-            get => _teamsInSelection;
-            set => SetProperty(ref _teamsInSelection, value);
-        }
-
-        public ICommand ConfirmCommand { get; }
-        public ICommand CancelCommand { get; }
-
-        public bool SelectAllIsSelected
-        {
-            get => _selectAllIsSelected;
-            set
-            {
-                if (SetProperty(ref _selectAllIsSelected, value))
-                    ChangeIsSelectedOfAllTeams(_selectAllIsSelected);
-            }
-        }
-
-        public TournamentSize SelectedTournamentSize { get => _selectedTournamentSize; set => SetProperty(ref _selectedTournamentSize, value); }
-
-        public IBaseDialog Dialog { get => _dialog; set => SetProperty(ref _dialog, value); }
-
+        private string _tournamentName = string.Empty;
+        private bool _advancedMode;
+        private TournamentPlayerCount _selectedTotalPlayers;
+        private ObservableCollection<SelectableDartPlayerUI> _players;
+        private int _maxPlayers = 8;
 
         public CreateGameVM()
         {
-            _playerService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
+            TotalPlayersOptions = new ObservableCollection<TournamentPlayerCount>
+            {
+                TournamentPlayerCount.Four,
+                TournamentPlayerCount.Eight,
+                TournamentPlayerCount.Sixteen,
+                TournamentPlayerCount.ThirtyTwo
+            };
 
-            ConfirmCommand = new RelayCommand(ConfirmSelection);
-            CancelCommand = new RelayCommand(CancelSelection);
+            Players = new ObservableCollection<SelectableDartPlayerUI>
+            {
+                new SelectableDartPlayerUI(new DartPlayerUI("Player 1")),
+                new SelectableDartPlayerUI(new DartPlayerUI("Player 2")),
+                new SelectableDartPlayerUI(new DartPlayerUI("Player 3")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 4")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
+            };
 
-            LoadTeams();
+            foreach (var p in Players)
+            {
+                p.PropertyChanged += Player_PropertyChanged;
+            }
+
+            CreateSessionCommand = new RelayCommand(CreateSession);
+            CancelCommand = new RelayCommand(Cancel);
+
+            SelectedTotalPlayers = TournamentPlayerCount.Eight; // Default selection
         }
 
-        private async void LoadTeams()
+        private void Player_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            TeamsInSelection =
-                new ObservableCollection<TeamInSelection>();
-            var players = await _playerService.GetPlayerAsync();
-            foreach (var player in players)
+            if (e.PropertyName == nameof(SelectableDartPlayerUI.IsSelected))
             {
-                var selectionTeam = new TeamInSelection(DartPlayerUIMapper.FromGetDto(player));
-                TeamsInSelection.Add(selectionTeam);
-                selectionTeam.PropertyChanged += SelectionTeam_PropertyChanged;
+                OnPropertyChanged(nameof(SelectedPlayersCount));
             }
         }
 
-        private void SelectionTeam_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        public string TournamentName
         {
-            if (e.PropertyName == nameof(TeamInSelection.IsChecked))
-                CheckAllIsSelectedValues();
+            get => _tournamentName;
+            set => SetProperty(ref _tournamentName, value);
         }
 
-        private void CheckAllIsSelectedValues()
+        public bool AdvancedMode
         {
-            bool? result = TeamsInSelection?.Any(x => x.IsChecked == false);
-            if (result == true)
-            {
-                SetProperty(ref _selectAllIsSelected, false, nameof(SelectAllIsSelected));
-            }
-            else
-            {
-                SetProperty(ref _selectAllIsSelected, true, nameof(SelectAllIsSelected));
-            }
+            get => _advancedMode;
+            set => SetProperty(ref _advancedMode, value);
         }
 
-        private void ConfirmSelection()
+        public TournamentPlayerCount SelectedTotalPlayers
         {
-            int count = GetSelectedTeams().Count();
-            int neededTeamSize = (int)SelectedTournamentSize;
-
-            if (count != neededTeamSize)
-                return; // TODO Show Error with correct abstraction
-
-            Dialog.CloseWindow(true);
+            get => _selectedTotalPlayers;
+            set => SetProperty(ref _selectedTotalPlayers, value);
         }
 
-        private void CancelSelection()
+        public ObservableCollection<TournamentPlayerCount> TotalPlayersOptions { get; }
+
+        public ObservableCollection<SelectableDartPlayerUI> Players
         {
-            Dialog.CloseWindow(false);
+            get => _players;
+            set => SetProperty(ref _players, value);
         }
 
-        private void ChangeIsSelectedOfAllTeams(bool value)
+        public int SelectedPlayersCount => Players?.Count(p => p.IsSelected) ?? 0;
+
+        public int MaxPlayers
         {
-            foreach (var teamInSelection in TeamsInSelection)
-            {
-                teamInSelection.IsChecked = value;
-            }
+            get => _maxPlayers;
+            set => SetProperty(ref _maxPlayers, value);
         }
 
-        public List<DartPlayerUI> GetSelectedTeams()
+        public ICommand CreateSessionCommand { get; }
+        public ICommand CancelCommand { get; }
+
+        private void CreateSession()
         {
-            var selectedTeams = TeamsInSelection.Where(t => t.IsChecked).Select(t => t.Team).ToList();
-            return selectedTeams;
+            // TODO: implemet validation
+            Dialog?.CloseWindow(true);
+        }
+
+        private void Cancel()
+        {
+            Dialog?.CloseWindow(false);
+        }
+
+        internal List<DartPlayerUI> GetSelectedTeams()
+        {
+            return Players
+                .Where(p => p.IsSelected)
+                .Select(p => p.Player)
+                .ToList();
         }
     }
 }

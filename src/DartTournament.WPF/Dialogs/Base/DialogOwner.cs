@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DartTournament.WPF.Dialogs.DialogManagement
+namespace DartTournament.WPF.Dialogs.Base
 {
     internal class DialogOwner : IDialogOwner
     {

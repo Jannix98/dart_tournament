@@ -8,7 +8,7 @@ using System.Windows;
 using DartTournament.Infrastructure.JSON.Persistence;
 using DartTournament.WPF.Controls.PlayerOverview;
 using DartTournament.WPF.Dialogs.AddPlayer;
-using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Navigator;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

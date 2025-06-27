@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DartTournament.WPF.Dialogs.AddPlayer"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:dialogManagement="clr-namespace:DartTournament.WPF.Dialogs.DialogManagement"
+        xmlns:dialogManagement="clr-namespace:DartTournament.WPF.Dialogs.Base"
         mc:Ignorable="d"
         Title="Neues Team"
         Width="300"

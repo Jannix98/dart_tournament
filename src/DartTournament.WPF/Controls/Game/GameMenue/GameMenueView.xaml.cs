@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DartTournament.WPF.Dialogs.CreateGame;
-using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.WPF.Dialogs.Base;
 
 namespace DartTournament.WPF.Controls.Game.GameMenue
 {
@@ -38,15 +38,12 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Window1 window1 = new Window1();
-            window1.ShowDialog();
+            IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
+            CreateGameView createGameView = new CreateGameView(owner);
+            var result = createGameView.ShowDialog();
 
-            //IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
-            //CreateGameView createGameView = new CreateGameView(owner);
-            //var result = createGameView.ShowDialog();
-
-            //if (result.DialogResult == false)
-            //    return;
+            if (result.DialogResult == false)
+                return;
 
             // Create Game!
         }

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DartTournament.Domain.Entities;
-using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Models;
 
 namespace DartTournament.WPF.Dialogs.AddPlayer

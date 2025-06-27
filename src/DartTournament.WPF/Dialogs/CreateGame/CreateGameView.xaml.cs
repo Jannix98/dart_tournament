@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using DartTournament.WPF.Dialogs.DialogManagement;
+using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Models;
 
 namespace DartTournament.WPF.Dialogs.CreateGame
@@ -24,8 +24,11 @@ namespace DartTournament.WPF.Dialogs.CreateGame
         public CreateGameView(IDialogOwner dialogOwner) : base(dialogOwner)
         {
             InitializeComponent();
-            if (this.DataContext is CreateGameVM vm)
-                vm.Dialog = this;
+            if(this.DataContext is not CreateGameVM vm)
+            {
+                throw new InvalidOperationException("DataContext must be of type CreateGameVM");
+            }
+            vm.Dialog = this;
         }
 
         internal override CreateGameViewResult ShowDialog()
