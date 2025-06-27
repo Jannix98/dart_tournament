@@ -3,6 +3,7 @@ using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Models;
 using DartTournament.WPF.Models.Enums;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DartTournament.WPF.Dialogs.CreateGame
@@ -108,8 +109,36 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 
         private void CreateSession()
         {
-            // TODO: implemet validation
+            bool flowControl = ValidateProperties();
+            if (!flowControl)
+            {
+                return;
+            }
             Dialog?.CloseWindow(true);
+        }
+
+        private bool ValidateProperties()
+        {
+            // TODO: Implement validation logic with xaml error handling and snackbars instead of message boxes
+            // TODO: remove mvvm validation and use xaml error handling with snackbars
+            int maxPlayers = (int)SelectedTotalPlayers;
+            if (SelectedPlayersCount < maxPlayers)
+            {
+                MessageBox.Show($"Please select at least {maxPlayers} players.", "Insufficient Players", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(TournamentName))
+            {
+                MessageBox.Show("Please enter a tournament name.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (Players.Count(p => p.IsSelected) > maxPlayers)
+            {
+                MessageBox.Show($"You can only select up to {maxPlayers} players.", "Too Many Players", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
         }
 
         private void Cancel()
