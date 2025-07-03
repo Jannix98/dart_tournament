@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DartTournament.WPF.Test (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "DartTournament.WPF.Test (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

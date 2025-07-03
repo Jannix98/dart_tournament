@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using DartTournament.WPF.Controls.Game;
 using DartTournament.WPF.Controls.PlayerOverview;
 using MaterialDesignThemes.Wpf;
+using DartTournament.WPF.Utils;
 
 namespace DartTournament.WPF.Screens.StartScreen
 {
@@ -16,23 +17,28 @@ namespace DartTournament.WPF.Screens.StartScreen
     {
         public StartScreenVM()
         {
-            MenueItems = new ObservableCollection<ApplicationMenueItem>
+            AllMenuItems = new ObservableCollection<ApplicationMenueItem>
             {
-                new ApplicationMenueItem("Games", new GameView(), PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic),
-                new ApplicationMenueItem("Player", new PlayerOverviewView(), PackIconKind.AccountOutline, PackIconKind.Account),
-                new ApplicationMenueItem("Settings", new UserControl(), PackIconKind.CogOutline, PackIconKind.Cog),
+                new ApplicationMenueItem("Games", new GameView(), PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false),
+                new ApplicationMenueItem("Player", new PlayerOverviewView(), PackIconKind.AccountOutline, PackIconKind.Account, false),
+                new ApplicationMenueItem("Settings", new UserControl(), PackIconKind.CogOutline, PackIconKind.Cog, true),
             };
 
-            // TODO: add later
-            BottomMenueItems = new ObservableCollection<ApplicationMenueItem>()
+            Mediator.Subscribe("AddMenuItem", arg =>
             {
-            };
+                if (arg is ApplicationMenueItem item)
+                    AllMenuItems.Add(item);
+            });
         }
 
-        public ObservableCollection<ApplicationMenueItem> MenueItems { get; set; }
-        public ObservableCollection<ApplicationMenueItem> BottomMenueItems { get; set; }
-
+        ObservableCollection<ApplicationMenueItem> _allMenuItems;
+        
         private ApplicationMenueItem _selectedMenuItem;
+        public ApplicationMenueItem SelectedMenuItem
+        {
+            get => _selectedMenuItem;
+            set => SetProperty(ref _selectedMenuItem, value);
+        }
 
         private UserControl _selectedContent;
         public UserControl SelectedContent
@@ -45,7 +51,7 @@ namespace DartTournament.WPF.Screens.StartScreen
             }
         }
 
-        public ApplicationMenueItem SelectedMenuItem { get => _selectedMenuItem; set => SetProperty(ref _selectedMenuItem, value); }
+        public ObservableCollection<ApplicationMenueItem> AllMenuItems { get => _allMenuItems; set => SetProperty(ref _allMenuItems, value); }
     }
 
     public class ApplicationMenueItem
@@ -54,13 +60,15 @@ namespace DartTournament.WPF.Screens.StartScreen
         public UserControl Content { get; set; }
         public PackIconKind SelectedIcon { get; set; }
         public PackIconKind UnselectedIcon { get; set; }
+        public bool IsBottomSection { get; set; } // NEW
 
-        public ApplicationMenueItem(string text, UserControl content, PackIconKind selectedIcon, PackIconKind unselectedIcon)
+        public ApplicationMenueItem(string text, UserControl content, PackIconKind selectedIcon, PackIconKind unselectedIcon, bool isBottomSection = false)
         {
             Text = text;
             Content = content;
             SelectedIcon = selectedIcon;
             UnselectedIcon = unselectedIcon;
+            IsBottomSection = isBottomSection;
         }
     }
 }

@@ -7,6 +7,7 @@
                  xmlns:base="clr-namespace:DartTournament.WPF.Screens.Base"
                  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:resx="clr-namespace:DartTournament.WPF.Resources"
+                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                  mc:Ignorable="d"
                  d:Background="White"
                  d:DesignHeight="450"
@@ -15,6 +16,18 @@
         <local:StartScreenVM></local:StartScreenVM>
     </UserControl.DataContext>
     <UserControl.Resources>
+        <CollectionViewSource x:Key="GroupedMenuItems"
+                              Source="{Binding AllMenuItems}">
+            <CollectionViewSource.SortDescriptions>
+                <!-- false (top) before true (bottom) -->
+                <scm:SortDescription PropertyName="IsBottomSection" Direction="Ascending"/>
+                <!-- Optionally, sort by Text or another property within groups -->
+                <scm:SortDescription PropertyName="Text" Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="IsBottomSection"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
         <Style TargetType="materialDesign:PackIcon">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
@@ -32,22 +45,33 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp2"
-                                 >
+            <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp2">
                 <StackPanel>
-                    <ListBox ItemsSource="{Binding MenueItems}"
-                             SelectedItem="{Binding SelectedMenuItem}">
+                    <ListBox ItemsSource="{Binding Source={StaticResource GroupedMenuItems}}"
+                             SelectedItem="{Binding SelectedMenuItem, Mode=TwoWay}">
+                        <ListBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.Panel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </GroupStyle.Panel>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="GroupItem">
+                                        <Setter Property="Margin" Value="0,10,0,0"/>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListBox.GroupStyle>
                         <ListBox.ItemContainerStyle>
-
                             <Style TargetType="ListBoxItem"
                                    BasedOn="{StaticResource MaterialDesign3.NavigationRailPrimaryListBoxItem}">
-
                                 <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
                                         Value="{Binding SelectedIcon}" />
                                 <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
                                         Value="{Binding UnselectedIcon}" />
                             </Style>
-                        </ListBox.ItemContainerStyle >
+                        </ListBox.ItemContainerStyle>
                         <ListBox.Resources>
                             <DataTemplate DataType="{x:Type local:ApplicationMenueItem}">
                                 <TextBlock Text="{Binding Text}"
@@ -55,33 +79,10 @@
                             </DataTemplate>
                         </ListBox.Resources>
                     </ListBox>
-
-                    <!-- TODO: add later-->
-                    <!--<ListBox ItemsSource="{Binding BottomMenueItems}"
-                             SelectedItem="{Binding SelectedMenuItem}">
-                        <ListBox.ItemContainerStyle>
-
-                            <Style TargetType="ListBoxItem"
-                                   BasedOn="{StaticResource MaterialDesign3.NavigationRailPrimaryListBoxItem}">
-
-                                <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
-                                        Value="{Binding SelectedIcon}" />
-                                <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
-                                        Value="{Binding UnselectedIcon}" />
-                            </Style>
-                        </ListBox.ItemContainerStyle >
-                        <ListBox.Resources>
-                            <DataTemplate DataType="{x:Type local:ApplicationMenueItem}">
-                                <TextBlock Text="{Binding Text}"
-                                           FontSize="16" />
-                            </DataTemplate>
-                        </ListBox.Resources>
-                    </ListBox>-->
                 </StackPanel>
             </materialDesign:Card>
 
             <!-- Sidebar ListBox -->
-            
 
             <!-- Content Display -->
             <ContentControl Grid.Column="1"

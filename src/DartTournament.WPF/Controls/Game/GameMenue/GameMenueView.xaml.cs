@@ -1,4 +1,9 @@
-﻿using DartTournament.WPF.Navigator;
+﻿using DartTournament.WPF.Controls.TournamentTree;
+using DartTournament.WPF.Dialogs.Base;
+using DartTournament.WPF.Dialogs.CreateGame;
+using DartTournament.WPF.Navigator;
+using DartTournament.WPF.Screens.StartScreen;
+using DartTournament.WPF.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +18,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DartTournament.WPF.Dialogs.CreateGame;
-using DartTournament.WPF.Dialogs.Base;
 
 namespace DartTournament.WPF.Controls.Game.GameMenue
 {
@@ -33,7 +36,7 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _navigator.NavigateTo(new TournamentTreeControl());
+            //_navigator.NavigateTo(new TournamentTreeControl());
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -45,6 +48,11 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
             if (result.DialogResult == false)
                 return;
 
+            var players = result.SelectedPlayers;
+
+            TournamentTreeControlParameter parameter = new TournamentTreeControlParameter(result.SelectedPlayers, result.IsAdvancedGame, result.TournamentName);
+
+            Mediator.Notify("AddMenuItem", new ApplicationMenueItem("Test", new TournamentTreeControl(parameter), MaterialDesignThemes.Wpf.PackIconKind.GamepadSquare, MaterialDesignThemes.Wpf.PackIconKind.GamepadSquareOutline, false));
             // Create Game!
         }
     }

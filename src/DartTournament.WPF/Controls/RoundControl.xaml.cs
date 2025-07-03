@@ -20,8 +20,11 @@ namespace DartTournament.WPF
     /// </summary>
     public partial class RoundControl : UserControl
     {
+        List<TeamTournamentControl> _controls;
+
         public RoundControl(List<TeamTournamentControl> controls) : this()
         {
+            _controls = controls;
             FillGrid(controls);
         }
 
@@ -61,6 +64,36 @@ namespace DartTournament.WPF
             if (roundControls.Count != 1 && roundControls.Count % 2 != 0)
                 throw new Exception("Uneven controls");
             return roundControls;
+        }
+
+        public void FillNames(List<string> teamNames)
+        {
+            if (teamNames.Count != roundGrid.Children.Count)
+                throw new Exception("Team names count does not match the number of controls in the grid.");
+            for (int i = 0; i < teamNames.Count; i++)
+            {
+                SetTeamNames(teamNames[i], i % 2 == 0, i);
+            }
+        }
+
+        private void SetTeamNames(string name, bool topOrBottom, int indexInRound)
+        {
+            var children = roundGrid.Children[indexInRound];
+            if (children is TeamTournamentControl teamControl)
+            {
+                if (topOrBottom)
+                {
+                    teamControl.SetTopTeamName(name);
+                }
+                else
+                {
+                    teamControl.SetBottomTeamName(name);
+                }
+            }
+            else
+            {
+                throw new Exception("Child is not a TeamTournamentControl");
+            }
         }
     }
 }

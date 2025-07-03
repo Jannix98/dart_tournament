@@ -12,16 +12,24 @@ namespace DartTournament.WPF.Controls
     {
         LineManager _lineManager;
         TreePainter _treePainter;
+        TournamentTreeControlParameter _parameter;
 
-        public TournamentTreeControl()
+        internal TournamentTreeControl(TournamentTreeControlParameter parameter)
         {
             InitializeComponent();
+            Loaded += TournamentTreeControl_Loaded;
+            _parameter = parameter;
+        }
+
+        private void TournamentTreeControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Load();
         }
 
         public void Load()
         {
             _treePainter = new TreePainter();
-            var uiElements = _treePainter.CreateTournamentTree();
+            var uiElements = _treePainter.CreateTournamentTree(_parameter.MaxPlayers, _parameter.Players);
             foreach (var element in uiElements) 
             {
                 myStack.Children.Add(element);

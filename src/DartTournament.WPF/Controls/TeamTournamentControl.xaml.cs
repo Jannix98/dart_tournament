@@ -31,9 +31,17 @@ namespace DartTournament.WPF
         public TeamTournamentControl()
         {
             InitializeComponent();
-            // TODO: fix
-            teamName.Content = "ABC";
             teamScore.Content = 4711;
+        }
+
+        internal void SetBottomTeamName(string name)
+        {
+            teamName.Content = name;
+        }
+
+        internal void SetTopTeamName(string name)
+        {
+            teamName.Content = name;
         }
     }
 }

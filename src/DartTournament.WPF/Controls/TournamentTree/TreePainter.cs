@@ -1,4 +1,5 @@
 ﻿using DartTournament.Domain.Entities;
+using DartTournament.WPF.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,13 +13,13 @@ namespace DartTournament.WPF.Controls.TournamentTree
     internal class TreePainter
     {
 
-        public List<UIElement> CreateTournamentTree()
+        public List<UIElement> CreateTournamentTree(int maxPlayers, List<DartPlayerUI> players)
         {
             List<UIElement> uIElements = new List<UIElement>();
             // TODO add parameter
             int score = 501;
-            int teamsInFirstRound = 32;
-            int rounds = 6; // TODO: calculate with Teams 
+            int teamsInFirstRound = maxPlayers;
+            int rounds = RoundCalculator.GetRoundCount(teamsInFirstRound);
             int teamCount = teamsInFirstRound;
             for (int i = 0; i < rounds; i++)
             {
@@ -30,6 +31,14 @@ namespace DartTournament.WPF.Controls.TournamentTree
                 uIElements.Add(control);
                 teamCount = teamCount / 2;
             }
+
+            RoundControl first = uIElements[0] as RoundControl;
+            if(first == null)
+            {
+                throw new ArgumentException("First round control cannot be null.");
+            }
+            first.FillNames(players.Select(p => p.Name).ToList());
+
             return uIElements;
         }
 
