@@ -44,20 +44,17 @@ namespace DartTournament.WPF.Controls.GameTreeControl
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            double maxWidth = 0;
+            double totalWidth = 0;
             double totalHeight = 0;
 
             foreach (UIElement child in InternalChildren)
             {
                 child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                maxWidth = Math.Max(maxWidth, child.DesiredSize.Width);
+                totalWidth += child.DesiredSize.Width;
                 totalHeight += child.DesiredSize.Height;
             }
 
-            // Add spacing if needed, or calculate based on your layout logic
-            // For a bracket, you may want to calculate width/height based on rounds and matches
-
-            return new Size(maxWidth, totalHeight);
+            return new Size(totalWidth, totalHeight);
         }
 
         // Helper to get the first child of a specific type in the visual tree
