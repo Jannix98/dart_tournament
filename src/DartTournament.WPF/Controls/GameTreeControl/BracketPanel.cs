@@ -2,6 +2,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using DartTournament.WPF.Controls.GameTreeControl.PositionCalculator;
 
 namespace DartTournament.WPF.Controls.GameTreeControl
 {
@@ -76,13 +77,6 @@ namespace DartTournament.WPF.Controls.GameTreeControl
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            double itemWidth = 200; // TODO remove
-            double itemHeight = 100; // TODO remove
-            double horizontalSpacing = 40;
-
-            
-
-            // Get MatchControl instances
             var matchControls = InternalChildren
                 .OfType<ContentPresenter>()
                 .Select(cp => FindVisualChild<MatchControl.MatchControl>(cp))
@@ -96,66 +90,10 @@ namespace DartTournament.WPF.Controls.GameTreeControl
                 .OrderBy(g => g.Key)
                 .ToList();
 
-            var firstRound = rounds[0].Select(x => x).ToList();
-
-            PositionFirstRound(firstRound, finalSize);
-
-            //foreach (var roundGroup in rounds)
-            //{
-            //    int roundIndex = roundGroup.Key;
-            //    int matchCount = roundGroup.Count();
-
-            //    // Calculate total height occupied by all matches
-            //    double matchesHeight = matchCount * itemHeight;
-            //    // Calculate the space to distribute between matches (including top and bottom)
-            //    double totalSpacing = finalSize.Height - matchesHeight;
-            //    double spacing = matchCount > 1
-            //        ? totalSpacing / (matchCount + 1)
-            //        : totalSpacing / 2; // Center if only one
-
-            //    int i = 0;
-            //    foreach (var child in roundGroup)
-            //    {
-            //        double x = roundIndex * (itemWidth + horizontalSpacing);
-            //        // y = spacing + (itemHeight + spacing) * i
-            //        double y = spacing + i * (itemHeight + spacing);
-
-            //        child.Arrange(new Rect(new Point(x, y), new Size(itemWidth, itemHeight)));
-            //        i++;
-            //    }
-            //}
+            MatchControlPositionManager positionManager = new MatchControlPositionManager(rounds, finalSize.Height);
+            positionManager.PositionControls();
 
             return finalSize;
-        }
-
-        private void PositionFirstRound(List<MatchControl.MatchControl> firstRound, Size finalSize)
-        {
-            int matchesInFirstRound = firstRound.Count();
-            if(firstRound.Select(x => x.Height).Distinct().Count() > 1)
-                throw new InvalidOperationException("All matches in the first round must have the same height.");
-
-            if(firstRound.Select(x => x.Width).Distinct().Count() > 1)
-                throw new InvalidOperationException("All matches in the first round must have the same width.");
-
-            double itemHeight = firstRound.First().Height;
-            double itemWidth = firstRound.First().Width;
-            double totalHeight = itemHeight * matchesInFirstRound;
-            double verticalSpacing = (finalSize.Height - totalHeight) / (matchesInFirstRound + 1);
-            if(verticalSpacing < 20)
-                verticalSpacing = 20; // Minimum spacing
-
-            int i = 0;
-            int horizontalSpacing = 40; // TODO remove
-            int roundIndex = 0; // Assuming first round is at index 0
-            foreach (var child in firstRound)
-            {
-                double x = roundIndex * (itemWidth + horizontalSpacing);
-                // y = spacing + (itemHeight + spacing) * i
-                double y = verticalSpacing + i * (itemHeight + verticalSpacing);
-
-                child.Arrange(new Rect(new Point(x, y), new Size(itemWidth, itemHeight)));
-                i++;
-            }
         }
     }
 }
