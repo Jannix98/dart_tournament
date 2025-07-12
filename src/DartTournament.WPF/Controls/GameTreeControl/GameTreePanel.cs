@@ -6,40 +6,11 @@ using DartTournament.WPF.Controls.GameTreeControl.PositionCalculator;
 
 namespace DartTournament.WPF.Controls.GameTreeControl
 {
-    public class BracketPanel : Panel
+    public class GameTreePanel : Panel
     {
-        public static readonly DependencyProperty RoundIndexProperty =
-            DependencyProperty.RegisterAttached(
-                "RoundIndex",
-                typeof(int),
-                typeof(BracketPanel),
-                new FrameworkPropertyMetadata(default(int)));
-
-        public static readonly DependencyProperty MatchIndexProperty =
-            DependencyProperty.RegisterAttached(
-                "MatchIndex",
-                typeof(int),
-                typeof(BracketPanel),
-                new FrameworkPropertyMetadata(default(int)));
-
-        public static int GetRoundIndex(UIElement element)
-        {
-            return (int)element.GetValue(RoundIndexProperty);
-        }
-
-        public static void SetRoundIndex(UIElement element, int value)
-        {
-            element.SetValue(RoundIndexProperty, value);
-        }
-
-        public static int GetMatchIndex(UIElement element)
-        {
-            return (int)element.GetValue(MatchIndexProperty);
-        }
-
-        public static void SetMatchIndex(UIElement element, int value)
-        {
-            element.SetValue(MatchIndexProperty, value);
+        public GameTreePanel()
+        { 
+            Background = new SolidColorBrush(Colors.Transparent);
         }
 
         protected override Size MeasureOverride(Size availableSize)

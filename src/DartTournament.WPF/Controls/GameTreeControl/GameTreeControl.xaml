@@ -7,7 +7,7 @@
         <ItemsControl ItemsSource="{Binding AllMatches}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <local:BracketPanel />
+                    <local:GameTreePanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
