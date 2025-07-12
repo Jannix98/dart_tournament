@@ -36,7 +36,7 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //_navigator.NavigateTo(new TournamentTreeControl());
+            Mediator.Notify("AddMenuItem1", new ApplicationMenueItem("Test1", new GameTreeControl.GameTreeControl(), MaterialDesignThemes.Wpf.PackIconKind.GamepadCircle, MaterialDesignThemes.Wpf.PackIconKind.GamepadCircleOutline, false));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

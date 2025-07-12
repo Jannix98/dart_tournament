@@ -1,0 +1,20 @@
+<UserControl x:Class="DartTournament.WPF.Controls.GameTreeControl.GameTreeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DartTournament.WPF.Controls.GameTreeControl"
+             xmlns:mctrl="clr-namespace:DartTournament.WPF.Controls.GameTreeControl.MatchControl">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding AllMatches}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <local:BracketPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:MatchViewModel}">
+                    <mctrl:MatchControl Match="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

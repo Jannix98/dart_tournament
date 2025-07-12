@@ -29,6 +29,12 @@ namespace DartTournament.WPF.Screens.StartScreen
                 if (arg is ApplicationMenueItem item)
                     AllMenuItems.Add(item);
             });
+
+            Mediator.Subscribe("AddMenuItem1", arg =>
+            {
+                if (arg is ApplicationMenueItem item)
+                    AllMenuItems.Add(item);
+            });
         }
 
         ObservableCollection<ApplicationMenueItem> _allMenuItems;
