@@ -9,6 +9,10 @@ namespace DartTournament.WPF.Dialogs.Base
 {
     public class BaseDialog : Window, IBaseDialog
     {
+        private BaseDialogInput _input;
+
+        public virtual BaseDialogInput Input { get => _input; set => _input = value; }
+
         public BaseDialog(IDialogOwner dialogOwner)
         {
             this.Owner = dialogOwner?.GetApplicationMainWindow();

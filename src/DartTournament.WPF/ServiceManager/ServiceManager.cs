@@ -1,19 +1,20 @@
 ﻿using DartTournament.Domain.Interfaces;
+using DartTournament.Infrastructure.JSON.Persistence;
+using DartTournament.Presentation.Base.Services;
+using DartTournament.Presentation.Services;
+using DartTournament.WPF.Controls.PlayerOverview;
+using DartTournament.WPF.Dialogs.AddPlayer;
+using DartTournament.WPF.Dialogs.Base;
+using DartTournament.WPF.Dialogs.SelectWinner;
+using DartTournament.WPF.Navigator;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using DartTournament.Infrastructure.JSON.Persistence;
-using DartTournament.WPF.Controls.PlayerOverview;
-using DartTournament.WPF.Dialogs.AddPlayer;
-using DartTournament.WPF.Dialogs.Base;
-using DartTournament.WPF.Navigator;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using DartTournament.Presentation.Base.Services;
-using DartTournament.Presentation.Services;
 
 namespace DartTournament.WPF.ServiceManager
 {
@@ -48,6 +49,7 @@ namespace DartTournament.WPF.ServiceManager
             services.AddSingleton<IDialogManager, DialogManager>();
             // TODO: Dialog Factory to pass the "Application.Current.MainWindow"
             services.AddTransient<IAddPlayerView, AddPlayerView>();
+            services.AddTransient<ISelectWinnerDialog, SelectWinnerDialog>();
             services.AddTransient<IDialogOwner, DialogOwner>();
 
             // Register PlayerPresentationService
