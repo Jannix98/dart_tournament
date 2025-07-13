@@ -20,7 +20,7 @@ namespace DartTournament.WPF.Controls.TournamentTree
                 teamCount /= 2;
                 rounds++;
             }
-            return rounds + 1;
+            return rounds;
         }
     }
 }

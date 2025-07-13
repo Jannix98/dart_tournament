@@ -1,3 +1,5 @@
+using DartTournament.WPF.Controls.TournamentTree;
+using DartTournament.WPF.Models;
 using System.Windows.Controls;
 
 namespace DartTournament.WPF.Controls.GameTreeControl
@@ -7,38 +9,56 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         public GameTreeControl()
         {
             InitializeComponent();
-            // For demo: set DataContext here or bind from outside
-            this.DataContext = new GameTreeViewModel
+        }
+
+        internal static GameTreeControl CreateGame(int maxPlayer, List<DartPlayerUI> players)
+        {
+            if(maxPlayer != players.Count)
             {
-                Rounds = new System.Collections.ObjectModel.ObservableCollection<RoundViewModel>() 
+                throw new ArgumentException($"The number of players must be {maxPlayer}.");
+            }
+
+            int roundCount = RoundCalculator.GetRoundCount(maxPlayer);
+
+            RoundViewModel firstRound = new RoundViewModel();
+            List<MatchViewModel> matches = new List<MatchViewModel>();
+            int firsrtRoundMatchIndex = 0;
+            for (int i = 0; i < players.Count; i+=2)
+            {
+                matches.Add(new MatchViewModel
                 {
-                    new RoundViewModel
-                    {
-                        Matches = new System.Collections.ObjectModel.ObservableCollection<MatchViewModel>
-                        {
-                            new MatchViewModel { Team1Name = "Team A", Team2Name = "Team B", Team1Score = 10, Team2Score = 8 },
-                            new MatchViewModel { Team1Name = "Team C", Team2Name = "Team D", Team1Score = 12, Team2Score = 15 },
-                            new MatchViewModel { Team1Name = "Team E", Team2Name = "Team F", Team1Score = 10, Team2Score = 8 },
-                            new MatchViewModel { Team1Name = "Team G", Team2Name = "Team H", Team1Score = 12, Team2Score = 15 }
-                        }
-                    },
-                    new RoundViewModel
-                    {
-                        Matches = new System.Collections.ObjectModel.ObservableCollection<MatchViewModel>
-                        {
-                            new MatchViewModel { Team1Name = "Team A", Team2Name = "Team B", Team1Score = 10, Team2Score = 8 },
-                            new MatchViewModel { Team1Name = "Team C", Team2Name = "Team D", Team1Score = 12, Team2Score = 15 }
-                        }
-                    },
-                    new RoundViewModel
-                    {
-                        Matches = new System.Collections.ObjectModel.ObservableCollection<MatchViewModel>
-                        {
-                            new MatchViewModel { Team1Name = "Team E", Team2Name = "Team F", Team1Score = 9, Team2Score = 11 }
-                        }
-                    }
+                    Team1Name = players[i].Name,
+                    Team2Name = players[i + 1].Name,
+                    RoundIndex = 0,
+                    MatchIndex = firsrtRoundMatchIndex++
+                });
+            }
+            firstRound.Matches = new System.Collections.ObjectModel.ObservableCollection<MatchViewModel>(matches);
+
+            List<RoundViewModel> rounds = new List<RoundViewModel>();
+            rounds.Add(firstRound);
+
+            int matchIndex = 0;
+            for (int i = 1; i < roundCount; i++)
+            {
+                RoundViewModel round = new RoundViewModel();
+                for (int j = 0; j < matches.Count / (i*2); j++)
+                {
+                    round.Matches.Add(new MatchViewModel() 
+                    { 
+                        RoundIndex = i,
+                        MatchIndex = matchIndex++,
+                    });
                 }
+                rounds.Add(round);
+            }
+
+            GameTreeControl gameTreeControl = new GameTreeControl();
+            gameTreeControl.DataContext = new GameTreeViewModel
+            {
+                Rounds = new System.Collections.ObjectModel.ObservableCollection<RoundViewModel>(rounds)
             };
+            return gameTreeControl;
         }
     }
 }

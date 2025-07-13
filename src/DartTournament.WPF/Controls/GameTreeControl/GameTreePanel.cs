@@ -58,6 +58,9 @@ namespace DartTournament.WPF.Controls.GameTreeControl
                 .OrderBy(g => g.Key)
                 .ToList();
 
+            if (rounds.Count == 0)
+                return finalSize;
+
             MatchControlPositionManager positionManager = new MatchControlPositionManager(rounds, finalSize.Height);
             positionManager.PositionControls();
 

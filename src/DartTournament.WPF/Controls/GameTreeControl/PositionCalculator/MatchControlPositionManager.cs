@@ -21,6 +21,9 @@ namespace DartTournament.WPF.Controls.GameTreeControl.PositionCalculator
 
         public void PositionControls()
         {
+            if (_rounds == null || _rounds.Count == 0)
+                return;
+
             var firstRound = _rounds[0].Select(x => x).ToList();
 
             var firstRoundPositions = GetFirstRoundPositions(firstRound);

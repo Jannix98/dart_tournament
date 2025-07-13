@@ -36,24 +36,42 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Mediator.Notify("AddMenuItem1", new ApplicationMenueItem("Test1", new GameTreeControl.GameTreeControl(), MaterialDesignThemes.Wpf.PackIconKind.GamepadCircle, MaterialDesignThemes.Wpf.PackIconKind.GamepadCircleOutline, false));
+            CreateGameViewResult result;
+            bool flowControl = ShowPlayerSelectionDialog(out result);
+            if (!flowControl)
+            {
+                return;
+            }
+
+            var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
+
+            Mediator.Notify("AddMenuItem1", new ApplicationMenueItem("Test1", control, MaterialDesignThemes.Wpf.PackIconKind.GamepadCircle, MaterialDesignThemes.Wpf.PackIconKind.GamepadCircleOutline, false));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
-            CreateGameView createGameView = new CreateGameView(owner);
-            var result = createGameView.ShowDialog();
-
-            if (result.DialogResult == false)
+            CreateGameViewResult result;
+            bool flowControl = ShowPlayerSelectionDialog(out result);
+            if (!flowControl)
+            {
                 return;
-
-            var players = result.SelectedPlayers;
+            }
 
             TournamentTreeControlParameter parameter = new TournamentTreeControlParameter(result.SelectedPlayers, result.IsAdvancedGame, result.TournamentName);
 
             Mediator.Notify("AddMenuItem", new ApplicationMenueItem("Test", new TournamentTreeControl(parameter), MaterialDesignThemes.Wpf.PackIconKind.GamepadSquare, MaterialDesignThemes.Wpf.PackIconKind.GamepadSquareOutline, false));
             // Create Game!
+        }
+
+        private static bool ShowPlayerSelectionDialog(out CreateGameViewResult result)
+        {
+            IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
+            CreateGameView createGameView = new CreateGameView(owner);
+            result = createGameView.ShowDialog();
+            if (result.DialogResult == false)
+                return false;
+
+            return true;
         }
     }
 }

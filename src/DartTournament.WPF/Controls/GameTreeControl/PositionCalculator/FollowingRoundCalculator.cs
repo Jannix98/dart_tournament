@@ -47,7 +47,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl.PositionCalculator
             int secondIndex = firstIndex + 1;
 
             Rect firstRect = _positionsOfPreviousRound[firstIndex];
-            Rect secondRect = _positionsOfPreviousRound[secondIndex];
+            Rect secondRect = _positionsOfPreviousRound[secondIndex]; // TODO: fix error with "16" players
 
             double minY = firstRect.Y;
             double maxY = secondRect.Y + secondRect.Height;

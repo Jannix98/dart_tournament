@@ -12,7 +12,14 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:MatchViewModel}">
-                    <mctrl:MatchControl Match="{Binding}" />
+                    <ContentControl>
+                        <ContentControl.InputBindings>
+                            <MouseBinding Gesture="LeftClick" 
+                                          Command="{Binding DataContext.SelectWinnerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                          CommandParameter="{Binding}" />
+                        </ContentControl.InputBindings>
+                        <mctrl:MatchControl Match="{Binding}"  />
+                    </ContentControl>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
