@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DartTournament.WPF.Controls.TournamentTree
+namespace DartTournament.WPF.Utils.RoundCalculator
 {
-    [Obsolete]
-    public static class RoundCalculator
+    internal abstract class RoundCalculatorBase
     {
-        public static int GetRoundCount(int teamCount)
+        protected abstract int MinmalRoundCount();
+
+        public int GetRoundCount(int teamCount)
         {
-            // TODO: looser Round accept 2 teams! 
             // Valid team sizes: 4, 8, 16, 32, ...
             // Each round halves the teams until 1 remains
-            if (teamCount < 4 || (teamCount & (teamCount - 1)) != 0)
-                throw new ArgumentException("Team count must be a power of 2 and at least 4.");
+            if (teamCount < MinmalRoundCount() || (teamCount & (teamCount - 1)) != 0)
+                throw new ArgumentException($"Team count must be a power of 2 and at least {MinmalRoundCount}.");
             int rounds = 0;
             while (teamCount > 1)
             {
