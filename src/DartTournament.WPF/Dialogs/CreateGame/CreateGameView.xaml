@@ -27,7 +27,7 @@
             <RowDefinition Height="8"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="8"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="250"/>
             <RowDefinition Height="16"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -84,11 +84,19 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <ListBox x:Name="playerList" ItemsSource="{Binding Players}" MaxHeight="200">
+            <ListBox x:Name="playerList"
+                     ItemsSource="{Binding Players}"
+                     MaxHeight="205"
+                     RequestBringIntoView="PlayerList_RequestBringIntoView">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <EventSetter Event="MouseLeftButtonUp" Handler="PlayerListItem_MouseLeftButtonUp"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox IsChecked="{Binding IsSelected}" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" Background="Transparent" Focusable="False">
+                            <CheckBox IsChecked="{Binding IsSelected}" VerticalAlignment="Center" Focusable="False"/>
                             <TextBlock Text="{Binding Name}" Margin="8,0,0,0" VerticalAlignment="Center"/>
                         </StackPanel>
                     </DataTemplate>

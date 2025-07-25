@@ -45,6 +45,20 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 
             return new CreateGameViewResult(baseResult, selectedTeams, vm.AdvancedMode, vm.TournamentName);
         }
+
+        private void PlayerListItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ListBoxItem item && item.DataContext is SelectableDartPlayerUI player)
+            {
+                player.IsSelected = !player.IsSelected;
+            }
+        }
+
+        private void PlayerList_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            // Prevent automatic scrolling
+            e.Handled = true;
+        }
     }
 
     
