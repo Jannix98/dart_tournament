@@ -14,13 +14,13 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
 
 
         public List<DartPlayerUI> SelectedPlayers { get; private set; }
-        public bool IsAdvancedGame { get; private set; } = false;
+        public bool AddLooserRound { get; private set; } = false;
 
 
         public CreateGameViewResult(BaseDialogResult baseDialogResult, List<DartPlayerUI> selectedPlayers, bool isAdvancedGame, string tournamentName) : base(baseDialogResult)
         {
             SelectedPlayers = selectedPlayers;
-            IsAdvancedGame = isAdvancedGame;
+            AddLooserRound = isAdvancedGame;
             TournamentName = tournamentName ?? string.Empty;
         }
     }

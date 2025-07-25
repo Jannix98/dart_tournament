@@ -1,9 +1,11 @@
-﻿using DartTournament.WPF.Controls.TournamentTree;
+﻿using DartTournament.WPF.Controls.GameSession;
+using DartTournament.WPF.Controls.TournamentTree;
 using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Dialogs.CreateGame;
 using DartTournament.WPF.Navigator;
 using DartTournament.WPF.Screens.StartScreen;
 using DartTournament.WPF.Utils;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,21 +36,12 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
             _navigator = navigator;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoadGameClick(object sender, RoutedEventArgs e)
         {
-            CreateGameViewResult result;
-            bool flowControl = ShowPlayerSelectionDialog(out result);
-            if (!flowControl)
-            {
-                return;
-            }
-
-            var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
-
-            Mediator.Notify("AddMenuItem1", new ApplicationMenueItem("Test1", control, MaterialDesignThemes.Wpf.PackIconKind.GamepadCircle, MaterialDesignThemes.Wpf.PackIconKind.GamepadCircleOutline, false));
+           MessageBox.Show("Load Game Clicked", "This feature is not implemented yet.", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void AddNewGameClick(object sender, RoutedEventArgs e)
         {
             CreateGameViewResult result;
             bool flowControl = ShowPlayerSelectionDialog(out result);
@@ -57,10 +50,10 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
                 return;
             }
 
-            TournamentTreeControlParameter parameter = new TournamentTreeControlParameter(result.SelectedPlayers, result.IsAdvancedGame, result.TournamentName);
+            //var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
+            var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);
 
-            Mediator.Notify("AddMenuItem", new ApplicationMenueItem("Test", new TournamentTreeControl(parameter), MaterialDesignThemes.Wpf.PackIconKind.GamepadSquare, MaterialDesignThemes.Wpf.PackIconKind.GamepadSquareOutline, false));
-            // Create Game!
+            Mediator.Notify("AddMenuItem", new ApplicationMenueItem(result.TournamentName, control, PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false));
         }
 
         private static bool ShowPlayerSelectionDialog(out CreateGameViewResult result)

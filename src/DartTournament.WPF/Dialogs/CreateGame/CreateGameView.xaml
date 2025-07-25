@@ -51,7 +51,7 @@
 
         <!-- Advanced Mode -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBlock Text="Advanced Mode:" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            <TextBlock Text="Add Looser Round:" FontWeight="SemiBold" VerticalAlignment="Center"/>
             <ToggleButton Margin="12, 12, 0, 12"
   Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding AdvancedMode}"/>
         </StackPanel>

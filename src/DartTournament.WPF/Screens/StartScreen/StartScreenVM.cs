@@ -19,7 +19,7 @@ namespace DartTournament.WPF.Screens.StartScreen
         {
             AllMenuItems = new ObservableCollection<ApplicationMenueItem>
             {
-                new ApplicationMenueItem("Games", new GameView(), PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false),
+                new ApplicationMenueItem("Games", new GameView(), PackIconKind.PlusOutline, PackIconKind.Plus, false),
                 new ApplicationMenueItem("Player", new PlayerOverviewView(), PackIconKind.AccountOutline, PackIconKind.Account, false),
                 new ApplicationMenueItem("Settings", new UserControl(), PackIconKind.CogOutline, PackIconKind.Cog, true),
             };
@@ -30,11 +30,6 @@ namespace DartTournament.WPF.Screens.StartScreen
                     AllMenuItems.Add(item);
             });
 
-            Mediator.Subscribe("AddMenuItem1", arg =>
-            {
-                if (arg is ApplicationMenueItem item)
-                    AllMenuItems.Add(item);
-            });
         }
 
         ObservableCollection<ApplicationMenueItem> _allMenuItems;

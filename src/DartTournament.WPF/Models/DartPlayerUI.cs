@@ -3,7 +3,7 @@ using DartTournament.WPF.NotifyPropertyChange;
 
 namespace DartTournament.WPF.Models
 {
-    internal class DartPlayerUI : NotifyPropertyChanged
+    public class DartPlayerUI : NotifyPropertyChanged
     {
         private Guid _id;
         private string _name;

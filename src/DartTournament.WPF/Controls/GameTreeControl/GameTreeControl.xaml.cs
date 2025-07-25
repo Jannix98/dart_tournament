@@ -13,7 +13,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
 
         internal static GameTreeControl CreateGame(int maxPlayer, List<DartPlayerUI> players)
         {
-            if(maxPlayer != players.Count)
+            if(maxPlayer != players.Count && players.Count > 0)
             {
                 throw new ArgumentException($"The number of players must be {maxPlayer}.");
             }
@@ -23,12 +23,20 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             RoundViewModel firstRound = new RoundViewModel();
             List<MatchViewModel> matches = new List<MatchViewModel>();
             int firsrtRoundMatchIndex = 0;
-            for (int i = 0; i < players.Count; i+=2)
+            for (int i = 0; i < maxPlayer; i+=2)
             {
+                string name1 = string.Empty;
+                string name2 = string.Empty;
+                if(players.Count > 0)
+                {
+                    name1 = players[i].Name;
+                    name2 = players[i + 1].Name;
+                }
+
                 matches.Add(new MatchViewModel
                 {
-                    Team1Name = players[i].Name,
-                    Team2Name = players[i + 1].Name,
+                    Team1Name = name1,
+                    Team2Name = name2,
                     RoundIndex = 0,
                     MatchIndex = firsrtRoundMatchIndex++
                 });
@@ -54,10 +62,8 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             }
 
             GameTreeControl gameTreeControl = new GameTreeControl();
-            gameTreeControl.DataContext = new GameTreeViewModel
-            {
-                Rounds = new System.Collections.ObjectModel.ObservableCollection<RoundViewModel>(rounds)
-            };
+            var roundCollection = new System.Collections.ObjectModel.ObservableCollection<RoundViewModel>(rounds);
+            gameTreeControl.DataContext = new GameTreeViewModel(roundCollection);
             return gameTreeControl;
         }
     }

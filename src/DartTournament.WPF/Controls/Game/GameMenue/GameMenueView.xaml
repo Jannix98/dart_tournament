@@ -14,12 +14,12 @@
             <Button Content="{x:Static resx:Labels.NewGame}"
                     Width="300"
                     Height="30"
-                    Click="Button_Click_1" />
+                    Click="AddNewGameClick" />
             <Button Content="{x:Static resx:Labels.LoadGame}"
                     Width="300"
                     Margin="0, 16, 0, 16"
                     Height="30"
-                    Click="Button_Click" />
+                    Click="LoadGameClick" />
             <ContentControl x:Name="mainContent" />
         </StackPanel>
     </Grid>

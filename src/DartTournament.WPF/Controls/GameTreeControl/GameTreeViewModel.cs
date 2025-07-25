@@ -11,8 +11,9 @@ namespace DartTournament.WPF.Controls.GameTreeControl
     public class GameTreeViewModel : NotifyPropertyChanged
     {
         IDialogManager _dialogManager;
-        public GameTreeViewModel()
+        public GameTreeViewModel(ObservableCollection<RoundViewModel> rounds)
         {
+            Rounds = rounds;
             SelectWinnerCommand = new RelayCommand<MatchViewModel>((match) => SelectWinner(match));
             _dialogManager = ServiceManager.ServiceManager.Instance.GetRequiredService<IDialogManager>();
         }

@@ -18,15 +18,6 @@
     <UserControl.Resources>
         <CollectionViewSource x:Key="GroupedMenuItems"
                               Source="{Binding AllMenuItems}">
-            <CollectionViewSource.SortDescriptions>
-                <!-- false (top) before true (bottom) -->
-                <scm:SortDescription PropertyName="IsBottomSection" Direction="Ascending"/>
-                <!-- Optionally, sort by Text or another property within groups -->
-                <scm:SortDescription PropertyName="Text" Direction="Ascending"/>
-            </CollectionViewSource.SortDescriptions>
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="IsBottomSection"/>
-            </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
         <Style TargetType="materialDesign:PackIcon">
             <Style.Triggers>
