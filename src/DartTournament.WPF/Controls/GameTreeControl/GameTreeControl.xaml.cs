@@ -38,9 +38,9 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             List<RoundViewModel> rounds = new List<RoundViewModel>();
             rounds.Add(firstRound);
 
-            int matchIndex = 0;
             for (int i = 1; i < roundCount; i++)
             {
+                int matchIndex = 0;
                 RoundViewModel round = new RoundViewModel();
                 for (int j = 0; j < matches.Count / (i*2); j++)
                 {
