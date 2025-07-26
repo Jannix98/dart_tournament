@@ -1,6 +1,8 @@
 ﻿using DartTournament.WPF.Models;
 using DartTournament.WPF.Utils.GameData;
 using DartTournament.WPF.Utils.MatchCreator;
+using DartTournament.WPF.Utils.MatchGenerator;
+using DartTournament.WPF.Utils.MatchHandler;
 using DartTournament.WPF.Utils.RoundCalculator;
 using System;
 using System.Collections.Generic;
@@ -54,8 +56,16 @@ namespace DartTournament.WPF.Controls.GameSession
                 var looserGameData = looserMatchCreator.Create(_players.Count, _players);
 
                 this.TabControl.Visibility = Visibility.Visible;
-                var control = GameTreeControl.GameTreeControl.CreateGame(looserGameData.GameRounds);
-                var looserControl = GameTreeControl.GameTreeControl.CreateGame(looserGameData.LooserRounds);
+
+                var matches = MatchGenerator.FromRounds(looserGameData.GameRounds);
+                var looserMatches = MatchGenerator.FromRounds(looserGameData.LooserRounds);
+
+                var looserMatchHandler = new LooserGameMatchHandler(looserMatches);
+                var gameControlMatchHandler = new GameMatchHandler(matches, looserMatchHandler);
+                var looserGameControlMatchHandler = new GameMatchHandler(looserMatches, null);
+
+                var control = GameTreeControl.GameTreeControl.CreateGame(gameControlMatchHandler);
+                var looserControl = GameTreeControl.GameTreeControl.CreateGame(looserGameControlMatchHandler);
                 GameTab.Content = control;
                 LooserRoundTab.Content = looserControl;
             }
@@ -64,7 +74,13 @@ namespace DartTournament.WPF.Controls.GameSession
                 GameDataCreator normalGameCreator = new GameDataCreator(new NormalRoundCalculator());
                 NormalMatchCreator normalMatchCreator = new NormalMatchCreator(normalGameCreator);
                 var normalGameData = normalMatchCreator.Create(_players.Count, _players);
-                var control = GameTreeControl.GameTreeControl.CreateGame(normalGameData.GameRounds);
+
+                var matches = MatchGenerator.FromRounds(normalGameData.GameRounds);
+
+                var gameControlMatchHandler = new GameMatchHandler(matches, null);
+
+                var control = GameTreeControl.GameTreeControl.CreateGame(gameControlMatchHandler);
+
                 this.TabControl.Visibility = Visibility.Collapsed;
                 GameContent.Content = control;
             }

@@ -3,6 +3,7 @@ using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Dialogs.SelectWinner;
 using DartTournament.WPF.NotifyPropertyChange;
+using DartTournament.WPF.Utils.MatchHandler;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -11,9 +12,14 @@ namespace DartTournament.WPF.Controls.GameTreeControl
     public class GameTreeViewModel : NotifyPropertyChanged
     {
         IDialogManager _dialogManager;
-        public GameTreeViewModel(ObservableCollection<RoundViewModel> rounds)
+        ObservableCollection<MatchViewModel> _allMatches = new ObservableCollection<MatchViewModel>(); // Initialize to avoid null
+        private GameMatchHandler _matchHandler;
+
+        public GameTreeViewModel(GameMatchHandler gameMatchHandler)
         {
-            Rounds = rounds;
+            _matchHandler = gameMatchHandler;
+            var matches = gameMatchHandler.Matches;
+            AllMatches = new ObservableCollection<MatchViewModel>(matches);
             SelectWinnerCommand = new RelayCommand<MatchViewModel>((match) => SelectWinner(match));
             _dialogManager = ServiceManager.ServiceManager.Instance.GetRequiredService<IDialogManager>();
         }
@@ -26,60 +32,11 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             if (result?.DialogResult == false)
                 return;
 
-            // we have a winner!
-            var nextMatch = FindNextMatch(match.RoundIndex, match.MatchIndex);
-            if (match.MatchIndex % 2 == 0)
-            {
-                nextMatch.Team1Name = result.WinnerName;
-            }
-            else
-            {
-                nextMatch.Team2Name = result.WinnerName;
-            }
-        }
-
-        public ObservableCollection<RoundViewModel> Rounds { get; set; } = new();
-
-        public ObservableCollection<MatchViewModel> AllMatches
-        {
-            get
-            {
-                var all = new ObservableCollection<MatchViewModel>();
-                for (int round = 0; round < Rounds.Count; round++)
-                {
-                    for (int match = 0; match < Rounds[round].Matches.Count; match++)
-                    {
-                        var m = Rounds[round].Matches[match];
-                        all.Add(m);
-                    }
-                }
-                return all;
-            }
+            _matchHandler.SetToNextMatch(match.RoundIndex, match.MatchIndex, result);
         }
 
         public ICommand SelectWinnerCommand { get; set; }
-
-        private MatchViewModel FindNextMatch(int currentRoundIndex, int currentMatchIndex)
-        {
-            int newRoundIndex = currentRoundIndex + 1;
-            if (newRoundIndex >= Rounds.Count)
-                return null;
-
-            int nextMatchIndex = GetNextIndex(currentMatchIndex);
-            var newMatch = AllMatches.Where(m => m.RoundIndex == newRoundIndex && m.MatchIndex == nextMatchIndex)
-                .FirstOrDefault();
-
-            if(newMatch == null)
-                throw new InvalidOperationException($"No match found for Round {newRoundIndex}, Match {nextMatchIndex}.");
-
-            return newMatch;
-
-        }
-
-        int GetNextIndex(int inputIndex)
-        {
-            return inputIndex / 2;
-        }
+        public ObservableCollection<MatchViewModel> AllMatches { get => _allMatches; set => SetProperty(ref _allMatches, value); }
     }
 
     public class RoundViewModel

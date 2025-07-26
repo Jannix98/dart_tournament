@@ -25,6 +25,8 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
         MatchViewModel _match;
         Guid _winnerId;
         string _winnerName;
+        Guid _looserId;
+        string _looserName;
 
         public SelectWinnerDialog(IDialogOwner dialogOwner) : base(dialogOwner)
         {
@@ -43,10 +45,12 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
             btn2.Content = _match.Team2Name;
         }
 
-        internal void SetWinner(Guid winnerId, string winnerName)
+        internal void SetWinner(Guid winnerId, string winnerName, Guid looserId, string looserName)
         {
             _winnerId = winnerId;
             _winnerName = winnerName;
+            _looserId = looserId;
+            _looserName = looserName;
             this.DialogResult = true;
             this.Close();
         }
@@ -57,21 +61,21 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
             var baseResult = base.ShowDialog();
             if (baseResult.DialogResult == true)
             {
-                return new SelectWinnerResult(true, _winnerId, _winnerName);
+                return new SelectWinnerResult(_winnerId, _winnerName, _looserId, _looserName, true);
             }
-            return new SelectWinnerResult(false, Guid.Empty, null);
+            return new SelectWinnerResult(Guid.Empty, null, Guid.Empty, null, false);
         }
 
         private void btn1_Click(object sender, RoutedEventArgs e)
         {
             // TODO guid
-            SetWinner(Guid.Empty, _match.Team1Name);
+            SetWinner(Guid.Empty, _match.Team1Name, Guid.Empty, _match.Team2Name);
         }
 
         private void btn2_Click(object sender, RoutedEventArgs e)
         {
             // TODO guid
-            SetWinner(Guid.Empty, _match.Team2Name);
+            SetWinner(Guid.Empty, _match.Team2Name, Guid.Empty, _match.Team1Name);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -81,17 +85,22 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
         }
     }
 
-    internal class SelectWinnerResult : BaseDialogResult
+    public class SelectWinnerResult : BaseDialogResult
     {
         public Guid WinnderId { get; set; }
-        public string WinnerName { get; set; } 
+        public string WinnerName { get; set; }
 
-        public SelectWinnerResult(bool dialogResult, Guid id, string name) : base(dialogResult)
+        public Guid LooserId { get; set; }
+        public string LooserName { get; set; }
+
+        public SelectWinnerResult(Guid winnderId, string winnerName, Guid looserId, string looserName, bool dialogResult) 
+            : base(dialogResult)
         {
-            WinnderId = id;
-            WinnerName = name;
+            WinnderId = winnderId;
+            WinnerName = winnerName;
+            LooserId = looserId;
+            LooserName = looserName;
         }
-
     }
 
     public interface ISelectWinnerDialog

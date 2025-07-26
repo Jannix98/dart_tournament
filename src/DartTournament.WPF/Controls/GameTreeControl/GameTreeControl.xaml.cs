@@ -1,6 +1,7 @@
 using DartTournament.WPF.Controls.TournamentTree;
 using DartTournament.WPF.Models;
 using DartTournament.WPF.Utils.MatchCreator;
+using DartTournament.WPF.Utils.MatchHandler;
 using System.Windows.Controls;
 
 namespace DartTournament.WPF.Controls.GameTreeControl
@@ -12,11 +13,10 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             InitializeComponent();
         }
 
-        internal static GameTreeControl CreateGame(ICollection<RoundViewModel> roundViewModels)
+        internal static GameTreeControl CreateGame(GameMatchHandler gameMatchHandler)
         {
             GameTreeControl gameTreeControl = new GameTreeControl();
-            var roundCollection = new System.Collections.ObjectModel.ObservableCollection<RoundViewModel>(roundViewModels);
-            gameTreeControl.DataContext = new GameTreeViewModel(roundCollection);
+            gameTreeControl.DataContext = new GameTreeViewModel(gameMatchHandler);
             return gameTreeControl;
         }
     }
