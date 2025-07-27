@@ -33,19 +33,6 @@ namespace DartTournament.WPF.Controls.GameTreeControl.MatchControl
             set => SetValue(MatchProperty, value);
         }
 
-        //public static readonly DependencyProperty SelectWinnerProperty =
-        //    DependencyProperty.Register(
-        //        nameof(SelectWinner),
-        //        typeof(ICommand),
-        //        typeof(MatchControl),
-        //        new PropertyMetadata(null, (_, _) => { }));
-
-        //public ICommand SelectWinner
-        //{
-        //    get => (ICommand)GetValue(SelectWinnerProperty);
-        //    set => SetValue(SelectWinnerProperty, value);
-        //}
-
         private static void OnMatchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
         }

@@ -11,6 +11,10 @@ namespace DartTournament.WPF.Utils.MatchHandler
     public class GameMatchHandler : GameMatchHandlerBase
     {
         LooserGameMatchHandler _looserGameMatchHandler;
+        /// <summary>
+        /// this events notifies when a match has changed
+        /// </summary>
+        public event EventHandler NotifyMatchChange;
 
         public GameMatchHandler(List<MatchViewModel> matches, LooserGameMatchHandler looserMatchHandler) : base(matches)
         {
@@ -24,6 +28,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
             {
                 _looserGameMatchHandler.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
             }
+            NotifyMatchChange?.Invoke(null, null);
         }
 
         protected override MatchViewModel FindNextMatch(int currentRoundIndex, int currentMatchIndex, List<MatchViewModel> matches)

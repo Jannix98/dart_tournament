@@ -11,7 +11,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:MatchViewModel}">
+                <DataTemplate >
                     <ContentControl>
                         <ContentControl.InputBindings>
                             <MouseBinding Gesture="LeftClick" 
