@@ -7,7 +7,7 @@
                  xmlns:base="clr-namespace:DartTournament.WPF.Screens.Base"
                  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:resx="clr-namespace:DartTournament.WPF.Resources"
-                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" xmlns:toolbar="clr-namespace:DartTournament.WPF.Controls.Toolbar"
                  mc:Ignorable="d"
                  d:Background="White"
                  d:DesignHeight="450"
@@ -15,86 +15,11 @@
     <UserControl.DataContext>
         <local:StartScreenVM></local:StartScreenVM>
     </UserControl.DataContext>
-    <UserControl.Resources>
-        <CollectionViewSource x:Key="GroupedMenuItems"
-                              Source="{Binding AllMenuItems}">
-        </CollectionViewSource>
-        <Style TargetType="materialDesign:PackIcon">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                             Value="True">
-                    <Setter Property="Foreground"
-                            Value="White" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
     <Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp2">
-                <StackPanel>
-                    <ListBox ItemsSource="{Binding Source={StaticResource GroupedMenuItems}}"
-                             SelectedItem="{Binding SelectedMenuItem, Mode=TwoWay}">
-                        <ListBox.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.Panel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel />
-                                    </ItemsPanelTemplate>
-                                </GroupStyle.Panel>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="GroupItem">
-                                        <Setter Property="Margin" Value="0,10,0,0"/>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                        </ListBox.GroupStyle>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem"
-                                   BasedOn="{StaticResource MaterialDesign3.NavigationRailPrimaryListBoxItem}">
-                                <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
-                                        Value="{Binding SelectedIcon}" />
-                                <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
-                                        Value="{Binding UnselectedIcon}" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.Resources>
-                            <DataTemplate DataType="{x:Type local:ApplicationMenueItem}">
-                                <TextBlock Text="{Binding Text}"
-                                           FontSize="16" />
-                            </DataTemplate>
-                        </ListBox.Resources>
-                    </ListBox>
-                </StackPanel>
-            </materialDesign:Card>
-
-            <!-- Sidebar ListBox -->
-
-            <!-- Content Display -->
-            <ContentControl Grid.Column="1"
-                            Content="{Binding SelectedMenuItem.Content}" />
-        </Grid>
-        <!--<StackPanel Orientation="Vertical"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <Button Content="{x:Static resx:Labels.NewGame}"
-                    Width="300"
-                    Height="30" />
-            <Button Content="{x:Static resx:Labels.LoadGame}"
-                    Width="300"
-                    Margin="0, 16, 0, 16"
-                    Height="30"
-                    Click="Button_Click" />
-            <Button Content="{x:Static resx:Labels.TeamOverview}"
-                    Width="300"
-                    Height="30"
-                    Click="Button_Click_1" />
-            <ContentControl x:Name="mainContent" />
-        </StackPanel>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <toolbar:ToolbarControl/>
     </Grid>
 </base:ScreenBase>

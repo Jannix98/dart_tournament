@@ -55,10 +55,20 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Name}" FontSize="16" VerticalAlignment="Center" />
-                            <Button Grid.Column="1" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                                    Style="{StaticResource MaterialDesignIconButton}"
+                            <!--TODO: the button needs to be removed and replaced with something like a gesture capture control around the icon-->
+                            <Button Grid.Column="1" Margin="0" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    Style="{StaticResource MaterialDesignFlatLightButton}"
+                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding DataContext.EditPlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    ToolTip="MaterialDesignIconButton">
+                                <materialDesign:PackIcon
+                                    Kind="Edit" />
+                            </Button>
+                            <Button Grid.Column="2" Margin="0" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    Style="{StaticResource MaterialDesignFlatLightButton}"
                                     Visibility="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Command="{Binding DataContext.DeletePlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                     ToolTip="MaterialDesignIconButton">
@@ -93,14 +103,15 @@
 
             <GridSplitter Grid.Column="1"
                           Width="2"
+                          IsEnabled="False"
                           VerticalAlignment="Stretch"
                           Background="Gray" />
 
             <Grid Grid.Column="2">
                 <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="6*" />
-                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" Text="{Binding SelectedPlayer.Name}" FontSize="16" IsEnabled="{Binding EditIsEnabled}" />
                     <Button Grid.Column="1" Content="Bearbeiten" Width="100" Command="{Binding EditPlayerCommand}" />

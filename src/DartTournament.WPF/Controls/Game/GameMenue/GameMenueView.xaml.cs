@@ -43,28 +43,9 @@ namespace DartTournament.WPF.Controls.Game.GameMenue
 
         private void AddNewGameClick(object sender, RoutedEventArgs e)
         {
-            CreateGameViewResult result;
-            bool flowControl = ShowPlayerSelectionDialog(out result);
-            if (!flowControl)
-            {
-                return;
-            }
-
-            //var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
-            var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);
-
-            Mediator.Notify("AddMenuItem", new ApplicationMenueItem(result.TournamentName, control, PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false));
+            
         }
 
-        private static bool ShowPlayerSelectionDialog(out CreateGameViewResult result)
-        {
-            IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
-            CreateGameView createGameView = new CreateGameView(owner);
-            result = createGameView.ShowDialog();
-            if (result.DialogResult == false)
-                return false;
 
-            return true;
-        }
     }
 }
