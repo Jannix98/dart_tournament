@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DartTournament.WPF.Dialogs.Player"
         xmlns:p="clr-namespace:DartTournament.WPF.Controls.PlayerOverview"
         mc:Ignorable="d"
-        Title="PlayerView" Height="600" Width="500">
+        Title="Spieler verwalten" Height="600" Width="500" WindowStartupLocation="CenterOwner">
     <Grid>
         <p:PlayerOverviewView/>
     </Grid>

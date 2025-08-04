@@ -22,6 +22,7 @@ namespace DartTournament.WPF.Dialogs.Player
         public PlayerView()
         {
             InitializeComponent();
+            Owner = System.Windows.Application.Current.MainWindow; 
         }
     }
 }

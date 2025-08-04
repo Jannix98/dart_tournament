@@ -1,4 +1,5 @@
 ﻿using DartTournament.WPF.Controls.Game.GameMenue;
+using DartTournament.WPF.Controls.GameNavigationRail;
 using DartTournament.WPF.Controls.GameSession;
 using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Dialogs.CreateGame;
@@ -27,7 +28,7 @@ namespace DartTournament.WPF.Controls.Toolbar
             //var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
             var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);
 
-            Mediator.Notify("AddMenuItem", new ApplicationMenueItem(result.TournamentName, control, PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false));
+            Mediator.Notify("AddMenuItem", new GameNavigationItem(result.TournamentName, control, PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false));
         }
 
         private static bool ShowPlayerSelectionDialog(out CreateGameViewResult result)

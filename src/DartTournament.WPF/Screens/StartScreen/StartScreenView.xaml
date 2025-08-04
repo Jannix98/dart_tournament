@@ -8,18 +8,17 @@
                  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:resx="clr-namespace:DartTournament.WPF.Resources"
                  xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" xmlns:toolbar="clr-namespace:DartTournament.WPF.Controls.Toolbar"
+                 xmlns:gameNav="clr-namespace:DartTournament.WPF.Controls.GameNavigationRail"
                  mc:Ignorable="d"
                  d:Background="White"
                  d:DesignHeight="450"
                  d:DesignWidth="800">
-    <UserControl.DataContext>
-        <local:StartScreenVM></local:StartScreenVM>
-    </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <toolbar:ToolbarControl/>
+        <toolbar:ToolbarControl Grid.Row="0"/>
+        <gameNav:GameNavigationRail Grid.Row="1"/>
     </Grid>
 </base:ScreenBase>

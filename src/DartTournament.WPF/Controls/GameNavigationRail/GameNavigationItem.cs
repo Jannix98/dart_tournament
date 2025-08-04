@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace DartTournament.WPF.Controls.GameNavigationRail
 {
-    public class GameNavigationtem
+    public class GameNavigationItem
     {
         public string Text { get; set; }
         public UserControl Content { get; set; }
@@ -16,7 +16,7 @@ namespace DartTournament.WPF.Controls.GameNavigationRail
         public PackIconKind UnselectedIcon { get; set; }
         public bool IsBottomSection { get; set; } // NEW
 
-        public GameNavigationtem(string text, UserControl content, PackIconKind selectedIcon, PackIconKind unselectedIcon, bool isBottomSection = false)
+        public GameNavigationItem(string text, UserControl content, PackIconKind selectedIcon, PackIconKind unselectedIcon, bool isBottomSection = false)
         {
             Text = text;
             Content = content;
