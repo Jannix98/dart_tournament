@@ -24,51 +24,53 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-        <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp2">
-            <StackPanel>
-                <ListBox ItemsSource="{Binding Items}"
+        <!-- surface container -->
+        <ListBox Grid.Column="0" ItemsSource="{Binding Items}" Background="#F3EDF7" 
                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-                    <ListBox.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.Panel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel />
-                                </ItemsPanelTemplate>
-                            </GroupStyle.Panel>
-                            <GroupStyle.ContainerStyle>
-                                <Style TargetType="GroupItem">
-                                    <Setter Property="Margin" Value="0,10,0,0"/>
-                                </Style>
-                            </GroupStyle.ContainerStyle>
-                        </GroupStyle>
-                    </ListBox.GroupStyle>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem"
-                               BasedOn="{StaticResource MaterialDesign3.NavigationDrawerPrimaryListBoxItem}">
-                            <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
-                                    Value="{Binding SelectedIcon}" />
-                            <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
-                                    Value="{Binding UnselectedIcon}" />
+            <!--<ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="GroupItem">
+                            <Setter Property="Margin" Value="0,10,0,0"/>
                         </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.Resources>
-                        <DataTemplate DataType="{x:Type local:GameNavigationItem}">
-                            <TextBlock Text="{Binding Text}"
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListBox.GroupStyle>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem"
+                               BasedOn="{StaticResource MaterialDesign3.NavigationDrawerPrimaryListBoxItem}">
+                    <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
+                                    Value="{Binding SelectedIcon}" />
+                    <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
+                                    Value="{Binding UnselectedIcon}" />
+                </Style>
+            </ListBox.ItemContainerStyle>-->
+            <ListBox.Resources>
+                <DataTemplate DataType="{x:Type local:GameNavigationItem}">
+                    <TextBlock Text="{Binding Text}"
                                        FontSize="16" />
-                        </DataTemplate>
-                    </ListBox.Resources>
-                </ListBox>
-            </StackPanel>
-        </materialDesign:Card>
+                </DataTemplate>
+            </ListBox.Resources>
+        </ListBox>
 
         <!-- Sidebar ListBox -->
 
         <!-- Content Display -->
-        <ContentControl Grid.Column="1"
+        <Grid Grid.Column="1" Background="#F7F2FA">
+            <!-- surface container low -->
+            <!--<Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Please create or load a game!"/>-->
+
+            <ContentControl Grid.Column="1"
                         Content="{Binding SelectedItem.Content}" />
+        </Grid>
+
     </Grid>
 </UserControl>

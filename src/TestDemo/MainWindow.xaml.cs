@@ -36,16 +36,16 @@ namespace TestDemo
         /// <param name="theme"></param>
         private static void SetPurpleThemeLight()
         {
-            var swatches = new SwatchesProvider().Swatches;
-            var deepPurple = swatches.FirstOrDefault(x => x.Name == "deeppurple");
-            //Color color = Colors.Dee
-            PaletteHelper paletteHelper = new PaletteHelper();
-            Theme theme = paletteHelper.GetTheme();
-            var c700 = deepPurple.PrimaryHues.FirstOrDefault(x => x.Name == "Primary400");
-            theme.PrimaryLight = c700.Color.Lighten();
-            theme.PrimaryMid = c700.Color;
-            theme.PrimaryDark = c700.Color.Darken();
-            paletteHelper.SetTheme(theme);
+            //var swatches = new SwatchesProvider().Swatches;
+            //var deepPurple = swatches.FirstOrDefault(x => x.Name == "deeppurple");
+            ////Color color = Colors.Dee
+            //PaletteHelper paletteHelper = new PaletteHelper();
+            //Theme theme = paletteHelper.GetTheme();
+            //var c700 = deepPurple.PrimaryHues.FirstOrDefault(x => x.Name == "Primary400");
+            //theme.PrimaryLight = c700.Color.Lighten();
+            //theme.PrimaryMid = c700.Color;
+            //theme.PrimaryDark = c700.Color.Darken();
+            //paletteHelper.SetTheme(theme);   aaa
         }
     }
 

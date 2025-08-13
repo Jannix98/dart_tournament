@@ -7,12 +7,15 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:resx="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="400" d:Background="White">
+             d:DesignHeight="62" d:DesignWidth="400" d:Background="White">
     <UserControl.Resources>
         <Style x:Key="ToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
             <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Background" Value="#F3EDF7"/>
+            <Setter Property="Foreground" Value="#6750A4"/>
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
             <!-- IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" -->
-            <Setter Property="Margin" Value="15,0,0,0"/>
+            <Setter Property="Margin" Value="24,6,0,6"/>
             <Setter Property="IsEnabled" Value="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
         </Style>
         <Style TargetType="materialDesign:PackIcon">
@@ -20,17 +23,13 @@
             <Setter Property="Height" Value="18"/>
         </Style>
     </UserControl.Resources>
-    <Grid Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid Background="#F3EDF7"> <!-- Surface Container-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button x:Name="AddGameBtn" Style="{StaticResource ToolbarButtonStyle}" Margin="5,0,0,0" Click="AddGameBtn_Click">
+            <Button x:Name="AddGameBtn" Style="{StaticResource ToolbarButtonStyle}" Click="AddGameBtn_Click">
                 <materialDesign:PackIcon
                     Kind="Plus"/>
             </Button>
