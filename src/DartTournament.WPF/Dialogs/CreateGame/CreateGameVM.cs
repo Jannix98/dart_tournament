@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using DartTournament.Presentation.Base.Services;
 using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Models;
 using DartTournament.WPF.Models.Enums;
@@ -10,14 +11,17 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 {
     internal class CreateGameVM : BaseDialogVM
     {
+        IPlayerPresentationService _playerService;
         private string _tournamentName = string.Empty;
         private bool _advancedMode;
         private TournamentPlayerCount _selectedTotalPlayers;
         private ObservableCollection<SelectableDartPlayerUI> _players;
         private int _maxPlayers = 8;
+        private bool _isLoading = true;
 
         public CreateGameVM()
         {
+            _playerService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
             TotalPlayersOptions = new ObservableCollection<TournamentPlayerCount>
             {
                 TournamentPlayerCount.Four,
@@ -25,36 +29,6 @@ namespace DartTournament.WPF.Dialogs.CreateGame
                 TournamentPlayerCount.Sixteen,
                 TournamentPlayerCount.ThirtyTwo
             };
-
-            Players = new ObservableCollection<SelectableDartPlayerUI>
-            {
-                new SelectableDartPlayerUI(new DartPlayerUI("Player 1")),
-                new SelectableDartPlayerUI(new DartPlayerUI("Player 2")),
-                new SelectableDartPlayerUI(new DartPlayerUI("Player 3")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 4")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 5")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 6")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 7")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 8")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 9")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 10")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 11")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 12")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 13")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 14")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 15")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 16")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 17")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 18")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 19")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 20")),
-                new SelectableDartPlayerUI (new DartPlayerUI("Player 21")),
-            };
-
-            foreach (var p in Players)
-            {
-                p.PropertyChanged += Player_PropertyChanged;
-            }
 
             CreateSessionCommand = new RelayCommand(CreateSession);
             CancelCommand = new RelayCommand(Cancel);
@@ -106,6 +80,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 
         public ICommand CreateSessionCommand { get; }
         public ICommand CancelCommand { get; }
+        public bool IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
 
         private void CreateSession()
         {
@@ -152,6 +127,22 @@ namespace DartTournament.WPF.Dialogs.CreateGame
                 .Where(p => p.IsSelected)
                 .Select(p => p.Player)
                 .ToList();
+        }
+
+        public async Task LoadPlayersAsync()
+        {
+            IsLoading = true;
+            var data = await _playerService.GetPlayerAsync();
+            var loadedPlayers = data.Select(dto => new DartPlayerUI(dto.Id, dto.Name)).ToList();
+            Players = new ObservableCollection<SelectableDartPlayerUI>(
+                loadedPlayers.Select(p => new SelectableDartPlayerUI(p))
+            );
+
+            foreach (var p in Players)
+            {
+                p.PropertyChanged += Player_PropertyChanged;
+            }
+            IsLoading = false;
         }
     }
 }

@@ -119,7 +119,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
         public ICommand DeletePlayerCommand { get => _deletePlayerCommand; set => _deletePlayerCommand = value; }
         public bool EditIsEnabled { get => _editIsEnabled; set => SetProperty(ref _editIsEnabled, value); }
 
-        public async Task LoadTeamsAsync()
+        public async Task LoadPlayersAsync()
         {
             try
             {

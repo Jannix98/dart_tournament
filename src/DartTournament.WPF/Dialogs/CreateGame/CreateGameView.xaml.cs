@@ -30,6 +30,13 @@ namespace DartTournament.WPF.Dialogs.CreateGame
                 throw new InvalidOperationException("DataContext must be of type CreateGameVM");
             }
             vm.Dialog = this;
+            this.Loaded += CreateGameView_Loaded;
+        }
+
+
+        private async void CreateGameView_Loaded(object sender, RoutedEventArgs e)
+        {
+            await ((CreateGameVM)this.DataContext).LoadPlayersAsync();
         }
 
         internal override CreateGameViewResult ShowDialog()

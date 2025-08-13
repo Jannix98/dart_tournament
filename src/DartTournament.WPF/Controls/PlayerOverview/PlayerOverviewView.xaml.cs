@@ -20,7 +20,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
         {
             if (this.DataContext is PlayerOverviewVM vm)
             {
-                await vm.LoadTeamsAsync();
+                await vm.LoadPlayersAsync();
             }
         }
     }
