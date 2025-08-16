@@ -4,26 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.GameSession"
+             xmlns:converters="clr-namespace:DartTournament.WPF.ValueConverter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" x:Name="TitleTextBlock"
-               FontSize="24" FontWeight="Bold" Margin="10"/>
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <ContentControl x:Name="GameContent"/>    
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ContentPresenter x:Name="GameContent" Content="{Binding CurrentContent}"/>
         </ScrollViewer>
-        
-        <TabControl Grid.Row="1" x:Name="TabControl" Visibility="Collapsed">
-            <TabItem x:Name="GameTab" Header="Game">
-                <!-- Game tab content here -->
+
+        <TabControl Width="250" VerticalAlignment="Top" HorizontalAlignment="Right"
+                    Margin="0, 48, 48,0"
+                    x:Name="TabControl" 
+                    SelectedIndex="{Binding SelectedTabIndex}"
+                    Visibility="{Binding ShowLooserRound, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TabItem x:Name="GameTab" Header="Game" Width="125">
+                <!-- Tab content is now handled by the ContentPresenter below -->
             </TabItem>
-            <TabItem x:Name="LooserRoundTab" Header="Looser Round">
-                <!-- Looser Round tab content here -->
+            <TabItem x:Name="LooserRoundTab" Header="Looser Round" Width="125">
+                <!-- Tab content is now handled by the ContentPresenter below -->
             </TabItem>
         </TabControl>
+        
+
     </Grid>
 </UserControl>
