@@ -39,11 +39,11 @@ namespace DartTournament.WPF.Utils.MatchHandler
         {
             if (currentMatchIndex % 2 == 0)
             {
-                nextMatch.Team1Name = winnerResult.LooserName;
+                nextMatch.Player1Name = winnerResult.LooserName;
             }
             else
             {
-                nextMatch.Team2Name = winnerResult.LooserName;
+                nextMatch.Player2Name = winnerResult.LooserName;
             }
         }
     }

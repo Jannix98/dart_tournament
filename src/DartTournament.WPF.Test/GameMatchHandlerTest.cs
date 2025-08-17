@@ -16,9 +16,9 @@ namespace DartTournament.WPF.Test
         [TestMethod]
         public void Test1()
         {
-            var match1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Team1Name = "Team A", Team2Name = "Team B" };
-            var match2 = new MatchViewModel { RoundIndex = 0, MatchIndex = 1, Team1Name = "Team C", Team2Name = "Team D" };
-            var match3 = new MatchViewModel { RoundIndex = 1, MatchIndex = 0, Team1Name = "", Team2Name = "" };
+            var match1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Player1Name = "Team A", Player2Name = "Team B" };
+            var match2 = new MatchViewModel { RoundIndex = 0, MatchIndex = 1, Player1Name = "Team C", Player2Name = "Team D" };
+            var match3 = new MatchViewModel { RoundIndex = 1, MatchIndex = 0, Player1Name = "", Player2Name = "" };
 
             // Arrange
             var matches = new List<MatchViewModel>
@@ -37,16 +37,16 @@ namespace DartTournament.WPF.Test
             gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
             gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
 
-            Assert.AreEqual("Team B", match3.Team1Name);
-            Assert.AreEqual("Team C", match3.Team2Name);
+            Assert.AreEqual("Team B", match3.Player1Name);
+            Assert.AreEqual("Team C", match3.Player2Name);
         }
 
         [TestMethod]
         public void Test2()
         {
-            var match1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Team1Name = "Team A", Team2Name = "Team B" };
-            var match2 = new MatchViewModel { RoundIndex = 0, MatchIndex = 1, Team1Name = "Team C", Team2Name = "Team D" };
-            var match3 = new MatchViewModel { RoundIndex = 1, MatchIndex = 0, Team1Name = "", Team2Name = "" };
+            var match1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Player1Name = "Team A", Player2Name = "Team B" };
+            var match2 = new MatchViewModel { RoundIndex = 0, MatchIndex = 1, Player1Name = "Team C", Player2Name = "Team D" };
+            var match3 = new MatchViewModel { RoundIndex = 1, MatchIndex = 0, Player1Name = "", Player2Name = "" };
 
             // Arrange
             var matches = new List<MatchViewModel>
@@ -56,7 +56,7 @@ namespace DartTournament.WPF.Test
                 match3
             };
 
-            var looserMatch1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Team1Name = "", Team2Name = "" };
+            var looserMatch1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Player1Name = "", Player2Name = "" };
             var looserMatches = new List<MatchViewModel>
             {
                 looserMatch1
@@ -71,11 +71,11 @@ namespace DartTournament.WPF.Test
             gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
             gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
 
-            Assert.AreEqual("Team B", match3.Team1Name);
-            Assert.AreEqual("Team C", match3.Team2Name);
+            Assert.AreEqual("Team B", match3.Player1Name);
+            Assert.AreEqual("Team C", match3.Player2Name);
 
-            Assert.AreEqual("Team A", looserMatch1.Team1Name);
-            Assert.AreEqual("Team D", looserMatch1.Team2Name);
+            Assert.AreEqual("Team A", looserMatch1.Player1Name);
+            Assert.AreEqual("Team D", looserMatch1.Player2Name);
         }
 
     }

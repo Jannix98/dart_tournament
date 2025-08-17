@@ -35,13 +35,14 @@ namespace DartTournament.WPF.Utils.MatchGenerator
                 
                 foreach (var matchDTO in roundDTO.Matches)
                 {
-                    var matchViewModel = new MatchViewModel
-                    {
-                        Team1Name = matchDTO.PlayerAName ?? string.Empty,
-                        Team2Name = matchDTO.PlayerBName ?? string.Empty,
-                        RoundIndex = roundDTO.RoundNumber,
-                        MatchIndex = roundDTO.Matches.IndexOf(matchDTO)
-                    };
+                    var matchViewModel = new MatchViewModel(
+                        matchDTO.Id, 
+                        matchDTO.PlayerAId, 
+                        matchDTO.PlayerBId, 
+                        matchDTO.PlayerAName, 
+                        matchDTO.PlayerBName, 
+                        roundDTO.RoundNumber, 
+                        roundDTO.Matches.IndexOf(matchDTO));
                     
                     roundViewModel.Matches.Add(matchViewModel);
                 }

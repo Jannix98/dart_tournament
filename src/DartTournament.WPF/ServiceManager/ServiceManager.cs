@@ -1,5 +1,9 @@
 ﻿using DartTournament.Application.UseCases.Game.Services;
 using DartTournament.Application.UseCases.Game.Services.Interfaces;
+using DartTournament.Application.UseCases.Match.Services;
+using DartTournament.Application.UseCases.Match.Services.Interfaces;
+using DartTournament.Application.UseCases.Player.Services;
+using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Domain.Interfaces;
 using DartTournament.Infrastructure.JSON.Persistence;
 using DartTournament.Presentation.Base.Services;
@@ -9,7 +13,6 @@ using DartTournament.WPF.Controls.Toolbar;
 using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Dialogs.SelectWinner;
-using DartTournament.WPF.Navigator;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -48,27 +51,32 @@ namespace DartTournament.WPF.SM
 
         private void ConfigureServices(ServiceCollection services)
         {
+            // Repositories
             services.AddSingleton<IDartPlayerRepository, DartPlayerRepository>();
+            services.AddSingleton<IMatchRepository, MatchRepository>();
+            services.AddSingleton<IRoundRepository, RoundRepository>();
+            services.AddSingleton<IGameRepository, GameRepository>();
+            services.AddSingleton<IGameParentRepository, GameParentRepository>();
+
+            // Application Services
+            services.AddSingleton<IPlayerService, PlayerService>();
+            services.AddSingleton<IMatchService, MatchService>();
+            services.AddSingleton<IGameService, GameService>();
+
+            // Presentation Services
+            services.AddSingleton<IPlayerPresentationService, PlayerPresentationService>();
+            services.AddSingleton<IMatchPresentationService, MatchPresentationService>();
+            services.AddSingleton<IGamePresentationService, GamePresentationService>();
+
+            // Dialog services
             services.AddSingleton<IDialogManager, DialogManager>();
-            // TODO: Dialog Factory to pass the "Application.Current.MainWindow"
             services.AddTransient<IAddPlayerView, AddPlayerView>();
             services.AddTransient<ISelectWinnerDialog, SelectWinnerDialog>();
             services.AddTransient<IDialogOwner, DialogOwner>();
 
-            services.AddSingleton<IGameParentRepository, GameParentRepository>();
-            services.AddSingleton<IGamePresentationService, GamePresentationService>();
-            services.AddSingleton<IGameService, GameService>();
-
-            services.AddSingleton<IMatchRepository, MatchRepository>();
-            services.AddSingleton<IRoundRepository, RoundRepository>();
-            services.AddSingleton<IGameRepository, GameRepository>();
-
+            // Utilities
             services.AddSingleton<GameCreator>();
             services.AddSingleton<GameLoader>();
-
-            // Register PlayerPresentationService
-            //services.AddSingleton<IInitializePresentationService, InitializePresentationService>();
-            //services.AddSingleton<IPlayerPresentationService, PlayerPresentationService>();
         }
 
         public T GetRequiredService<T>()

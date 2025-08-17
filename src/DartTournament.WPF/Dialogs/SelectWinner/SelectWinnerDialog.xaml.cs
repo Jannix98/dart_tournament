@@ -41,8 +41,8 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
             {
                 throw new ArgumentNullException(nameof(_match), "Match cannot be null");
             }
-            btn1.Content = _match.Team1Name;
-            btn2.Content = _match.Team2Name;
+            btn1.Content = _match.Player1Name;
+            btn2.Content = _match.Player2Name;
         }
 
         internal void SetWinner(Guid winnerId, string winnerName, Guid looserId, string looserName)
@@ -69,13 +69,13 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
         private void btn1_Click(object sender, RoutedEventArgs e)
         {
             // TODO guid
-            SetWinner(Guid.Empty, _match.Team1Name, Guid.Empty, _match.Team2Name);
+            SetWinner(_match.IdGameEntityA, _match.Player1Name, _match.IdGameEntityB, _match.Player2Name);
         }
 
         private void btn2_Click(object sender, RoutedEventArgs e)
         {
             // TODO guid
-            SetWinner(Guid.Empty, _match.Team2Name, Guid.Empty, _match.Team1Name);
+            SetWinner(_match.IdGameEntityB, _match.Player2Name, _match.IdGameEntityA, _match.Player1Name);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -87,7 +87,7 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
 
     public class SelectWinnerResult : BaseDialogResult
     {
-        public Guid WinnderId { get; set; }
+        public Guid WinnerId { get; set; }
         public string WinnerName { get; set; }
 
         public Guid LooserId { get; set; }
@@ -96,7 +96,7 @@ namespace DartTournament.WPF.Dialogs.SelectWinner
         public SelectWinnerResult(Guid winnderId, string winnerName, Guid looserId, string looserName, bool dialogResult) 
             : base(dialogResult)
         {
-            WinnderId = winnderId;
+            WinnerId = winnderId;
             WinnerName = winnerName;
             LooserId = looserId;
             LooserName = looserName;

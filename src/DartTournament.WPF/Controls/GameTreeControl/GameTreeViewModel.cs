@@ -1,4 +1,7 @@
 using CommunityToolkit.Mvvm.Input;
+using DartTournament.Application.DTO.Match;
+using DartTournament.Presentation.Base.Services;
+using DartTournament.Presentation.Services;
 using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Dialogs.SelectWinner;
@@ -14,6 +17,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         IDialogManager _dialogManager;
         ObservableCollection<MatchViewModel> _allMatches = new ObservableCollection<MatchViewModel>(); // Initialize to avoid null
         private GameMatchHandler _matchHandler;
+        private IMatchPresentationService _matchPresentationService;
 
         public GameTreeViewModel(GameMatchHandler gameMatchHandler)
         {
@@ -22,6 +26,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             AllMatches = new ObservableCollection<MatchViewModel>(matches);
             SelectWinnerCommand = new RelayCommand<MatchViewModel>((match) => SelectWinner(match));
             _dialogManager = SM.ServiceManager.Instance.GetRequiredService<IDialogManager>();
+            _matchPresentationService = SM.ServiceManager.Instance.GetRequiredService<IMatchPresentationService>();
         }
 
         private void SelectWinner(MatchViewModel? match)
@@ -47,11 +52,25 @@ namespace DartTournament.WPF.Controls.GameTreeControl
     public class MatchViewModel : NotifyPropertyChanged
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid IdGameEntityA { get; set; }
+        public Guid IdGameEntityB { get; set; }
         private string _team1Name = string.Empty;
-        public string Team1Name { get => _team1Name; set => SetProperty(ref _team1Name, value); }
+        public string Player1Name { get => _team1Name; set => SetProperty(ref _team1Name, value); }
         private string _team2Name = string.Empty;
-        public string Team2Name { get => _team2Name; set => SetProperty(ref _team2Name, value); }
+        public string Player2Name { get => _team2Name; set => SetProperty(ref _team2Name, value); }
         public int RoundIndex { get; set; }
         public int MatchIndex { get; set; }
+
+
+        public MatchViewModel(Guid id, Guid idGameEntityA, Guid idGameEntityB, string player1Name, string player2Name, int roundIndex, int matchIndex)
+        {
+            Id = id;
+            IdGameEntityA = idGameEntityA;
+            IdGameEntityB = idGameEntityB;
+            Player1Name = player1Name;
+            Player2Name = player2Name;
+            RoundIndex = roundIndex;
+            MatchIndex = matchIndex;
+        }
     }
 }

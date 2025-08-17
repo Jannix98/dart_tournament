@@ -34,6 +34,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         /// </summary>
         private void Refresh()
         {
+            Console.WriteLine("Trigger refresh");
             var panel = FindGameTreePanel(this);
             panel?.InvalidateMeasure();
         }
