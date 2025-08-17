@@ -40,6 +40,18 @@ namespace DartTournament.Application.UseCases.Game.Services
             return await _dartGameRepository.CreateGameParent(gameParent);
         }
 
+        public async Task<List<GameResult>> GetAllGames()
+        {
+            var games = await _dartGameRepository.GetAllGameParentsWithProperties();
+            List<GameResult> gameResults = new List<GameResult>();
+            foreach (var gameParent in games)
+            {
+                var gameResult = await GameMapper.MapToGameResultAsync(gameParent, _playerService);
+                gameResults.Add(gameResult);
+            }
+            return gameResults;
+        }
+
         public async Task<GameResult> GetGame(Guid id)
         {
             var gameParent = await _dartGameRepository.GetGameParent(id);

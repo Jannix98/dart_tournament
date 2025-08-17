@@ -35,8 +35,7 @@
         <!-- Title -->
         <TextBlock
             Text="Create Tournament Session"
-            FontWeight="Bold"
-            FontSize="24"
+            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
             Margin="0,0,0,8"/>
 
         <!-- Enter Name -->

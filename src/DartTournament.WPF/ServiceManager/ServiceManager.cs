@@ -64,6 +64,7 @@ namespace DartTournament.WPF.SM
             services.AddSingleton<IGameRepository, GameRepository>();
 
             services.AddSingleton<GameCreator>();
+            services.AddSingleton<GameLoader>();
 
             // Register PlayerPresentationService
             //services.AddSingleton<IInitializePresentationService, InitializePresentationService>();

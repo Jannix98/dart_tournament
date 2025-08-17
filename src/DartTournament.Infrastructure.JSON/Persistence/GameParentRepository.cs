@@ -85,6 +85,11 @@ namespace DartTournament.Infrastructure.JSON.Persistence
         {
             var all = await GetAllGameParents();
             var gameParent = all.FirstOrDefault(gp => gp.Id == id);
+            return await FillLoadedGameProperties(id, gameParent);
+        }
+
+        private async Task<GameParent> FillLoadedGameProperties(Guid id, GameParent? gameParent)
+        {
             if (gameParent == null)
                 throw new ArgumentException($"GameParent with ID {id} not found.");
 
@@ -132,6 +137,16 @@ namespace DartTournament.Infrastructure.JSON.Persistence
         public Task<List<GameParent>> GetAllGameParents()
         {
             return base.GetAllAsync();
+        }
+
+        public async Task<List<GameParent>> GetAllGameParentsWithProperties()
+        {
+            var all = await GetAllGameParents();
+            foreach (var gameParent in all)
+            {
+                FillLoadedGameProperties(gameParent.Id, gameParent).Wait();
+            }
+            return all;
         }
     }
 }

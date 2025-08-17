@@ -11,5 +11,6 @@ namespace DartTournament.Presentation.Base.Services
     {
         Task<Guid> CreateGame(CreateGameDTO createGame);
         Task<GameResult> GetGame(Guid gameId);
+        Task<List<GameResult>> GetAllGames();
     }
 }

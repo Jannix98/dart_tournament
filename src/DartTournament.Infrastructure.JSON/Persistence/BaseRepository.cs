@@ -33,11 +33,28 @@ namespace DartTournament.Infrastructure.JSON.Persistence
 
         protected async Task<List<T>> GetAllAsync()
         {
-            if (!File.Exists(FilePath)) return new List<T>();
-            var json = await File.ReadAllTextAsync(FilePath);
-            if (String.IsNullOrEmpty(json))
-                return new List<T>();
-            return JsonSerializer.Deserialize<List<T>>(json) ?? new List<T>();
+            try
+            {
+                if (!File.Exists(FilePath)) 
+                {
+                    Console.WriteLine($"File does not exist: {FilePath}");
+                    return new List<T>();
+                }
+                
+                Console.WriteLine($"Reading file: {FilePath}");
+                var json = File.ReadAllText(FilePath);
+                Console.WriteLine($"Successfully read {json.Length} characters");
+                
+                if (String.IsNullOrEmpty(json))
+                    return new List<T>();
+                    
+                return JsonSerializer.Deserialize<List<T>>(json) ?? new List<T>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading file {FilePath}: {ex.Message}");
+                throw;
+            }
         }
 
     }

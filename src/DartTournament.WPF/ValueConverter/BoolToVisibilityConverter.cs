@@ -9,6 +9,7 @@ using System.Windows.Data;
 
 namespace DartTournament.WPF.ValueConverter
 {
+    [Obsolete("Use Bool Converter instead")]
     public class BoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

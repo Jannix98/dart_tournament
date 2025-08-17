@@ -12,5 +12,6 @@ namespace DartTournament.Domain.Interfaces
         Task<Guid> CreateGameParent(GameParent gameParent);
         Task<GameParent> GetGameParent(Guid id);
         Task<List<GameParent>> GetAllGameParents();
+        Task<List<GameParent>> GetAllGameParentsWithProperties();
     }
 }

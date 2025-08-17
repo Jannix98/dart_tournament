@@ -26,6 +26,7 @@ namespace DartTournament.WPF.Controls.Toolbar
     public partial class ToolbarControl : UserControl
     {
         GameCreator _gameCreator;
+        GameLoader _gameLoader;
         PlayerManager _playerManager;
 
         public ToolbarControl()
@@ -33,6 +34,7 @@ namespace DartTournament.WPF.Controls.Toolbar
             InitializeComponent();
             _gameCreator = ServiceManager.Instance.GetRequiredService<GameCreator>();
             _playerManager = new PlayerManager();
+            _gameLoader = ServiceManager.Instance.GetRequiredService<GameLoader>();
         }
 
 
@@ -43,7 +45,7 @@ namespace DartTournament.WPF.Controls.Toolbar
 
         private void LoadGamesBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Load Game Clicked", "This feature is not implemented yet.", MessageBoxButton.OK, MessageBoxImage.Information);
+            _gameLoader.LoadGame();   
         }
 
         private void PeopleBtn_Click(object sender, RoutedEventArgs e)
