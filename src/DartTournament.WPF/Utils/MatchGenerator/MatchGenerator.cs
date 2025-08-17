@@ -1,4 +1,5 @@
 ﻿using DartTournament.WPF.Controls.GameTreeControl;
+using DartTournament.Application.DTO.Game;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,39 @@ namespace DartTournament.WPF.Utils.MatchGenerator
                 }
             }
             return all;
+        }
+
+        public static List<RoundViewModel> FromGameDTO(GameDTO gameDTO)
+        {
+            var rounds = new List<RoundViewModel>();
+            
+            foreach (var roundDTO in gameDTO.Rounds.OrderBy(r => r.RoundNumber))
+            {
+                var roundViewModel = new RoundViewModel();
+                
+                foreach (var matchDTO in roundDTO.Matches)
+                {
+                    var matchViewModel = new MatchViewModel
+                    {
+                        Team1Name = matchDTO.PlayerAName ?? string.Empty,
+                        Team2Name = matchDTO.PlayerBName ?? string.Empty,
+                        RoundIndex = roundDTO.RoundNumber,
+                        MatchIndex = roundDTO.Matches.IndexOf(matchDTO)
+                    };
+                    
+                    roundViewModel.Matches.Add(matchViewModel);
+                }
+                
+                rounds.Add(roundViewModel);
+            }
+            
+            return rounds;
+        }
+
+        public static List<MatchViewModel> FromGameDTO(GameDTO gameDTO, bool flatten = true)
+        {
+            var rounds = FromGameDTO(gameDTO);
+            return flatten ? FromRounds(rounds) : new List<MatchViewModel>();
         }
     }
 }

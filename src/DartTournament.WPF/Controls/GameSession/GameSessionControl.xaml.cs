@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DartTournament.Application.DTO.Game;
 
 namespace DartTournament.WPF.Controls.GameSession
 {
@@ -29,29 +30,30 @@ namespace DartTournament.WPF.Controls.GameSession
     {
         private readonly GameSessionVM _viewModel;
         private readonly List<DartPlayerUI> _players;
+        private readonly GameResult _gameResult;
 
-        public GameSessionControl(string title, bool showLooserRound, List<DartPlayerUI> players)
+        public GameSessionControl(GameResult gameResult)
         {
+            _gameResult = gameResult;
             InitializeComponent();
-            
-            _viewModel = new GameSessionVM(title, showLooserRound);
-            _players = players;
-            
+
+            _viewModel = new GameSessionVM(gameResult.Name, gameResult.LooserGame != null);
+            _players = null;
+
             DataContext = _viewModel;
-            Loaded += GameSessionControl_Loaded;
+            Loaded += GameSessionControl_Loaded_new;
         }
 
-        private void GameSessionControl_Loaded(object sender, RoutedEventArgs e)
+        private void GameSessionControl_Loaded_new(object sender, RoutedEventArgs e)
         {
-            if(_viewModel.ShowLooserRound)
+            if (_viewModel.ShowLooserRound)
             {
-                // Create looser game content
-                GameDataCreator looserGameCreator = new GameDataCreator(new LooserRoundCalculator());
-                LooserMatchCreator looserMatchCreator = new LooserMatchCreator(looserGameCreator);
-                var looserGameData = looserMatchCreator.Create(_players.Count, _players);
-
-                var matches = MatchGenerator.FromRounds(looserGameData.GameRounds);
-                var looserMatches = MatchGenerator.FromRounds(looserGameData.LooserRounds);
+                // Create game content from loaded GameResult with looser round
+                var mainGameRounds = MatchGenerator.FromGameDTO(_gameResult.MainGame);
+                var looserGameRounds = MatchGenerator.FromGameDTO(_gameResult.LooserGame);
+                
+                var matches = MatchGenerator.FromRounds(mainGameRounds);
+                var looserMatches = MatchGenerator.FromRounds(looserGameRounds);
 
                 var looserMatchHandler = new LooserGameMatchHandler(looserMatches);
                 var gameControlMatchHandler = new GameMatchHandler(matches, looserMatchHandler);
@@ -65,12 +67,10 @@ namespace DartTournament.WPF.Controls.GameSession
             }
             else
             {
-                // Create normal game content
-                GameDataCreator normalGameCreator = new GameDataCreator(new NormalRoundCalculator());
-                NormalMatchCreator normalMatchCreator = new NormalMatchCreator(normalGameCreator);
-                var normalGameData = normalMatchCreator.Create(_players.Count, _players);
-
-                var matches = MatchGenerator.FromRounds(normalGameData.GameRounds);
+                // Create normal game content from loaded GameResult
+                var mainGameRounds = MatchGenerator.FromGameDTO(_gameResult.MainGame);
+                var matches = MatchGenerator.FromRounds(mainGameRounds);
+                
                 var gameControlMatchHandler = new GameMatchHandler(matches, null);
                 var control = GameTreeControl.GameTreeControl.CreateGame(gameControlMatchHandler);
 

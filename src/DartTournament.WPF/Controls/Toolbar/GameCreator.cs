@@ -38,8 +38,8 @@ namespace DartTournament.WPF.Controls.Toolbar
             var guid = await _gamePresentationService.CreateGame(createGame);
             var game = await _gamePresentationService.GetGame(guid);
 
-            //var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
-            var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);
+            //var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);
+            var control = new GameSessionControl(game);
 
             Mediator.Notify("AddMenuItem", new GameNavigationItem(result.TournamentName, control, PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false));
         }
