@@ -1,6 +1,7 @@
 ﻿using DartTournament.Application.DTO.Game;
 using DartTournament.Application.Mappers;
 using DartTournament.Application.UseCases.Game.Services.Interfaces;
+using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Domain.Entities;
 using DartTournament.Domain.Interfaces;
 using DartTournament.Helper.RoundCalculator;
@@ -15,10 +16,12 @@ namespace DartTournament.Application.UseCases.Game.Services
     public class GameService : IGameService
     {
         private readonly IGameParentRepository _dartGameRepository;
+        private readonly IPlayerService _playerService;
 
-        public GameService(IGameParentRepository dartGameRepository)
+        public GameService(IGameParentRepository dartGameRepository, IPlayerService playerService)
         {
             _dartGameRepository = dartGameRepository;
+            _playerService = playerService;
         }
 
         public async Task<Guid> CreateGame(CreateGameDTO createGame)
@@ -43,7 +46,7 @@ namespace DartTournament.Application.UseCases.Game.Services
             if (gameParent == null)
                 throw new ArgumentException($"Game with ID {id} not found.");
 
-            return GameMapper.MapToGameResult(gameParent);
+            return await GameMapper.MapToGameResultAsync(gameParent, _playerService);
         }
 
         private List<GameRound> CreateRounds(int maxPlayer, List<Guid> playerIds, RoundCalculatorBase roundCalculator)

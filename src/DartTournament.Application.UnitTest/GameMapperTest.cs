@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using DartTournament.Application.Mappers;
 using DartTournament.Application.DTO.Game;
+using DartTournament.Application.DTO.Player;
+using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Domain.Entities;
 
 namespace DartTournament.Application.UnitTest
@@ -11,14 +15,22 @@ namespace DartTournament.Application.UnitTest
     [TestClass]
     public class GameMapperTest
     {
+        private Mock<IPlayerService> _playerServiceMock = null!;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _playerServiceMock = new Mock<IPlayerService>();
+        }
+
         [TestMethod]
-        public void MapToGameResult_Should_Map_Game_Without_Looser_Round()
+        public async Task MapToGameResultAsync_Should_Map_Game_Without_Looser_Round()
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", 4, false);
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result);
@@ -30,13 +42,13 @@ namespace DartTournament.Application.UnitTest
         }
 
         [TestMethod]
-        public void MapToGameResult_Should_Map_Game_With_Looser_Round()
+        public async Task MapToGameResultAsync_Should_Map_Game_With_Looser_Round()
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", 8, true);
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result);
@@ -52,13 +64,13 @@ namespace DartTournament.Application.UnitTest
         [DataRow(8, 3)] // 8 players: 3 rounds (4 matches + 2 matches + 1 match)
         [DataRow(16, 4)] // 16 players: 4 rounds (8 + 4 + 2 + 1 matches)
         [DataRow(32, 5)] // 32 players: 5 rounds (16 + 8 + 4 + 2 + 1 matches)
-        public void MapToGameResult_Should_Map_Correct_Number_Of_Rounds_For_Main_Game(int playerCount, int expectedRounds)
+        public async Task MapToGameResultAsync_Should_Map_Correct_Number_Of_Rounds_For_Main_Game(int playerCount, int expectedRounds)
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", playerCount, false);
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result.MainGame);
@@ -70,13 +82,13 @@ namespace DartTournament.Application.UnitTest
         [DataRow(8, new[] { 4, 2, 1 })] // 8 players: Round 1 has 4 matches, Round 2 has 2 matches, Round 3 has 1 match
         [DataRow(16, new[] { 8, 4, 2, 1 })] // 16 players: Round 1 has 8 matches, etc.
         [DataRow(32, new[] { 16, 8, 4, 2, 1 })] // 32 players: 5 rounds with decreasing matches
-        public void MapToGameResult_Should_Map_Correct_Match_Counts_Per_Round(int playerCount, int[] expectedMatchCounts)
+        public async Task MapToGameResultAsync_Should_Map_Correct_Match_Counts_Per_Round(int playerCount, int[] expectedMatchCounts)
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", playerCount, false);
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result.MainGame);
@@ -96,13 +108,13 @@ namespace DartTournament.Application.UnitTest
         [DataRow(8, new[] { 2, 1 })] // 8 players, looser round has 4 players, so 2 matches in round 1, 1 in round 2
         [DataRow(16, new[] { 4, 2, 1 })] // 16 players, looser round has 8 players, so 4 matches in round 1, etc.
         [DataRow(32, new[] { 8, 4, 2, 1 })] // 32 players, looser round has 16 players, so 8 matches in round 1, etc.
-        public void MapToGameResult_Should_Map_Correct_Looser_Round_Match_Counts(int playerCount, int[] expectedLooserMatchCounts)
+        public async Task MapToGameResultAsync_Should_Map_Correct_Looser_Round_Match_Counts(int playerCount, int[] expectedLooserMatchCounts)
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", playerCount, true);
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result.LooserGame);
@@ -116,27 +128,40 @@ namespace DartTournament.Application.UnitTest
         }
 
         [TestMethod]
-        public void MapToGameResult_Should_Map_Player_Ids_Correctly()
+        public async Task MapToGameResultAsync_Should_Map_Player_Ids_And_Names_Correctly()
         {
             // Arrange
             var playerIds = GeneratePlayerIds(8);
             var gameParent = CreateTestGameParentWithPlayerIds("Test Tournament", playerIds, false);
 
+            // Setup player service to return player names
+            for (int i = 0; i < playerIds.Count; i++)
+            {
+                var playerId = playerIds[i];
+                _playerServiceMock
+                    .Setup(ps => ps.GetPlayerByIdAsync(playerId))
+                    .ReturnsAsync(new DartPlayerGetDto { Id = playerId, Name = $"Player {i + 1}" });
+            }
+
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result.MainGame);
             var firstRound = result.MainGame.Rounds.First();
             Assert.AreEqual(4, firstRound.Matches.Count);
 
-            // Verify all players are mapped correctly
+            // Verify all players are mapped correctly with both IDs and names
             var mappedPlayerIds = new List<Guid>();
             foreach (var match in firstRound.Matches)
             {
                 Assert.AreNotEqual(Guid.Empty, match.PlayerAId);
                 Assert.AreNotEqual(Guid.Empty, match.PlayerBId);
                 Assert.AreNotEqual(match.PlayerAId, match.PlayerBId);
+                Assert.IsFalse(string.IsNullOrEmpty(match.PlayerAName));
+                Assert.IsFalse(string.IsNullOrEmpty(match.PlayerBName));
+                Assert.IsTrue(match.PlayerAName.StartsWith("Player"));
+                Assert.IsTrue(match.PlayerBName.StartsWith("Player"));
                 mappedPlayerIds.Add(match.PlayerAId);
                 mappedPlayerIds.Add(match.PlayerBId);
             }
@@ -147,16 +172,19 @@ namespace DartTournament.Application.UnitTest
                 Assert.IsTrue(mappedPlayerIds.Contains(playerId),
                     $"Player {playerId} should be mapped correctly");
             }
+
+            // Verify player service was called for each player
+            _playerServiceMock.Verify(ps => ps.GetPlayerByIdAsync(It.IsAny<Guid>()), Times.Exactly(8));
         }
 
         [TestMethod]
-        public void MapToGameResult_Should_Map_Empty_Matches_For_Subsequent_Rounds()
+        public async Task MapToGameResultAsync_Should_Map_Empty_Matches_For_Subsequent_Rounds()
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", 8, false);
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result.MainGame);
@@ -171,12 +199,16 @@ namespace DartTournament.Application.UnitTest
                         $"Round {i} should have empty PlayerAId");
                     Assert.AreEqual(Guid.Empty, match.PlayerBId,
                         $"Round {i} should have empty PlayerBId");
+                    Assert.AreEqual(string.Empty, match.PlayerAName,
+                        $"Round {i} should have empty PlayerAName");
+                    Assert.AreEqual(string.Empty, match.PlayerBName,
+                        $"Round {i} should have empty PlayerBName");
                 }
             }
         }
 
         [TestMethod]
-        public void MapToGameResult_Should_Map_All_Ids_Correctly()
+        public async Task MapToGameResultAsync_Should_Map_All_Ids_Correctly()
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", 4, false);
@@ -199,7 +231,7 @@ namespace DartTournament.Application.UnitTest
             }
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.AreEqual(expectedGameId, result.MainGame.Id);
@@ -212,14 +244,53 @@ namespace DartTournament.Application.UnitTest
         }
 
         [TestMethod]
-        public void MapToGameResult_Should_Handle_Null_Rounds_Gracefully()
+        public async Task MapToGameResultAsync_Should_Handle_Missing_Players()
+        {
+            // Arrange
+            var playerIds = GeneratePlayerIds(4);
+            var gameParent = CreateTestGameParentWithPlayerIds("Test Tournament", playerIds, false);
+
+            // Setup player service to return null for some players
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[0]))
+                .ReturnsAsync(new DartPlayerGetDto { Id = playerIds[0], Name = "Player 1" });
+            
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[1]))
+                .ReturnsAsync((DartPlayerGetDto)null);
+
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[2]))
+                .ReturnsAsync(new DartPlayerGetDto { Id = playerIds[2], Name = "Player 3" });
+
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[3]))
+                .ReturnsAsync((DartPlayerGetDto)null);
+
+            // Act
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
+
+            // Assert
+            var firstRound = result.MainGame.Rounds.First();
+            
+            // First match: Player 1 vs missing player
+            Assert.AreEqual("Player 1", firstRound.Matches[0].PlayerAName);
+            Assert.AreEqual(string.Empty, firstRound.Matches[0].PlayerBName);
+            
+            // Second match: Player 3 vs missing player
+            Assert.AreEqual("Player 3", firstRound.Matches[1].PlayerAName);
+            Assert.AreEqual(string.Empty, firstRound.Matches[1].PlayerBName);
+        }
+
+        [TestMethod]
+        public async Task MapToGameResultAsync_Should_Handle_Null_Rounds_Gracefully()
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", 4, false);
             gameParent.MainGame = new DartTournament.Domain.Entities.Game(null); // null rounds
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result.MainGame);
@@ -228,7 +299,7 @@ namespace DartTournament.Application.UnitTest
         }
 
         [TestMethod]
-        public void MapToGameResult_Should_Handle_Null_Matches_Gracefully()
+        public async Task MapToGameResultAsync_Should_Handle_Null_Matches_Gracefully()
         {
             // Arrange
             var gameParent = CreateTestGameParent("Test Tournament", 4, false);
@@ -238,7 +309,7 @@ namespace DartTournament.Application.UnitTest
             }
 
             // Act
-            var result = GameMapper.MapToGameResult(gameParent);
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
             // Assert
             Assert.IsNotNull(result.MainGame);
@@ -250,26 +321,47 @@ namespace DartTournament.Application.UnitTest
         }
 
         [TestMethod]
-        public void MapToGameResult_With_Null_GameParent_Should_Throw_ArgumentNullException()
+        public async Task MapToGameResultAsync_Should_Not_Call_PlayerService_For_Empty_Guids()
+        {
+            // Arrange
+            var gameParent = CreateTestGameParent("Test Tournament", 8, false);
+            // This creates a tournament where only the first round has player IDs, subsequent rounds have empty GUIDs
+
+            // Act
+            var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
+
+            // Assert
+            Assert.IsNotNull(result);
+            
+            // Verify player service was only called for non-empty GUIDs (first round matches)
+            var firstRoundMatchCount = gameParent.MainGame.Rounds[0].Matches.Count;
+            var expectedCalls = firstRoundMatchCount * 2; // 2 players per match
+            _playerServiceMock.Verify(ps => ps.GetPlayerByIdAsync(It.IsAny<Guid>()), Times.Exactly(expectedCalls));
+        }
+
+        [TestMethod]
+        public async Task MapToGameResultAsync_With_Null_GameParent_Should_Throw_ArgumentNullException()
         {
             // Act & Assert
-            var exception = Assert.ThrowsException<ArgumentNullException>(() => GameMapper.MapToGameResult(null));
+            var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(
+                () => GameMapper.MapToGameResultAsync(null, _playerServiceMock.Object));
             Assert.AreEqual("gameParent", exception.ParamName);
         }
 
         [TestMethod]
-        public void MapToGameResult_With_Null_MainGame_Should_Throw_ArgumentNullException()
+        public async Task MapToGameResultAsync_With_Null_MainGame_Should_Throw_ArgumentNullException()
         {
             // Arrange
             var gameParent = new GameParent("Test", null, null, false);
 
             // Act & Assert
-            var exception = Assert.ThrowsException<ArgumentNullException>(() => GameMapper.MapToGameResult(gameParent));
+            var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(
+                () => GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object));
             Assert.AreEqual("game", exception.ParamName);
         }
 
         [TestMethod]
-        public void MapToGameResult_Tournament_Names_Should_Be_Mapped_Correctly()
+        public async Task MapToGameResultAsync_Tournament_Names_Should_Be_Mapped_Correctly()
         {
             // Arrange
             var tournamentNames = new[] 
@@ -286,7 +378,7 @@ namespace DartTournament.Application.UnitTest
                 var gameParent = CreateTestGameParent(name, 4, false);
 
                 // Act
-                var result = GameMapper.MapToGameResult(gameParent);
+                var result = await GameMapper.MapToGameResultAsync(gameParent, _playerServiceMock.Object);
 
                 // Assert
                 Assert.AreEqual(name, result.Name, $"Tournament name '{name}' should be mapped correctly");

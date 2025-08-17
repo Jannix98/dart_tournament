@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DartTournament.Application.DTO.Game;
+using DartTournament.Application.DTO.Player;
 using DartTournament.Application.UseCases.Game.Services;
+using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Domain.Entities;
 using DartTournament.Domain.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,13 +18,15 @@ namespace DartTournament.Application.UnitTest
     public class GameServiceTest
     {
         private Mock<IGameParentRepository> _gameRepositoryMock = null!;
+        private Mock<IPlayerService> _playerServiceMock = null!;
         private GameService _gameService = null!;
 
         [TestInitialize]
         public void Setup()
         {
             _gameRepositoryMock = new Mock<IGameParentRepository>();
-            _gameService = new GameService(_gameRepositoryMock.Object);
+            _playerServiceMock = new Mock<IPlayerService>();
+            _gameService = new GameService(_gameRepositoryMock.Object, _playerServiceMock.Object);
         }
 
         [TestMethod]
@@ -293,7 +297,115 @@ namespace DartTournament.Application.UnitTest
             Assert.AreNotEqual(Guid.Empty, result);
         }
 
-        // New tests for GetGame method
+        // New tests for GetGame method with player name resolution
+        [TestMethod]
+        public async Task GetGame_Should_Return_Mapped_Game_With_Player_Names()
+        {
+            // Arrange
+            var gameId = Guid.NewGuid();
+            var playerIds = GeneratePlayerIds(4);
+            var gameParent = CreateTestGameParentWithPlayerIds("Test Tournament", playerIds, false);
+            
+            _gameRepositoryMock
+                .Setup(r => r.GetGameParent(gameId))
+                .ReturnsAsync(gameParent);
+
+            // Setup player service to return player names
+            for (int i = 0; i < playerIds.Count; i++)
+            {
+                var playerId = playerIds[i];
+                _playerServiceMock
+                    .Setup(ps => ps.GetPlayerByIdAsync(playerId))
+                    .ReturnsAsync(new DartPlayerGetDto { Id = playerId, Name = $"Player {i + 1}" });
+            }
+
+            // Act
+            var result = await _gameService.GetGame(gameId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(gameParent.Id, result.Id);
+            Assert.AreEqual("Test Tournament", result.Name);
+            Assert.IsFalse(result.HasLooserRound);
+            Assert.IsNotNull(result.MainGame);
+            Assert.IsNull(result.LooserGame);
+
+            // Verify player names are populated
+            var firstRound = result.MainGame.Rounds.First();
+            var matchesWithNames = firstRound.Matches.Where(m => !string.IsNullOrEmpty(m.PlayerAName) && !string.IsNullOrEmpty(m.PlayerBName));
+            Assert.AreEqual(2, matchesWithNames.Count());
+
+            _gameRepositoryMock.Verify(r => r.GetGameParent(gameId), Times.Once);
+            _playerServiceMock.Verify(ps => ps.GetPlayerByIdAsync(It.IsAny<Guid>()), Times.Exactly(4));
+        }
+
+        [TestMethod]
+        public async Task GetGame_Should_Handle_Missing_Players_Gracefully()
+        {
+            // Arrange
+            var gameId = Guid.NewGuid();
+            var playerIds = GeneratePlayerIds(4);
+            var gameParent = CreateTestGameParentWithPlayerIds("Test Tournament", playerIds, false);
+            
+            _gameRepositoryMock
+                .Setup(r => r.GetGameParent(gameId))
+                .ReturnsAsync(gameParent);
+
+            // Setup player service to return null for some players
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[0]))
+                .ReturnsAsync(new DartPlayerGetDto { Id = playerIds[0], Name = "Player 1" });
+            
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[1]))
+                .ReturnsAsync((DartPlayerGetDto)null); // Player not found
+
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[2]))
+                .ReturnsAsync(new DartPlayerGetDto { Id = playerIds[2], Name = "Player 3" });
+
+            _playerServiceMock
+                .Setup(ps => ps.GetPlayerByIdAsync(playerIds[3]))
+                .ReturnsAsync((DartPlayerGetDto)null); // Player not found
+
+            // Act
+            var result = await _gameService.GetGame(gameId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var firstRound = result.MainGame.Rounds.First();
+            
+            // First match: Player 1 vs missing player
+            Assert.AreEqual("Player 1", firstRound.Matches[0].PlayerAName);
+            Assert.AreEqual(string.Empty, firstRound.Matches[0].PlayerBName);
+            
+            // Second match: Player 3 vs missing player
+            Assert.AreEqual("Player 3", firstRound.Matches[1].PlayerAName);
+            Assert.AreEqual(string.Empty, firstRound.Matches[1].PlayerBName);
+        }
+
+        [TestMethod]
+        public async Task GetGame_Should_Not_Call_PlayerService_For_Empty_Guids()
+        {
+            // Arrange
+            var gameId = Guid.NewGuid();
+            var gameParent = CreateTestGameParent("Test Tournament", 8, false);
+            
+            _gameRepositoryMock
+                .Setup(r => r.GetGameParent(gameId))
+                .ReturnsAsync(gameParent);
+
+            // Act
+            var result = await _gameService.GetGame(gameId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            
+            // Verify player service was not called for empty GUIDs (only first round should have non-empty GUIDs)
+            var totalNonEmptyMatches = gameParent.MainGame.Rounds[0].Matches.Count * 2; // 2 players per match in first round
+            _playerServiceMock.Verify(ps => ps.GetPlayerByIdAsync(It.IsAny<Guid>()), Times.Exactly(totalNonEmptyMatches));
+        }
+
         [TestMethod]
         public async Task GetGame_Should_Return_Mapped_Game_Without_Looser_Round()
         {
@@ -439,12 +551,17 @@ namespace DartTournament.Application.UnitTest
         private GameParent CreateTestGameParent(string name, int playerCount, bool hasLooserRound)
         {
             var playerIds = GeneratePlayerIds(playerCount);
-            var mainGame = CreateTestGame(playerCount, playerIds);
+            return CreateTestGameParentWithPlayerIds(name, playerIds, hasLooserRound);
+        }
+
+        private GameParent CreateTestGameParentWithPlayerIds(string name, List<Guid> playerIds, bool hasLooserRound)
+        {
+            var mainGame = CreateTestGame(playerIds.Count, playerIds);
             DartTournament.Domain.Entities.Game looserGame = null;
 
             if (hasLooserRound)
             {
-                looserGame = CreateTestGame(playerCount / 2, new List<Guid>());
+                looserGame = CreateTestGame(playerIds.Count / 2, new List<Guid>());
             }
 
             var gameParent = new GameParent(name, mainGame, looserGame, hasLooserRound);

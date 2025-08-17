@@ -32,6 +32,12 @@ namespace DartTournament.Application.UseCases.Player.Services
             return players.Select(DartPlayerMapper.ToGetDto).ToList();
         }
 
+        public async Task<DartPlayerGetDto> GetPlayerByIdAsync(Guid id)
+        {
+            var player = await _playerRepository.GetByIdAsync(id);
+            return player != null ? DartPlayerMapper.ToGetDto(player) : null;
+        }
+
         public async Task UpdatePlayerAsync(DartPlayerUpdateDto updateDto)
         {
             var player = await _playerRepository.GetByIdAsync(updateDto.Id);
