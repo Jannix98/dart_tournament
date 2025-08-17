@@ -41,5 +41,11 @@ namespace DartTournament.Infrastructure.JSON.Persistence
                 throw new KeyNotFoundException($"Match with ID {match.Id} not found.");
             }
         }
+
+        public async Task<List<GameMatch>> GetByIdsAsync(List<Guid> ids)
+        {
+            var all = await GetAllAsync();
+            return all.Where(m => ids.Contains(m.Id)).ToList();
+        }
     }
 }

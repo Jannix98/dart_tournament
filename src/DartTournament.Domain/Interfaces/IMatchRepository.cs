@@ -12,5 +12,6 @@ namespace DartTournament.Domain.Interfaces
         Task Insert(GameMatch match);
         Task Update(GameMatch match);
         Task InsertRange(List<GameMatch> matches);
+        Task<List<GameMatch>> GetByIdsAsync(List<Guid> ids);
     }
 }

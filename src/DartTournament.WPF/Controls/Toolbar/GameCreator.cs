@@ -35,7 +35,8 @@ namespace DartTournament.WPF.Controls.Toolbar
             }
 
             CreateGameDTO createGame = new CreateGameDTO(result.TournamentName, result.SelectedPlayers.Count, result.SelectedPlayers.Select(x => x.Id).ToList(), result.AddLooserRound);
-            var guid = _gamePresentationService.CreateGame(createGame);
+            var guid = await _gamePresentationService.CreateGame(createGame);
+            var game = await _gamePresentationService.GetGame(guid);
 
             //var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
             var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);

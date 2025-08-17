@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartTournament.WPF.Test", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartTournament.Helper", "DartTournament.Helper\DartTournament.Helper.csproj", "{52AF2C3B-B595-44DA-8315-28133DA6D462}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartTournament.Infrastructure.JSON.Test", "DartTournament.Infrastructure.JSON.Test\DartTournament.Infrastructure.JSON.Test.csproj", "{33A8C1F3-E0F2-486F-A22A-7BE34F78B20B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{52AF2C3B-B595-44DA-8315-28133DA6D462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52AF2C3B-B595-44DA-8315-28133DA6D462}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52AF2C3B-B595-44DA-8315-28133DA6D462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A8C1F3-E0F2-486F-A22A-7BE34F78B20B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A8C1F3-E0F2-486F-A22A-7BE34F78B20B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A8C1F3-E0F2-486F-A22A-7BE34F78B20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A8C1F3-E0F2-486F-A22A-7BE34F78B20B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

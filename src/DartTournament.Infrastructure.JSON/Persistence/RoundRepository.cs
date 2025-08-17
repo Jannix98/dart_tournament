@@ -25,5 +25,11 @@ namespace DartTournament.Infrastructure.JSON.Persistence
             all.AddRange(rounds);
             await SaveInFile(all);
         }
+
+        public async Task<List<GameRound>> GetByIdsAsync(List<Guid> ids)
+        {
+            var all = await GetAllAsync();
+            return all.Where(r => ids.Contains(r.Id)).ToList();
+        }
     }
 }

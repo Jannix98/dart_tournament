@@ -76,14 +76,57 @@ namespace DartTournament.Infrastructure.JSON.Persistence
 
         private async Task Insert(GameParent gameParent)
         {
-            var all = await GetAllAsync();
+            var all = await GetAllGameParents();
             all.Add(gameParent);
             await SaveInFile(all);
         }
 
         public async Task<GameParent> GetGameParent(Guid id)
         {
-            throw new NotImplementedException();
+            var all = await GetAllGameParents();
+            var gameParent = all.FirstOrDefault(gp => gp.Id == id);
+            if (gameParent == null)
+                throw new ArgumentException($"GameParent with ID {id} not found.");
+
+            // Load the MainGame with its rounds and matches
+            var mainGame = await _gameRepository.GetByIdAsync(gameParent.MainGameId);
+            if (mainGame != null)
+            {
+                gameParent.MainGame = mainGame;
+                await LoadGameRoundsAndMatches(mainGame);
+            }
+
+            // Load the LooserGame with its rounds and matches if it exists
+            if (gameParent.LooserGameId.HasValue)
+            {
+                var looserGame = await _gameRepository.GetByIdAsync(gameParent.LooserGameId.Value);
+                if (looserGame != null)
+                {
+                    gameParent.LooserGame = looserGame;
+                    await LoadGameRoundsAndMatches(looserGame);
+                }
+            }
+
+            return gameParent;
+        }
+
+        private async Task LoadGameRoundsAndMatches(Game game)
+        {
+            if (game.RoundIds != null && game.RoundIds.Any())
+            {
+                var rounds = await _roundRepository.GetByIdsAsync(game.RoundIds);
+                game.Rounds = rounds;
+
+                // Load matches for each round
+                foreach (var round in rounds)
+                {
+                    if (round.MatchIds != null && round.MatchIds.Any())
+                    {
+                        var matches = await _matchRepository.GetByIdsAsync(round.MatchIds);
+                        round.Matches = matches;
+                    }
+                }
+            }
         }
 
         public Task<List<GameParent>> GetAllGameParents()

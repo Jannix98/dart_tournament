@@ -10,5 +10,6 @@ namespace DartTournament.Domain.Interfaces
     public interface IGameRepository
     {
         Task Insert(Game game);
+        Task<Game?> GetByIdAsync(Guid id);
     }
 }

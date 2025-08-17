@@ -18,5 +18,11 @@ namespace DartTournament.Infrastructure.JSON.Persistence
             all.Add(game);
             await SaveInFile(all);
         }
+
+        public async Task<Game?> GetByIdAsync(Guid id)
+        {
+            var all = await GetAllAsync();
+            return all.FirstOrDefault(g => g.Id == id);
+        }
     }
 }
