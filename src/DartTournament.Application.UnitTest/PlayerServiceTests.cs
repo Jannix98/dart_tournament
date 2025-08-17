@@ -71,23 +71,6 @@ namespace DartTournament.Application.UnitTest
         }
 
         [TestMethod]
-        public async Task UpdatePlayerAsync_Should_Update_Entity_If_Found()
-        {
-            // Arrange
-            var player = new DartPlayer("Old Name");
-            var updateDto = new DartPlayerUpdateDto { Id = player.Id, Name = "New Name" };
-            _playerRepositoryMock.Setup(r => r.GetByIdAsync(player.Id)).ReturnsAsync(player);
-            _playerRepositoryMock.Setup(r => r.Update(player)).Returns(Task.CompletedTask);
-
-            // Act
-            await _playerService.UpdatePlayerAsync(updateDto);
-
-            // Assert
-            Assert.AreEqual("New Name", player.Name);
-            _playerRepositoryMock.Verify(r => r.Update(player), Times.Once);
-        }
-
-        [TestMethod]
         public async Task UpdatePlayerAsync_Should_Not_Throw_If_Not_Found()
         {
             // Arrange

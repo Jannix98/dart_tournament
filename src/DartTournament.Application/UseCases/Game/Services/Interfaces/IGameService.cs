@@ -9,6 +9,7 @@ namespace DartTournament.Application.UseCases.Game.Services.Interfaces
 {
     public interface IGameService
     {
-        Guid CreateGame(CreateGameDTO createGame);
+        Task<Guid> CreateGame(CreateGameDTO createGame);
+        Task<GameResult> GetGame(Guid id);
     }
 }

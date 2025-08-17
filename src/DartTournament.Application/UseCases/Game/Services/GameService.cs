@@ -1,4 +1,5 @@
 ﻿using DartTournament.Application.DTO.Game;
+using DartTournament.Application.Mappers;
 using DartTournament.Application.UseCases.Game.Services.Interfaces;
 using DartTournament.Domain.Entities;
 using DartTournament.Domain.Interfaces;
@@ -20,7 +21,7 @@ namespace DartTournament.Application.UseCases.Game.Services
             _dartGameRepository = dartGameRepository;
         }
 
-        public Guid CreateGame(CreateGameDTO createGame)
+        public async Task<Guid> CreateGame(CreateGameDTO createGame)
         {
             DartTournament.Domain.Entities.Game mainGame = null;
             DartTournament.Domain.Entities.Game looserGame = null;
@@ -33,8 +34,16 @@ namespace DartTournament.Application.UseCases.Game.Services
                 looserGame = new DartTournament.Domain.Entities.Game(looserRounds);
             }
             GameParent gameParent = new GameParent(createGame.Name, mainGame, looserGame, createGame.HasLooserRound);
-            _dartGameRepository.CreateGameParent(gameParent);
-            return Guid.NewGuid();
+            return await _dartGameRepository.CreateGameParent(gameParent);
+        }
+
+        public async Task<GameResult> GetGame(Guid id)
+        {
+            var gameParent = await _dartGameRepository.GetGameParent(id);
+            if (gameParent == null)
+                throw new ArgumentException($"Game with ID {id} not found.");
+
+            return GameMapper.MapToGameResult(gameParent);
         }
 
         private List<GameRound> CreateRounds(int maxPlayer, List<Guid> playerIds, RoundCalculatorBase roundCalculator)

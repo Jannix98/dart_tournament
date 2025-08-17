@@ -18,9 +18,14 @@ namespace DartTournament.Presentation.Services
             _gameService = gameService;
         }
 
-        public Guid CreateGame(CreateGameDTO createGame)
+        public async Task<Guid> CreateGame(CreateGameDTO createGame)
         {
-            return _gameService.CreateGame(createGame);
+            return await _gameService.CreateGame(createGame);
+        }
+
+        public async Task<GameResult> GetGame(Guid gameId)
+        {
+            return await _gameService.GetGame(gameId);
         }
     }
 }

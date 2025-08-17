@@ -9,6 +9,7 @@ namespace DartTournament.Presentation.Base.Services
 {
     public interface IGamePresentationService
     {
-        Guid CreateGame(CreateGameDTO createGame);
+        Task<Guid> CreateGame(CreateGameDTO createGame);
+        Task<GameResult> GetGame(Guid gameId);
     }
 }
