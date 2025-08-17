@@ -1,5 +1,5 @@
 ﻿using DartTournament.Presentation.Base.Services;
-using DartTournament.WPF.ServiceManager;
+using DartTournament.WPF.SM;
 using System.Configuration;
 using System.Data;
 using System.Windows;

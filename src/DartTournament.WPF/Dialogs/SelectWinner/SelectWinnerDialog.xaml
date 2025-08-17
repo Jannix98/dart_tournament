@@ -7,6 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dialogManagement="clr-namespace:DartTournament.WPF.Dialogs.Base"
         mc:Ignorable="d"
+        ShowInTaskbar="False"
         Title="SelectWinnerDialog" Height="250" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>

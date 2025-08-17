@@ -1,8 +1,11 @@
-﻿using DartTournament.Domain.Interfaces;
+﻿using DartTournament.Application.UseCases.Game.Services;
+using DartTournament.Application.UseCases.Game.Services.Interfaces;
+using DartTournament.Domain.Interfaces;
 using DartTournament.Infrastructure.JSON.Persistence;
 using DartTournament.Presentation.Base.Services;
 using DartTournament.Presentation.Services;
 using DartTournament.WPF.Controls.PlayerOverview;
+using DartTournament.WPF.Controls.Toolbar;
 using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.WPF.Dialogs.Base;
 using DartTournament.WPF.Dialogs.SelectWinner;
@@ -16,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DartTournament.WPF.ServiceManager
+namespace DartTournament.WPF.SM
 {
     internal interface IServiceManager
     {
@@ -51,6 +54,16 @@ namespace DartTournament.WPF.ServiceManager
             services.AddTransient<IAddPlayerView, AddPlayerView>();
             services.AddTransient<ISelectWinnerDialog, SelectWinnerDialog>();
             services.AddTransient<IDialogOwner, DialogOwner>();
+
+            services.AddSingleton<IGameParentRepository, GameParentRepository>();
+            services.AddSingleton<IGamePresentationService, GamePresentationService>();
+            services.AddSingleton<IGameService, GameService>();
+
+            services.AddSingleton<IMatchRepository, MatchRepository>();
+            services.AddSingleton<IRoundRepository, RoundRepository>();
+            services.AddSingleton<IGameRepository, GameRepository>();
+
+            services.AddSingleton<GameCreator>();
 
             // Register PlayerPresentationService
             //services.AddSingleton<IInitializePresentationService, InitializePresentationService>();

@@ -1,4 +1,6 @@
-﻿using MaterialDesignColors;
+﻿using DartTournament.Presentation.Base.Services;
+using DartTournament.WPF.SM;
+using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -29,7 +31,7 @@ namespace DartTournament.WPF.Controls.Toolbar
         public ToolbarControl()
         {
             InitializeComponent();
-            _gameCreator = new GameCreator();
+            _gameCreator = ServiceManager.Instance.GetRequiredService<GameCreator>();
             _playerManager = new PlayerManager();
         }
 

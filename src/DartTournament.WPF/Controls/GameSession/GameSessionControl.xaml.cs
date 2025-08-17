@@ -3,7 +3,7 @@ using DartTournament.WPF.Utils.GameData;
 using DartTournament.WPF.Utils.MatchCreator;
 using DartTournament.WPF.Utils.MatchGenerator;
 using DartTournament.WPF.Utils.MatchHandler;
-using DartTournament.WPF.Utils.RoundCalculator;
+using DartTournament.Helper.RoundCalculator;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

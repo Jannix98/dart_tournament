@@ -21,7 +21,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             var matches = gameMatchHandler.Matches;
             AllMatches = new ObservableCollection<MatchViewModel>(matches);
             SelectWinnerCommand = new RelayCommand<MatchViewModel>((match) => SelectWinner(match));
-            _dialogManager = ServiceManager.ServiceManager.Instance.GetRequiredService<IDialogManager>();
+            _dialogManager = SM.ServiceManager.Instance.GetRequiredService<IDialogManager>();
         }
 
         private void SelectWinner(MatchViewModel? match)

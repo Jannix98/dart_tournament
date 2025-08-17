@@ -9,16 +9,13 @@ using System.Threading.Tasks;
 
 namespace DartTournament.Infrastructure.JSON.Persistence
 {
-    public class DartPlayerRepository : IDartPlayerRepository
+    public class DartPlayerRepository : BaseRepository<DartPlayer>, IDartPlayerRepository
     {
-        private readonly string FilePath = null;
-        private const string FileName = "player.json";
+        protected override string FileName => "player.json";
 
-        public DartPlayerRepository()
+        public DartPlayerRepository() : base()
         {
-            FilePath = PathManager.GetAndCreatePath(FileName);
         }
-
 
         public async Task AddAsync(DartPlayer player)
         {
@@ -26,23 +23,6 @@ namespace DartTournament.Infrastructure.JSON.Persistence
             players.Add(player);
 
             await SaveInFile(players);
-        }
-
-        private async Task SaveInFile(List<DartPlayer> players)
-        {
-            var json = JsonSerializer.Serialize(players, new JsonSerializerOptions { WriteIndented = true });
-            await File.WriteAllTextAsync(FilePath, json);
-        }
-
-        public async Task<List<DartPlayer>> GetAllAsync()
-        {
-            if (!File.Exists(FilePath)) return new List<DartPlayer>();
-
-            var json = await File.ReadAllTextAsync(FilePath);
-            if(String.IsNullOrEmpty(json))
-                return new List<DartPlayer>();
-
-            return JsonSerializer.Deserialize<List<DartPlayer>>(json) ?? new List<DartPlayer>();
         }
 
         public async Task Update(DartPlayer player)
@@ -69,6 +49,11 @@ namespace DartTournament.Infrastructure.JSON.Persistence
                 players.Remove(player);
                 await SaveInFile(players);
             }
+        }
+
+        Task<List<DartPlayer>> IDartPlayerRepository.GetAllAsync()
+        {
+            return base.GetAllAsync();
         }
     }
 }

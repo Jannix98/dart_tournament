@@ -1,7 +1,7 @@
 ﻿using DartTournament.WPF.Navigator;
 using DartTournament.WPF.Screens.StartScreen;
 
-using DartTournament.WPF.ServiceManager;
+using DartTournament.WPF.SM;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;

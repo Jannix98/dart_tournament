@@ -21,7 +21,7 @@ namespace DartTournament.WPF.Dialogs.CreateGame
 
         public CreateGameVM()
         {
-            _playerService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
+            _playerService = SM.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
             TotalPlayersOptions = new ObservableCollection<TournamentPlayerCount>
             {
                 TournamentPlayerCount.Four,

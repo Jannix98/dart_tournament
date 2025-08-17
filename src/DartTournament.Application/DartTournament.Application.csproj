@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DartTournament.Application.DTO\DartTournament.Application.DTO.csproj" />
     <ProjectReference Include="..\DartTournament.Domain\DartTournament.Domain.csproj" />
+    <ProjectReference Include="..\DartTournament.Helper\DartTournament.Helper.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DartTournament.WPF.Utils.RoundCalculator
+namespace DartTournament.Helper.RoundCalculator
 {
-    internal abstract class RoundCalculatorBase
+    public abstract class RoundCalculatorBase
     {
         protected abstract int MinmalRoundCount();
 

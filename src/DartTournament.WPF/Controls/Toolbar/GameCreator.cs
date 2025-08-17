@@ -1,4 +1,6 @@
-﻿using DartTournament.WPF.Controls.Game.GameMenue;
+﻿using DartTournament.Application.DTO.Game;
+using DartTournament.Presentation.Base.Services;
+using DartTournament.WPF.Controls.Game.GameMenue;
 using DartTournament.WPF.Controls.GameNavigationRail;
 using DartTournament.WPF.Controls.GameSession;
 using DartTournament.WPF.Dialogs.Base;
@@ -16,7 +18,14 @@ namespace DartTournament.WPF.Controls.Toolbar
 {
     internal class GameCreator
     {
-        public void CreateGame()
+        private IGamePresentationService _gamePresentationService;
+
+        public GameCreator(IGamePresentationService gamePresentationService)
+        {
+            _gamePresentationService = gamePresentationService;
+        }
+
+        public async void CreateGame()
         {
             CreateGameViewResult result;
             bool flowControl = ShowPlayerSelectionDialog(out result);
@@ -24,6 +33,9 @@ namespace DartTournament.WPF.Controls.Toolbar
             {
                 return;
             }
+
+            CreateGameDTO createGame = new CreateGameDTO(result.TournamentName, result.SelectedPlayers.Count, result.SelectedPlayers.Select(x => x.Id).ToList(), result.AddLooserRound);
+            var guid = _gamePresentationService.CreateGame(createGame);
 
             //var control = GameTreeControl.GameTreeControl.CreateGame(result.SelectedPlayers.Count, result.SelectedPlayers);
             var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);

@@ -17,7 +17,7 @@ namespace DartTournament.WPF.Dialogs.Base
     {
         public BaseDialogResult ShowDialog<T>()
         {
-            var instance = ServiceManager.ServiceManager.Instance.GetRequiredService<T>();
+            var instance = SM.ServiceManager.Instance.GetRequiredService<T>();
             if (!(instance is BaseDialog window))
                 throw new ArgumentException(nameof(instance));
 
@@ -26,7 +26,7 @@ namespace DartTournament.WPF.Dialogs.Base
 
         private static BaseDialog GetBaseDialog<T>()
         {
-            var instance = ServiceManager.ServiceManager.Instance.GetRequiredService<T>();
+            var instance = SM.ServiceManager.Instance.GetRequiredService<T>();
             if (!(instance is BaseDialog window))
                 throw new ArgumentException(nameof(instance));
             return window;

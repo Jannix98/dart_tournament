@@ -33,8 +33,8 @@ namespace DartTournament.WPF.Controls.PlayerOverview
 
         public PlayerOverviewVM()
         {
-            _playerService = ServiceManager.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
-            _dialogManager = ServiceManager.ServiceManager.Instance.GetRequiredService<IDialogManager>();
+            _playerService = SM.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
+            _dialogManager = SM.ServiceManager.Instance.GetRequiredService<IDialogManager>();
             AddPlayerCommand = new RelayCommand(() => AddPlayer());
             EditPlayerCommand = new RelayCommand(() => EditPlayer());
             SavePlayerCommand = new RelayCommand(() => SavePlayer());
