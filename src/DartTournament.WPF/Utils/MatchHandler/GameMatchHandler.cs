@@ -59,6 +59,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
                 Guid firstId = winnerResult.WinnerId;
                 Guid secondId = nextMatch.IdGameEntityB;
                 await UpdateMatch(nextMatch, firstId, secondId);
+                nextMatch.IdGameEntityA = winnerResult.WinnerId;
                 nextMatch.Player1Name = winnerResult.WinnerName;
             }
             else
@@ -66,6 +67,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
                 Guid firstId = nextMatch.IdGameEntityA;
                 Guid secondId = winnerResult.WinnerId;
                 await UpdateMatch(nextMatch, firstId, secondId);
+                nextMatch.IdGameEntityB = winnerResult.WinnerId;
                 nextMatch.Player2Name = winnerResult.WinnerName;
             }
 
