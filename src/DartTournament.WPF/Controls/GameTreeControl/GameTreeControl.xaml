@@ -18,7 +18,7 @@
                                           Command="{Binding DataContext.SelectWinnerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                           CommandParameter="{Binding}" />
                         </ContentControl.InputBindings>
-                        <mctrl:MatchControl Match="{Binding}"  />
+                        <mctrl:MatchControl Player1="{Binding Player1Name}" Player2="{Binding Player2Name}" MatchRoundIndex="{Binding RoundIndex}" />
                     </ContentControl>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

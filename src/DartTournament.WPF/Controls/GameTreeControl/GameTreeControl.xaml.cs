@@ -2,6 +2,7 @@ using DartTournament.WPF.Controls.TournamentTree;
 using DartTournament.WPF.Models;
 using DartTournament.WPF.Utils.MatchCreator;
 using DartTournament.WPF.Utils.MatchHandler;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -34,9 +35,22 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         /// </summary>
         private void Refresh()
         {
-            Console.WriteLine("Trigger refresh");
-            var panel = FindGameTreePanel(this);
-            panel?.InvalidateMeasure();
+            Trace.WriteLine("Trigger refresh");
+            //var panel = FindGameTreePanel(this);
+            //if(panel == null)
+            //{
+            //    Trace.WriteLine("Failed to refresh because panel is null");
+            //    return;
+            //}
+
+            //Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    this.InvalidateMeasure();
+            //    this.InvalidateArrange();
+            //    this.InvalidateVisual();
+            //    this.UpdateLayout();
+            //}), System.Windows.Threading.DispatcherPriority.Render);
+
         }
 
         private GameTreePanel FindGameTreePanel(DependencyObject parent)

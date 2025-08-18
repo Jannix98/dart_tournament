@@ -53,8 +53,8 @@ namespace DartTournament.WPF.Controls.GameTreeControl
 
             // 1. Group children by round
             var rounds = matchControls
-                .Where(mc => mc.Match != null)
-                .GroupBy(mc => mc.Match.RoundIndex)
+                .Where(mc => mc.MatchRoundIndex >= 0)
+                .GroupBy(mc => mc.MatchRoundIndex)
                 .OrderBy(g => g.Key)
                 .ToList();
 
@@ -74,11 +74,11 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             var matchControls = InternalChildren
                 .OfType<ContentPresenter>()
                 .Select(cp => FindVisualChild<MatchControl.MatchControl>(cp))
-                .Where(mc => mc != null && mc.Match != null)
+                .Where(mc => mc != null && mc.MatchRoundIndex >= 0)
                 .ToList();
 
             var rounds = matchControls
-                .GroupBy(mc => mc.Match.RoundIndex)
+                .GroupBy(mc => mc.MatchRoundIndex)
                 .OrderBy(g => g.Key)
                 .ToList();
 

@@ -20,21 +20,43 @@ namespace DartTournament.WPF.Controls.GameTreeControl.MatchControl
     /// </summary>
     public partial class MatchControl : UserControl
     {
-        public static readonly DependencyProperty MatchProperty =
+        public static readonly DependencyProperty Player1Property =
             DependencyProperty.Register(
-                nameof(Match),
-                typeof(MatchViewModel),
+                "Player1",
+                typeof(string),
                 typeof(MatchControl),
-                new PropertyMetadata(null, OnMatchChanged));
+                new PropertyMetadata(string.Empty));
 
-        public MatchViewModel Match
+        public static readonly DependencyProperty Player2Property =
+            DependencyProperty.Register(
+                "Player2",
+                typeof(string),
+                typeof(MatchControl),
+                new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty MatchRoundIndexProperty =
+            DependencyProperty.Register(
+                "MatchRoundIndex",
+                typeof(int),
+                typeof(MatchControl),
+                new PropertyMetadata(-1));
+
+        public string Player1
         {
-            get => (MatchViewModel)GetValue(MatchProperty);
-            set => SetValue(MatchProperty, value);
+            get => (string)GetValue(Player1Property);
+            set => SetValue(Player1Property, value);
         }
 
-        private static void OnMatchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public string Player2
         {
+            get => (string)GetValue(Player2Property);
+            set => SetValue(Player2Property, value);
+        }
+
+        public int MatchRoundIndex
+        {
+            get => (int)GetValue(MatchRoundIndexProperty);
+            set => SetValue(MatchRoundIndexProperty, value);
         }
 
         public MatchControl()
