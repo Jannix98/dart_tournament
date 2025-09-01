@@ -22,14 +22,13 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <!-- surface container -->
-        <ListBox Grid.Column="0" ItemsSource="{Binding Items}" Background="#F3EDF7" 
-                         SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+        <ListBox Grid.Column="0" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <!--<ListBox.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.Panel>
@@ -64,12 +63,15 @@
         <!-- Sidebar ListBox -->
 
         <!-- Content Display -->
-        <Grid Grid.Column="1" Background="#F7F2FA">
+        <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignCardBackground}" Margin="2, 2, 0 , 0">
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="1" Direction="180" Color="Black" Opacity="0.4" BlurRadius="4"/>
+            </Grid.Effect>
             <!-- surface container low -->
             <!--<Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Please create or load a game!"/>-->
-
-            <ContentControl Grid.Column="1"
-                        Content="{Binding SelectedItem.Content}" />
+            
+            <ContentControl Content="{Binding SelectedItem.Content}" />
+            
         </Grid>
 
     </Grid>

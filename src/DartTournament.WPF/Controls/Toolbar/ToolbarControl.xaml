@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <Style x:Key="ToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Background" Value="#F3EDF7"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#6750A4"/>
             <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
             <!-- IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" -->
@@ -23,7 +23,7 @@
             <Setter Property="Height" Value="18"/>
         </Style>
     </UserControl.Resources>
-    <Grid Background="#F3EDF7"> <!-- Surface Container-->
+    <Grid Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}"> <!-- Surface Container-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />

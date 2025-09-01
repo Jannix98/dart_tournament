@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="8">
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <ContentPresenter x:Name="GameContent" Content="{Binding CurrentContent}"/>
         </ScrollViewer>
