@@ -13,12 +13,20 @@ namespace DartTournament.WPF.Test
     [TestClass]
     public class GameMatchHandlerTest
     {
-        [TestMethod]
-        public void Test1()
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
         {
-            var match1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Player1Name = "Team A", Player2Name = "Team B" };
-            var match2 = new MatchViewModel { RoundIndex = 0, MatchIndex = 1, Player1Name = "Team C", Player2Name = "Team D" };
-            var match3 = new MatchViewModel { RoundIndex = 1, MatchIndex = 0, Player1Name = "", Player2Name = "" };
+            // Initialize the ServiceManager to avoid dependency issues
+            // This ensures services are properly configured for the test
+            var _ = DartTournament.WPF.SM.ServiceManager.Instance;
+        }
+
+        [TestMethod]
+        public async Task Test1()
+        {
+            var match1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team A", "Team B", 0, 0);
+            var match2 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team C", "Team D", 0, 1);
+            var match3 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 1, 0);
 
             // Arrange
             var matches = new List<MatchViewModel>
@@ -34,19 +42,19 @@ namespace DartTournament.WPF.Test
             SelectWinnerResult winnerResult1 = new SelectWinnerResult(Guid.Empty, "Team B", Guid.Empty, "Team A", true);
             SelectWinnerResult winnerResult2 = new SelectWinnerResult(Guid.Empty, "Team C", Guid.Empty, "Team D", true);
 
-            gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
-            gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
+            await gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
+            await gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
 
             Assert.AreEqual("Team B", match3.Player1Name);
             Assert.AreEqual("Team C", match3.Player2Name);
         }
 
         [TestMethod]
-        public void Test2()
+        public async Task Test2()
         {
-            var match1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Player1Name = "Team A", Player2Name = "Team B" };
-            var match2 = new MatchViewModel { RoundIndex = 0, MatchIndex = 1, Player1Name = "Team C", Player2Name = "Team D" };
-            var match3 = new MatchViewModel { RoundIndex = 1, MatchIndex = 0, Player1Name = "", Player2Name = "" };
+            var match1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team A", "Team B", 0, 0);
+            var match2 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team C", "Team D", 0, 1);
+            var match3 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 1, 0);
 
             // Arrange
             var matches = new List<MatchViewModel>
@@ -56,7 +64,7 @@ namespace DartTournament.WPF.Test
                 match3
             };
 
-            var looserMatch1 = new MatchViewModel { RoundIndex = 0, MatchIndex = 0, Player1Name = "", Player2Name = "" };
+            var looserMatch1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 0, 0);
             var looserMatches = new List<MatchViewModel>
             {
                 looserMatch1
@@ -68,8 +76,8 @@ namespace DartTournament.WPF.Test
             SelectWinnerResult winnerResult1 = new SelectWinnerResult(Guid.Empty, "Team B", Guid.Empty, "Team A", true);
             SelectWinnerResult winnerResult2 = new SelectWinnerResult(Guid.Empty, "Team C", Guid.Empty, "Team D", true);
 
-            gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
-            gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
+            await gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
+            await gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
 
             Assert.AreEqual("Team B", match3.Player1Name);
             Assert.AreEqual("Team C", match3.Player2Name);

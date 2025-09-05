@@ -29,7 +29,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             _matchPresentationService = SM.ServiceManager.Instance.GetRequiredService<IMatchPresentationService>();
         }
 
-        private void SelectWinner(MatchViewModel? match)
+        private async void SelectWinner(MatchViewModel? match)
         {
             SelectWinnerInput input = new SelectWinnerInput(match);
 
@@ -37,7 +37,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             if (result?.DialogResult == false)
                 return;
 
-            _matchHandler.SetToNextMatch(match.RoundIndex, match.MatchIndex, result);
+            await _matchHandler.SetToNextMatch(match.RoundIndex, match.MatchIndex, result);
         }
 
         public ICommand SelectWinnerCommand { get; set; }

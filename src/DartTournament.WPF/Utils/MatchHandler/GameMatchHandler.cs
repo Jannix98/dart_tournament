@@ -13,24 +13,26 @@ namespace DartTournament.WPF.Utils.MatchHandler
     public class GameMatchHandler : GameMatchHandlerBase
     {
         LooserGameMatchHandler _looserGameMatchHandler;
+
+        protected override bool UseWinnerInResult => true;
+
         /// <summary>
         /// this events notifies when a match has changed
         /// </summary>
         public event EventHandler NotifyMatchChange;
-        private IMatchPresentationService _matchPresentationService;
+        
 
         public GameMatchHandler(List<MatchViewModel> matches, LooserGameMatchHandler looserMatchHandler) : base(matches)
         {
             _looserGameMatchHandler = looserMatchHandler;
-            _matchPresentationService = SM.ServiceManager.Instance.GetRequiredService<IMatchPresentationService>();
         }
 
-        public override void SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
+        public override async Task SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
         {
-            base.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
+            await base.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
             if (currentRoundIndex == 0 && _looserGameMatchHandler != null)
             {
-                _looserGameMatchHandler.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
+                await _looserGameMatchHandler.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
             }
             NotifyMatchChange?.Invoke(null, null);
         }
@@ -52,37 +54,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
 
         }
 
-        protected async override void SetPlayerInMatch(SelectWinnerResult winnerResult, int currentIndex, MatchViewModel nextMatch)
-        {
-            if (currentIndex % 2 == 0)
-            {
-                Guid firstId = winnerResult.WinnerId;
-                Guid secondId = nextMatch.IdGameEntityB;
-                await UpdateMatch(nextMatch, firstId, secondId);
-                nextMatch.IdGameEntityA = winnerResult.WinnerId;
-                nextMatch.Player1Name = winnerResult.WinnerName;
-            }
-            else
-            {
-                Guid firstId = nextMatch.IdGameEntityA;
-                Guid secondId = winnerResult.WinnerId;
-                await UpdateMatch(nextMatch, firstId, secondId);
-                nextMatch.IdGameEntityB = winnerResult.WinnerId;
-                nextMatch.Player2Name = winnerResult.WinnerName;
-            }
 
-        }
-
-        private async Task UpdateMatch(MatchViewModel nextMatch, Guid firstId, Guid secondId)
-        {
-            GameMatchUpdateDto data = new GameMatchUpdateDto
-            {
-                Id = nextMatch.Id,
-                IdGameEntityA = firstId,
-                IdGameEntityB = secondId
-            };
-            await _matchPresentationService.UpdateMatchAsync(data);
-        }
     }
 
 

@@ -14,9 +14,11 @@ namespace DartTournament.WPF.Utils.MatchHandler
         {
         }
 
-        public override void SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
+        protected override bool UseWinnerInResult => false;
+
+        public override Task SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
         {
-            base.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
+            return base.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
         }
 
         protected override MatchViewModel FindNextMatch(int currentRoundIndex, int currentMatchIndex, List<MatchViewModel> matches)
@@ -33,18 +35,6 @@ namespace DartTournament.WPF.Utils.MatchHandler
                 throw new InvalidOperationException($"No match found for Round {newRoundIndex}, Match {nextMatchIndex}.");
 
             return newMatch;
-        }
-
-        protected override void SetPlayerInMatch(SelectWinnerResult winnerResult, int currentMatchIndex, MatchViewModel nextMatch)
-        {
-            if (currentMatchIndex % 2 == 0)
-            {
-                nextMatch.Player1Name = winnerResult.LooserName;
-            }
-            else
-            {
-                nextMatch.Player2Name = winnerResult.LooserName;
-            }
         }
     }
 }

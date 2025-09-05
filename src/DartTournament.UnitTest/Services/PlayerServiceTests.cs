@@ -18,7 +18,7 @@ namespace DartTournament.UnitTest.Services
             var mockRepo = new Mock<IDartPlayerRepository>();
             var service = new PlayerService(mockRepo.Object);
 
-            var result = await service.CreatePlayerAsync("Test Team");
+            var result = await service.CreatePlayerAsync(new Application.DTO.Player.DartPlayerInsertDto() { Name = "xxx"});
 
             Assert.AreNotEqual(Guid.Empty, result.Id);
             mockRepo.Verify(repo => repo.AddAsync(It.IsAny<DartPlayer>()), Times.Once);
