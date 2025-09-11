@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DartTournament.Application.DTO.Game;
+using DartTournament.Presentation.Base.Services;
 
 namespace DartTournament.WPF.Controls.GameSession
 {
@@ -46,6 +47,7 @@ namespace DartTournament.WPF.Controls.GameSession
 
         private void GameSessionControl_Loaded_new(object sender, RoutedEventArgs e)
         {
+            var matchPresentationService = SM.ServiceManager.Instance.GetRequiredService<IMatchPresentationService>();
             if (_viewModel.ShowLooserRound)
             {
                 // Create game content from loaded GameResult with looser round
@@ -55,9 +57,9 @@ namespace DartTournament.WPF.Controls.GameSession
                 var matches = MatchGenerator.FromRounds(mainGameRounds);
                 var looserMatches = MatchGenerator.FromRounds(looserGameRounds);
 
-                var looserMatchHandler = new LooserGameMatchHandler(looserMatches);
-                var gameControlMatchHandler = new GameMatchHandler(matches, looserMatchHandler);
-                var looserGameControlMatchHandler = new GameMatchHandler(looserMatches, null);
+                var looserMatchHandler = new LooserGameMatchHandler(looserMatches, matchPresentationService);
+                var gameControlMatchHandler = new GameMatchHandler(matches, looserMatchHandler, matchPresentationService);
+                var looserGameControlMatchHandler = new GameMatchHandler(looserMatches, null, matchPresentationService);
 
                 var gameControl = GameTreeControl.GameTreeControl.CreateGame(gameControlMatchHandler);
                 var looserControl = GameTreeControl.GameTreeControl.CreateGame(looserGameControlMatchHandler);
@@ -71,7 +73,7 @@ namespace DartTournament.WPF.Controls.GameSession
                 var mainGameRounds = MatchGenerator.FromGameDTO(_gameResult.MainGame);
                 var matches = MatchGenerator.FromRounds(mainGameRounds);
                 
-                var gameControlMatchHandler = new GameMatchHandler(matches, null);
+                var gameControlMatchHandler = new GameMatchHandler(matches, null, matchPresentationService);
                 var control = GameTreeControl.GameTreeControl.CreateGame(gameControlMatchHandler);
 
                 _viewModel.SetGameContent(control);

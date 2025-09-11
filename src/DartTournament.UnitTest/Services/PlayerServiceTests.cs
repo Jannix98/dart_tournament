@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace DartTournament.UnitTest.Services
 {
-    internal class PlayerServiceTests
+    [TestClass]
+    public class PlayerServiceTests
     {
         [TestMethod]
         public async Task CreatePlayer_ShouldReturnNewTeamId()

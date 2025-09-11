@@ -1,4 +1,5 @@
-﻿using DartTournament.WPF.Controls.GameTreeControl;
+﻿using DartTournament.Presentation.Base.Services;
+using DartTournament.WPF.Controls.GameTreeControl;
 using DartTournament.WPF.Dialogs.SelectWinner;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
 {
     public class LooserGameMatchHandler : GameMatchHandlerBase
     {
-        public LooserGameMatchHandler(List<MatchViewModel> matches) : base(matches)
+        public LooserGameMatchHandler(List<MatchViewModel> matches, IMatchPresentationService matchPresentationService) : base(matches, matchPresentationService)
         {
         }
 

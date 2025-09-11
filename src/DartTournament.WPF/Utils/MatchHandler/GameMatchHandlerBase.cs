@@ -22,11 +22,11 @@ namespace DartTournament.WPF.Utils.MatchHandler
 
         public List<MatchViewModel> Matches { get => matches; set => matches = value; }
 
-        protected GameMatchHandlerBase(List<MatchViewModel> matches)
+        protected GameMatchHandlerBase(List<MatchViewModel> matches, IMatchPresentationService matchPresentationService)
         {
             Matches = matches;
             _roundCount = matches.Max(m => m.RoundIndex) + 1;
-            matchPresentationService = SM.ServiceManager.Instance.GetRequiredService<IMatchPresentationService>();
+            this.matchPresentationService = matchPresentationService;
         }
 
         public virtual async Task SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)

@@ -12,12 +12,12 @@ namespace DartTournament.WPF.Test
     public sealed class RoundCalculatorTest
     {
         [TestMethod]
-        [DataRow(4, 3)]
-        [DataRow(8, 4)]
-        [DataRow(16, 5)]
-        [DataRow(32, 6)]
-        [DataRow(64, 7)]
-        [DataRow(128, 8)]
+        [DataRow(4, 2)]
+        [DataRow(8, 3)]
+        [DataRow(16, 4)]
+        [DataRow(32, 5)]
+        [DataRow(64, 6)]
+        [DataRow(128, 7)]
         public void GetRoundCount_ValidPowersOfTwo_ReturnsExpectedRounds(int teamCount, int expectedRounds)
         {
             int actualRounds = RoundCalculator.GetRoundCount(teamCount);

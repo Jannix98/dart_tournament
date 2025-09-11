@@ -22,7 +22,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
         public event EventHandler NotifyMatchChange;
         
 
-        public GameMatchHandler(List<MatchViewModel> matches, LooserGameMatchHandler looserMatchHandler) : base(matches)
+        public GameMatchHandler(List<MatchViewModel> matches, LooserGameMatchHandler looserMatchHandler, IMatchPresentationService matchPresentationService) : base(matches, matchPresentationService)
         {
             _looserGameMatchHandler = looserMatchHandler;
         }

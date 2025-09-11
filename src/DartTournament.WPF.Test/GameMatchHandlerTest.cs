@@ -1,7 +1,10 @@
-﻿using DartTournament.WPF.Controls.GameTreeControl;
+﻿using DartTournament.Presentation.Base.Services;
+using DartTournament.Presentation.Services;
+using DartTournament.WPF.Controls.GameTreeControl;
 using DartTournament.WPF.Dialogs.SelectWinner;
 using DartTournament.WPF.Utils.MatchHandler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +16,15 @@ namespace DartTournament.WPF.Test
     [TestClass]
     public class GameMatchHandlerTest
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
+        Mock<IMatchPresentationService> _mockMatchPresentationService;
+
+        [TestInitialize]
+        public void ClassInitialize()
         {
             // Initialize the ServiceManager to avoid dependency issues
             // This ensures services are properly configured for the test
             var _ = DartTournament.WPF.SM.ServiceManager.Instance;
+            _mockMatchPresentationService = new Mock<IMatchPresentationService>();
         }
 
         [TestMethod]
@@ -37,7 +43,7 @@ namespace DartTournament.WPF.Test
             };
 
             
-            var gameMatchHandler = new GameMatchHandler(matches, null);
+            var gameMatchHandler = new GameMatchHandler(matches, null, _mockMatchPresentationService.Object);
 
             SelectWinnerResult winnerResult1 = new SelectWinnerResult(Guid.Empty, "Team B", Guid.Empty, "Team A", true);
             SelectWinnerResult winnerResult2 = new SelectWinnerResult(Guid.Empty, "Team C", Guid.Empty, "Team D", true);
@@ -70,8 +76,8 @@ namespace DartTournament.WPF.Test
                 looserMatch1
             };
 
-            var looserMatchHandler = new LooserGameMatchHandler(looserMatches);
-            var gameMatchHandler = new GameMatchHandler(matches, looserMatchHandler);
+            var looserMatchHandler = new LooserGameMatchHandler(looserMatches, _mockMatchPresentationService.Object);
+            var gameMatchHandler = new GameMatchHandler(matches, looserMatchHandler, _mockMatchPresentationService.Object);
 
             SelectWinnerResult winnerResult1 = new SelectWinnerResult(Guid.Empty, "Team B", Guid.Empty, "Team A", true);
             SelectWinnerResult winnerResult2 = new SelectWinnerResult(Guid.Empty, "Team C", Guid.Empty, "Team D", true);
