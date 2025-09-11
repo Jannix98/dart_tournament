@@ -19,24 +19,28 @@ namespace DartTournament.WPF.Controls.GameTreeControl.PositionCalculator
             _availableHeight = availableHeight;
         }
 
-        public void PositionControls()
+        public List<Rect> GetControlPositions()
         {
             if (_rounds == null || _rounds.Count == 0)
-                return;
+                return null;
 
             var firstRound = _rounds[0].Select(x => x).ToList();
 
             var firstRoundPositions = GetFirstRoundPositions(firstRound);
-            PositionControl(firstRound, firstRoundPositions);
+            //PositionControl(firstRound, firstRoundPositions);
 
-            PositionOtherRounds(_rounds, firstRoundPositions);
-
+            var otherRoundPositions = GetOtherRoundPositions(_rounds, firstRoundPositions);
+            List<Rect> allPositions = new List<Rect>();
+            allPositions.AddRange(firstRoundPositions);
+            allPositions.AddRange(otherRoundPositions);
+            return allPositions;
         }
 
-        private static void PositionOtherRounds(List<IGrouping<int, MatchControl.MatchControl>> rounds, Rect[] firstRoundPositions)
+        private List<Rect> GetOtherRoundPositions(List<IGrouping<int, MatchControl.MatchControl>> rounds, Rect[] firstRoundPositions)
         {
+            List<Rect> newPositions = new List<Rect>();
             Rect[] previousRoundPositions = firstRoundPositions;
-
+            
             for (int i = 1; i < rounds.Count; i++)
             {
                 var controls = rounds[i].Select(x => x).ToList();
@@ -50,10 +54,10 @@ namespace DartTournament.WPF.Controls.GameTreeControl.PositionCalculator
                     i);
 
                 var positions = positionCalculator.CalculatePositions();
-
-                PositionControl(controls, positions);
+                newPositions.AddRange(positions);
                 previousRoundPositions = positions;
             }
+            return newPositions;
         }
 
         private Rect[] GetFirstRoundPositions(List<MatchControl.MatchControl> firstRound)
@@ -81,13 +85,5 @@ namespace DartTournament.WPF.Controls.GameTreeControl.PositionCalculator
             controlWidth = controls.First().Width;
         }
 
-        private static void PositionControl(List<MatchControl.MatchControl> controls, Rect[] rects)
-        {
-            for (int i = 0; i < controls.Count; i++)
-            {
-                var child = controls[i];
-                child.Arrange(rects[i]);
-            }
-        }
     }
 }

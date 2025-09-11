@@ -61,10 +61,34 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             if (rounds.Count == 0)
                 return finalSize;
 
-            MatchControlPositionManager positionManager = new MatchControlPositionManager(rounds, finalSize.Height);
-            positionManager.PositionControls();
+            if (InternalChildren.Count != matchControls.Count)
+                throw new InvalidOperationException("All children of GameTreePanel must be MatchControl instances.");
+
+            PositionMatchControls(finalSize, rounds);
 
             return finalSize;
+        }
+
+        /// <summary>
+        /// Arranges the match controls within the specified final size based on their grouping and positions.
+        /// </summary>
+        /// <remarks>This method calculates the positions of the match controls using a <see
+        /// cref="MatchControlPositionManager"/>  and arranges them within the layout area. The arrangement is based on
+        /// the grouping of the match controls  and the available height of the layout.
+        /// DISCLAIMER: This methods is only working because the <see cref="UIElement"/> is with a <see cref="UIElement.Arrange(Rect)"/> positioned. 
+        /// If this would be a normal UserControl the UI would not update correctly and the data from the MatchControl is only shown after a resize of the window.
+        /// </remarks>
+        /// <param name="finalSize">The final size of the layout area in which the match controls will be arranged.</param>
+        /// <param name="rounds">A list of grouped match controls, where each group represents a round of matches.</param>
+        private void PositionMatchControls(Size finalSize, List<IGrouping<int, MatchControl.MatchControl>> rounds)
+        {
+            MatchControlPositionManager positionManager = new MatchControlPositionManager(rounds, finalSize.Height);
+            var rects = positionManager.GetControlPositions();
+            for (int i = 0; i < InternalChildren.Count; i++)
+            {
+                UIElement child = InternalChildren[i];
+                child.Arrange(rects[i]);
+            }
         }
 
         protected override void OnRender(DrawingContext dc)
