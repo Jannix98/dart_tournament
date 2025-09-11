@@ -6,11 +6,28 @@ using DartTournament.WPF.Controls.GameTreeControl.PositionCalculator;
 
 namespace DartTournament.WPF.Controls.GameTreeControl
 {
+    /// <summary>
+    /// The panel to display the match controls in a tree structure with connecting lines.
+    /// Info about the lines: we have to draw the lines ourself in the OnRender method of this panel.
+    /// To do this we have to know the position of each MatchControl. This is done in the ArrangeOverride method.
+    /// Because of the WPF Lifeycle the ArrangeOverride is called before the OnRender method and we have to retrigger the process with InvalidateVisual.
+    /// The WPF Lifeycle is: "ArrangeOverride -> OnRender"m but the first call of ArrangeOverride is done before the controls have been added to the Children and therefore does not 
+    /// execute the positioning logic. So we have to call InvalidateVisual in the Loaded event to trigger a second call of ArrangeOverride and OnRender.
+    /// </summary>
     public class GameTreePanel : Panel
     {
+        bool _isLayoutComplete = false;
+
         public GameTreePanel()
         { 
             Background = new SolidColorBrush(Colors.Transparent);
+            Loaded += GameTreePanel_Loaded;
+        }
+
+        private void GameTreePanel_Loaded(object sender, RoutedEventArgs e)
+        {
+            InvalidateVisual();
+
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -66,6 +83,9 @@ namespace DartTournament.WPF.Controls.GameTreeControl
 
             PositionMatchControls(finalSize, rounds);
 
+            // Mark layout as complete and trigger a render
+            _isLayoutComplete = true;
+
             return finalSize;
         }
 
@@ -94,6 +114,10 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
+
+            // Only render connections after layout is complete
+            if (!_isLayoutComplete)
+                return;
 
             var matchControls = InternalChildren
                 .OfType<ContentPresenter>()
