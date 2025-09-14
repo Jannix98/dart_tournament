@@ -16,11 +16,17 @@
             <ContentPresenter x:Name="GameContent" Content="{Binding CurrentContent}"/>
         </ScrollViewer>
 
-        <materialDesign:Card Margin="0, 48, 48,0" BorderThickness="1" UniformCornerRadius="20" Height="50" Width="250" VerticalAlignment="Top" HorizontalAlignment="Right">
+        <materialDesign:Card Margin="0, 48, 48,0" 
+                             BorderThickness="1"
+                             UniformCornerRadius="20"
+                             Height="50"
+                             Width="250" 
+                             VerticalAlignment="Top" 
+                             HorizontalAlignment="Right"
+                             Visibility="{Binding ShowLooserRound, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TabControl Width="250"
             x:Name="TabControl" 
-            SelectedIndex="{Binding SelectedTabIndex}"
-            Visibility="{Binding ShowLooserRound, Converter={StaticResource BooleanToVisibilityConverter}}">
+            SelectedIndex="{Binding SelectedTabIndex}">
                 <TabItem x:Name="GameTab" Header="Game" Width="125">
                     <!-- Tab content is now handled by the ContentPresenter below -->
                 </TabItem>
