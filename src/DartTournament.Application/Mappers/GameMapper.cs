@@ -19,6 +19,7 @@ namespace DartTournament.Application.Mappers
 
             return new GameResult(
                 gameParent.Id,
+                gameParent.CreationDate,
                 gameParent.Name,
                 gameParent.HasLooserRound,
                 mainGameDto,

@@ -10,6 +10,7 @@ namespace DartTournament.Domain.Entities
     public class GameParent
     {
         Guid _id;
+        DateTime _creationDate;
         string _name;
         Guid _mainGameId;
         Game _mainGame;
@@ -17,9 +18,10 @@ namespace DartTournament.Domain.Entities
         Game? _looserGame;
         bool _hasLooserRound;
 
-        public GameParent(string name, Game mainGame, Game looserGame, bool hasLooserRound)
+        public GameParent(string name, DateTime creationDate, Game mainGame, Game looserGame, bool hasLooserRound)
         {
             _name = name;
+            _creationDate = creationDate;
             _mainGame = mainGame;
             _looserGame = looserGame;
             _hasLooserRound = hasLooserRound;
@@ -48,5 +50,6 @@ namespace DartTournament.Domain.Entities
         }
         public Guid MainGameId { get => _mainGameId; set => _mainGameId = value; }
         public Guid? LooserGameId { get => _looserGameId; set => _looserGameId = value; }
+        public DateTime CreationDate { get => _creationDate; set => _creationDate = value; }
     }
 }

@@ -564,7 +564,7 @@ namespace DartTournament.Application.UnitTest
                 looserGame = CreateTestGame(playerIds.Count / 2, new List<Guid>());
             }
 
-            var gameParent = new GameParent(name, mainGame, looserGame, hasLooserRound);
+            var gameParent = new GameParent(name, DateTime.Now, mainGame, looserGame, hasLooserRound);
             gameParent.Id = Guid.NewGuid();
             return gameParent;
         }

@@ -352,7 +352,7 @@ namespace DartTournament.Application.UnitTest
         public async Task MapToGameResultAsync_With_Null_MainGame_Should_Throw_ArgumentNullException()
         {
             // Arrange
-            var gameParent = new GameParent("Test", null, null, false);
+            var gameParent = new GameParent("Test", DateTime.Now, null, null, false);
 
             // Act & Assert
             var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(
@@ -401,7 +401,7 @@ namespace DartTournament.Application.UnitTest
                 looserGame = CreateTestGame(playerIds.Count / 2, new List<Guid>());
             }
 
-            var gameParent = new GameParent(name, mainGame, looserGame, hasLooserRound);
+            var gameParent = new GameParent(name, DateTime.Now, mainGame, looserGame, hasLooserRound);
             gameParent.Id = Guid.NewGuid();
             return gameParent;
         }

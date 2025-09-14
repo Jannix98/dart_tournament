@@ -36,7 +36,7 @@ namespace DartTournament.Application.UseCases.Game.Services
                 var looserRounds = CreateRounds(createGame.NumberOfPlayers / 2, new List<Guid>(), new LooserRoundCalculator());
                 looserGame = new DartTournament.Domain.Entities.Game(looserRounds);
             }
-            GameParent gameParent = new GameParent(createGame.Name, mainGame, looserGame, createGame.HasLooserRound);
+            GameParent gameParent = new GameParent(createGame.Name, DateTime.Now, mainGame, looserGame, createGame.HasLooserRound);
             return await _dartGameRepository.CreateGameParent(gameParent);
         }
 

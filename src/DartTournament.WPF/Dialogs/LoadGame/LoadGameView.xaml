@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:base="clr-namespace:DartTournament.WPF.Dialogs.Base"
         xmlns:local="clr-namespace:DartTournament.WPF.Dialogs.LoadGame"
-                 xmlns:valueConverter="clr-namespace:DartTournament.WPF.ValueConverter"
+        xmlns:valueConverter="clr-namespace:DartTournament.WPF.ValueConverter"
         mc:Ignorable="d"
         Title="Load Game" Height="600" Width="450"
         WindowStartupLocation="CenterOwner"
@@ -22,7 +22,7 @@
         <valueConverter:NotNullToBooleanConverter x:Key="NotNullToBool"/>
     </base:BaseDialog.Resources>
 
-    <Grid Margin="24">
+    <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -50,135 +50,139 @@
             </Grid>
         </materialDesign:Card>-->
         <TextBlock Grid.Row="0"
+                   Margin="16,0,0,0"
               Text="Load Game"
               Style="{StaticResource MaterialDesignHeadline5TextBlock}"
               VerticalAlignment="Center"/>
 
         <!-- Game List -->
-        <materialDesign:Card Grid.Row="1" 
-                                Margin="0,8,0,8"
-                                materialDesign:ElevationAssist.Elevation="Dp1">
-            <Grid>
-                <!-- Loading Progress Bar -->
-                <ProgressBar IsIndeterminate="True"
+        <Grid Grid.Row="1" 
+                                Margin="0,8,0,8">
+            <!-- Loading Progress Bar -->
+            <ProgressBar IsIndeterminate="True"
                                 Style="{StaticResource MaterialDesignLinearProgressBar}"
                                 VerticalAlignment="Top"
                                 Height="4"
                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolConverter}}"/>
 
-                <!-- Games List -->
-                <ListBox ItemsSource="{Binding Games}"
+            <!-- Games List -->
+            <ListBox ItemsSource="{Binding Games}"
                             SelectedItem="{Binding SelectedGame}"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Auto"
                             Margin="0,4,0,0">
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <materialDesign:Card Margin="8"
-                                                   materialDesign:ElevationAssist.Elevation="Dp1"
-                                                   Background="{DynamicResource MaterialDesignPaper}">
-                                <materialDesign:Card.Style>
-                                    <Style TargetType="materialDesign:Card">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp4"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:Card.Style>
-
-                                <Grid>
-                                    <Grid.InputBindings>
-                                        <MouseBinding MouseAction="LeftDoubleClick" 
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.InputBindings>
+                                <MouseBinding MouseAction="LeftDoubleClick" 
                                                         Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                                    </Grid.InputBindings>
+                            </Grid.InputBindings>
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
 
-                                    <!-- Game Info -->
-                                    <StackPanel Grid.Column="1" 
+                            <!-- Game Info -->
+                            <StackPanel Grid.Column="0" 
                                                    VerticalAlignment="Center"
-                                                   Margin="8,16">
-                                        <TextBlock Text="{Binding Name}"
+                                                   Margin="16,8">
+                                <TextBlock Text="{Binding Name}"
                                                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                                                       FontWeight="Medium"/>
-                                        <!-- Add some more content if neccessary-->
-                                    </StackPanel>
+                                <TextBlock Text="{Binding CreationDate, StringFormat='Created: {0:dd.MM.yyyy HH:mm}'}"
+                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                    Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                                    Opacity="0.7"/>
+                            </StackPanel>
 
-                                    <!-- Action Buttons -->
-                                    <StackPanel Grid.Column="2" 
+                            <!-- Action Buttons -->
+                            <StackPanel Grid.Column="1" 
                                                    Orientation="Horizontal"
                                                    VerticalAlignment="Center"
-                                                   Margin="8,16,16,16">
-                                        <StackPanel.Style>
-                                            <Style TargetType="StackPanel">
-                                                <Setter Property="Visibility" Value="Hidden"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
+                                                   Margin="8,8,8,8">
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
 
-                                        <Button Style="{StaticResource MaterialDesignIconButton}"
+                                <Button Style="{StaticResource MaterialDesignIconButton}"
                                                    ToolTip="Edit Game"
+                                                   Foreground="{DynamicResource MaterialDesign.Brush.Primary.Light.Foreground}"
                                                    Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                    CommandParameter="{Binding}"
                                                    Margin="0,0,8,0">
-                                            <materialDesign:PackIcon Kind="Edit" Width="18" Height="18"/>
-                                        </Button>
+                                    <materialDesign:PackIcon Kind="Edit" Width="18" Height="18"/>
+                                </Button>
 
-                                        <Button Style="{StaticResource MaterialDesignIconButton}"
+                                <Button Style="{StaticResource MaterialDesignIconButton}"
                                                    ToolTip="Delete Game"
                                                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                    CommandParameter="{Binding}"
                                                    Foreground="{DynamicResource MaterialDesignValidationErrorBrush}">
-                                            <materialDesign:PackIcon Kind="Delete" Width="18" Height="18"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </materialDesign:Card>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                                    <materialDesign:PackIcon Kind="Delete" Width="18" Height="18"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
 
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Margin" Value="0"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="Bd" CornerRadius="16"
+                            Background="Transparent" 
+                            SnapsToDevicePixels="true">
+                                        <ContentPresenter />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}"/>
+                                            <Setter TargetName="Bd" Property="Opacity" Value="0.7"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}"/>
+                                            <!--<Setter Property="Foreground" Value="White"/>-->
+                                            <!--<Setter TargetName="Bd" Property="Opacity" Value="0.7"/>-->
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
 
-                <!-- Empty State -->
-                <StackPanel VerticalAlignment="Center" 
+            <!-- Empty State -->
+            <StackPanel VerticalAlignment="Center" 
                                HorizontalAlignment="Center"
                                Visibility="{Binding Games.Count, Converter={StaticResource CountToVis}, ConverterParameter=invert}">
-                    <materialDesign:PackIcon Kind="GamepadVariant" 
+                <materialDesign:PackIcon Kind="GamepadVariant" 
                                                Width="64" Height="64"
-                                               Foreground="{DynamicResource MaterialDesignCheckBoxDisabled}"
+                                               Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                                                HorizontalAlignment="Center"/>
-                    <TextBlock Text="No games found"
+                <TextBlock Text="No games found"
                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                                   HorizontalAlignment="Center"
                                   Margin="0,16,0,8"
-                                  Foreground="{DynamicResource MaterialDesignCheckBoxDisabled}"/>
-                    <TextBlock Text="Load games to see them here"
-                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
-                                  HorizontalAlignment="Center"
-                                  Foreground="{DynamicResource MaterialDesignCheckBoxDisabled}"/>
-                </StackPanel>
-            </Grid>
-        </materialDesign:Card>
+                                  Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
+            </StackPanel>
+        </Grid>
 
         <!-- Action Buttons -->
         <Grid Margin="16" Grid.Row="2">
@@ -189,27 +193,29 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Close Button -->
-            <Button Grid.Column="2"
-                           Style="{StaticResource MaterialDesignOutlinedButton}"
-                           Command="{Binding CloseCommand}"
-                           Margin="0,0,8,0">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Close" Width="18" Height="18" Margin="0,0,8,0"/>
-                    <TextBlock Text="Close"/>
-                </StackPanel>
-            </Button>
-
             <!-- Open Button -->
-            <Button Grid.Column="3"
+            <Button Grid.Column="2"
                            Style="{StaticResource MaterialDesignRaisedButton}"
                            Command="{Binding OpenCommand}"
+                           Margin="0,0,8,0"
                            IsEnabled="{Binding SelectedGame, Converter={StaticResource NotNullToBool}}">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="FolderOpen" Width="18" Height="18" Margin="0,0,8,0"/>
                     <TextBlock Text="Open"/>
                 </StackPanel>
             </Button>
+
+            <!-- Close Button -->
+            <Button Grid.Column="3"
+                           Style="{StaticResource MaterialDesignOutlinedButton}"
+                           Command="{Binding CloseCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Close" Width="18" Height="18" Margin="0,0,8,0"/>
+                    <TextBlock Text="Close"/>
+                </StackPanel>
+            </Button>
+
+
         </Grid>
     </Grid>
 </base:BaseDialog>
