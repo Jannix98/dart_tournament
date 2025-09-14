@@ -12,14 +12,9 @@
         <local:GameNavigationRailVM/>
     </UserControl.DataContext>
     <UserControl.Resources>
-        <Style TargetType="materialDesign:PackIcon">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                         Value="True">
-                    <Setter Property="Foreground"
-                        Value="White" />
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="GameItem" TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesign3.NavigationDrawerPrimaryListBoxItem}">
+            <Setter Property="Width" Value="225"/>
+            <Setter Property="Height" Value="48"/>
         </Style>
     </UserControl.Resources>
     <Grid Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}">
@@ -27,37 +22,26 @@
             <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <!-- surface container -->
-        <ListBox Grid.Column="0" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-            <!--<ListBox.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.Panel>
-                        <ItemsPanelTemplate>
-                            <StackPanel />
-                        </ItemsPanelTemplate>
-                    </GroupStyle.Panel>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="GroupItem">
-                            <Setter Property="Margin" Value="0,10,0,0"/>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-            </ListBox.GroupStyle>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem"
-                               BasedOn="{StaticResource MaterialDesign3.NavigationDrawerPrimaryListBoxItem}">
-                    <Setter Property="materialDesign:NavigationRailAssist.SelectedIcon"
-                                    Value="{Binding SelectedIcon}" />
-                    <Setter Property="materialDesign:NavigationRailAssist.UnselectedIcon"
-                                    Value="{Binding UnselectedIcon}" />
-                </Style>
-            </ListBox.ItemContainerStyle>-->
+
+        <ListBox x:Name="DemoItemsListBox"
+                   Margin="12,16,12,16"
+                   AutomationProperties.Name="DemoPagesListBox"
+                   ItemsSource="{Binding Items}"
+                   SelectedIndex="{Binding SelectedIndex}"
+                   SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}">
             <ListBox.Resources>
+                <Style TargetType="ScrollViewer" BasedOn="{StaticResource MaterialDesignScrollViewer}" />
+                <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
                 <DataTemplate DataType="{x:Type local:GameNavigationItem}">
-                    <TextBlock Text="{Binding Text}"
-                                       FontSize="16" />
+                    <TextBlock Text="{Binding Text}" TextAlignment="Center" FontSize="14" TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
             </ListBox.Resources>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource GameItem}">
+                    <Setter Property="materialDesign:NavigationDrawerAssist.SelectedIcon" Value="GamepadClassic" />
+                    <Setter Property="materialDesign:NavigationDrawerAssist.UnselectedIcon" Value="GamepadClassicOutline" />
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
 
         <!-- Sidebar ListBox -->
