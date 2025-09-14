@@ -55,6 +55,27 @@ namespace DartTournament.WPF.Controls.GameTreeControl.MatchControl
                 typeof(MatchControl),
                 new PropertyMetadata(null));
 
+        public static readonly DependencyProperty Player1IdProperty =
+            DependencyProperty.Register(
+                "Player1Id",
+                typeof(Guid),
+                typeof(MatchControl),
+                new PropertyMetadata(Guid.Empty));
+
+        public static readonly DependencyProperty Player2IdProperty =
+            DependencyProperty.Register(
+                "Player2Id",
+                typeof(Guid),
+                typeof(MatchControl),
+                new PropertyMetadata(Guid.Empty));
+
+        public static readonly DependencyProperty WinnerIdProperty =
+            DependencyProperty.Register(
+                "WinnerId",
+                typeof(Guid),
+                typeof(MatchControl),
+                new PropertyMetadata(Guid.Empty));
+
         public string Player1
         {
             get => (string)GetValue(Player1Property);
@@ -83,6 +104,24 @@ namespace DartTournament.WPF.Controls.GameTreeControl.MatchControl
         {
             get => GetValue(ChooseWinnerCommandParameterProperty);
             set => SetValue(ChooseWinnerCommandParameterProperty, value);
+        }
+
+        public Guid Player1Id
+        {
+            get => (Guid)GetValue(Player1IdProperty);
+            set => SetValue(Player1IdProperty, value);
+        }
+
+        public Guid Player2Id
+        {
+            get => (Guid)GetValue(Player2IdProperty);
+            set => SetValue(Player2IdProperty, value);
+        }
+
+        public Guid WinnerId
+        {
+            get => (Guid)GetValue(WinnerIdProperty);
+            set => SetValue(WinnerIdProperty, value);
         }
 
         public MatchControl()

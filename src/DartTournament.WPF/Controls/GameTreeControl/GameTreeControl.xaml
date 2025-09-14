@@ -15,6 +15,9 @@
                     <ContentControl>
                         <mctrl:MatchControl Player1="{Binding Player1Name}" 
                                             Player2="{Binding Player2Name}" 
+                                            Player1Id="{Binding IdGameEntityA}"
+                                            Player2Id="{Binding IdGameEntityB}"
+                                            WinnerId="{Binding WinnerId}"
                                             MatchRoundIndex="{Binding RoundIndex}"
                                             ChooseWinnerCommand="{Binding DataContext.SelectWinnerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             ChooseWinnerCommandParameter="{Binding}"

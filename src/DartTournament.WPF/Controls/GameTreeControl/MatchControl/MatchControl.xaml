@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.GameTreeControl.MatchControl"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converter="clr-namespace:DartTournament.WPF.ValueConverter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Height="100" Width="200">
     <UserControl.Resources>
+        <converter:PlayerLoserForegroundConverter x:Key="PlayerLoserForegroundConverter"/>
+        <converter:PlayerLoserTextDecorationConverter x:Key="PlayerLoserTextDecorationConverter"/>
+        
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -29,11 +33,37 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <TextBlock Grid.Row="0" Text="{Binding Player1, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                <TextBlock Grid.Row="0" Text="{Binding Player1, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <TextBlock.Foreground>
+                        <MultiBinding Converter="{StaticResource PlayerLoserForegroundConverter}">
+                            <Binding Path="Player1Id" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                            <Binding Path="WinnerId" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                        </MultiBinding>
+                    </TextBlock.Foreground>
+                    <TextBlock.TextDecorations>
+                        <MultiBinding Converter="{StaticResource PlayerLoserTextDecorationConverter}">
+                            <Binding Path="Player1Id" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                            <Binding Path="WinnerId" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                        </MultiBinding>
+                    </TextBlock.TextDecorations>
+                </TextBlock>
 
                 <Separator Grid.Row="1" Margin="0,4" Height="1" Background="Gray"/>
 
-                <TextBlock Grid.Row="2" Text="{Binding Player2, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                <TextBlock Grid.Row="2" Text="{Binding Player2, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <TextBlock.Foreground>
+                        <MultiBinding Converter="{StaticResource PlayerLoserForegroundConverter}">
+                            <Binding Path="Player2Id" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                            <Binding Path="WinnerId" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                        </MultiBinding>
+                    </TextBlock.Foreground>
+                    <TextBlock.TextDecorations>
+                        <MultiBinding Converter="{StaticResource PlayerLoserTextDecorationConverter}">
+                            <Binding Path="Player2Id" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                            <Binding Path="WinnerId" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                        </MultiBinding>
+                    </TextBlock.TextDecorations>
+                </TextBlock>
             </Grid>
             <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button 
