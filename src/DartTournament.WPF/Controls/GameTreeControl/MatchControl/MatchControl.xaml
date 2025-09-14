@@ -36,8 +36,18 @@
                 <TextBlock Grid.Row="2" Text="{Binding Player2, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             </Grid>
             <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <materialDesign:PackIcon
-    Kind="Edit" />
+                <Button 
+                    BorderThickness="0"
+                    Command="{Binding ChooseWinnerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding ChooseWinnerCommandParameter, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    ToolTip="Choose Winner"
+                    materialDesign:ButtonAssist.CornerRadius="8"
+                    Width="38"
+                    Height="38"
+                    Background="{DynamicResource MaterialDesign.Brush.Primary}"
+                    Padding="8">
+                    <materialDesign:PackIcon Kind="Trophy" Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}" />
+                </Button>
             </Grid>
         </Grid>
     </materialDesign:Card>

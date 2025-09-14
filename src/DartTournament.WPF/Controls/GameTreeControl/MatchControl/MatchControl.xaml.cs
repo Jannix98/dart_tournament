@@ -41,6 +41,20 @@ namespace DartTournament.WPF.Controls.GameTreeControl.MatchControl
                 typeof(MatchControl),
                 new PropertyMetadata(-1));
 
+        public static readonly DependencyProperty ChooseWinnerCommandProperty =
+            DependencyProperty.Register(
+                "ChooseWinnerCommand",
+                typeof(ICommand),
+                typeof(MatchControl),
+                new PropertyMetadata(null));
+
+        public static readonly DependencyProperty ChooseWinnerCommandParameterProperty =
+            DependencyProperty.Register(
+                "ChooseWinnerCommandParameter",
+                typeof(object),
+                typeof(MatchControl),
+                new PropertyMetadata(null));
+
         public string Player1
         {
             get => (string)GetValue(Player1Property);
@@ -57,6 +71,18 @@ namespace DartTournament.WPF.Controls.GameTreeControl.MatchControl
         {
             get => (int)GetValue(MatchRoundIndexProperty);
             set => SetValue(MatchRoundIndexProperty, value);
+        }
+
+        public ICommand ChooseWinnerCommand
+        {
+            get => (ICommand)GetValue(ChooseWinnerCommandProperty);
+            set => SetValue(ChooseWinnerCommandProperty, value);
+        }
+
+        public object ChooseWinnerCommandParameter
+        {
+            get => GetValue(ChooseWinnerCommandParameterProperty);
+            set => SetValue(ChooseWinnerCommandParameterProperty, value);
         }
 
         public MatchControl()

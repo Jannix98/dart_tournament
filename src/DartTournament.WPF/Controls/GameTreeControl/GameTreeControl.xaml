@@ -13,12 +13,12 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate >
                     <ContentControl>
-                        <ContentControl.InputBindings>
-                            <MouseBinding Gesture="LeftClick" 
-                                          Command="{Binding DataContext.SelectWinnerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                          CommandParameter="{Binding}" />
-                        </ContentControl.InputBindings>
-                        <mctrl:MatchControl Player1="{Binding Player1Name}" Player2="{Binding Player2Name}" MatchRoundIndex="{Binding RoundIndex}" />
+                        <mctrl:MatchControl Player1="{Binding Player1Name}" 
+                                            Player2="{Binding Player2Name}" 
+                                            MatchRoundIndex="{Binding RoundIndex}"
+                                            ChooseWinnerCommand="{Binding DataContext.SelectWinnerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            ChooseWinnerCommandParameter="{Binding}"
+                                            />                        
                     </ContentControl>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
