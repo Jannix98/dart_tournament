@@ -40,6 +40,7 @@
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource GameItem}">
                     <Setter Property="materialDesign:NavigationDrawerAssist.SelectedIcon" Value="GamepadClassic" />
                     <Setter Property="materialDesign:NavigationDrawerAssist.UnselectedIcon" Value="GamepadClassicOutline" />
+                    <Setter Property="materialDesign:NavigationDrawerAssist.CornerRadius" Value="16" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
