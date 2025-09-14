@@ -81,7 +81,7 @@ namespace DartTournament.Application.Mappers
                 playerBName = playerB?.Name ?? string.Empty;
             }
 
-            return new GameMatchDTO(gameMatch.Id, gameMatch.IdGameEntityA, gameMatch.IdGameEntityB, playerAName, playerBName);
+            return new GameMatchDTO(gameMatch.Id, gameMatch.IdGameEntityA, gameMatch.IdGameEntityB, gameMatch.WinnerId, playerAName, playerBName);
         }
     }
 }

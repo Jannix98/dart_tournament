@@ -31,8 +31,34 @@ namespace DartTournament.WPF.Utils.MatchHandler
 
         public virtual async Task SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
         {
+            // Update the current match with the winner
+            await SetWinnerInCurrentMatch(currentRoundIndex, currentMatchIndex, winnerResult);
+            
             var nextMatch = FindNextMatch(currentRoundIndex, currentMatchIndex, Matches);
-            await SetPlayerInMatch(winnerResult, currentMatchIndex, nextMatch);
+            if (nextMatch != null)
+            {
+                await SetPlayerInMatch(winnerResult, currentMatchIndex, nextMatch);
+            }
+        }
+
+        protected async Task SetWinnerInCurrentMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
+        {
+            var currentMatch = Matches.FirstOrDefault(m => m.RoundIndex == currentRoundIndex && m.MatchIndex == currentMatchIndex);
+            if (currentMatch != null)
+            {
+                currentMatch.WinnerId = winnerResult.WinnerId;
+                
+                GameMatchUpdateDto data = new GameMatchUpdateDto
+                {
+                    Id = currentMatch.Id,
+                    IdGameEntityA = currentMatch.IdGameEntityA,
+                    IdGameEntityB = currentMatch.IdGameEntityB,
+                    WinnerId = winnerResult.WinnerId
+                };
+                Trace.WriteLine($"About to update match {currentMatch.Id} with winner {winnerResult.WinnerId}");
+                await matchPresentationService.UpdateMatchAsync(data);
+                Trace.WriteLine($"Updated match {currentMatch.Id} with winner {winnerResult.WinnerId}");
+            }
         }
 
         protected async Task SetPlayerInMatch(SelectWinnerResult winnerResult, int currentMatchIndex, MatchViewModel nextMatch)
@@ -84,7 +110,8 @@ namespace DartTournament.WPF.Utils.MatchHandler
             {
                 Id = nextMatch.Id,
                 IdGameEntityA = firstId,
-                IdGameEntityB = secondId
+                IdGameEntityB = secondId,
+                WinnerId = nextMatch.WinnerId // Preserve existing winner if any
             };
             Trace.WriteLine($"About to match {nextMatch.Id} with players {firstId} and {secondId}");
             await matchPresentationService.UpdateMatchAsync(data);

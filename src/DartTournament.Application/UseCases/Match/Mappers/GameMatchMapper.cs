@@ -8,7 +8,7 @@ namespace DartTournament.Application.UseCases.Match.Mappers
 
         public static GameMatch ToEntity(GameMatchUpdateDto dto)
         {
-            return new GameMatch(dto.IdGameEntityA, dto.IdGameEntityB)
+            return new GameMatch(dto.IdGameEntityA, dto.IdGameEntityB, dto.WinnerId)
             {
                 Id = dto.Id
             };

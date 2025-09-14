@@ -600,7 +600,7 @@ namespace DartTournament.Application.UnitTest
                     }
                 }
 
-                var match = new GameMatch(player1Id, player2Id);
+                var match = new GameMatch(player1Id, player2Id, Guid.Empty);
                 match.Id = Guid.NewGuid();
                 firstRoundMatches.Add(match);
             }
@@ -618,7 +618,7 @@ namespace DartTournament.Application.UnitTest
 
                 for (int j = 0; j < matchesInThisRound; j++)
                 {
-                    var match = new GameMatch(Guid.Empty, Guid.Empty);
+                    var match = new GameMatch(Guid.Empty, Guid.Empty, Guid.Empty);
                     match.Id = Guid.NewGuid();
                     roundMatches.Add(match);
                 }

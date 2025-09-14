@@ -82,7 +82,7 @@ namespace DartTournament.Application.UseCases.Game.Services
                     id2 = playerIds[i + 1];
                 }
 
-                matches.Add(new GameMatch(id1, id2));
+                matches.Add(new GameMatch(id1, id2, Guid.Empty));
             }
             GameRound firstRound = new GameRound(0, matches);
             firstRound.Matches = matches;
@@ -97,7 +97,7 @@ namespace DartTournament.Application.UseCases.Game.Services
                 for (int j = 0; j < matchesInFirstRound >> i; j++)
                 {
 
-                    matchesInRound.Add(new GameMatch(Guid.Empty, Guid.Empty));
+                    matchesInRound.Add(new GameMatch(Guid.Empty, Guid.Empty, Guid.Empty));
                 }
                 GameRound round = new GameRound(i, matchesInRound);
                 rounds.Add(round);

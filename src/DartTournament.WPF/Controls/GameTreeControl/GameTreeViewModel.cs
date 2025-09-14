@@ -61,8 +61,10 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         public int RoundIndex { get; set; }
         public int MatchIndex { get; set; }
 
+        private Guid _winnerId = Guid.Empty;
+        public Guid WinnerId { get => _winnerId; set => SetProperty(ref _winnerId, value); }
 
-        public MatchViewModel(Guid id, Guid idGameEntityA, Guid idGameEntityB, string player1Name, string player2Name, int roundIndex, int matchIndex)
+        public MatchViewModel(Guid id, Guid idGameEntityA, Guid idGameEntityB, string player1Name, string player2Name, int roundIndex, int matchIndex, Guid winnerId)
         {
             Id = id;
             IdGameEntityA = idGameEntityA;
@@ -71,6 +73,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             Player2Name = player2Name;
             RoundIndex = roundIndex;
             MatchIndex = matchIndex;
+            WinnerId = winnerId;
         }
     }
 }

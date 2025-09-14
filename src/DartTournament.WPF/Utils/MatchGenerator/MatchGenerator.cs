@@ -42,7 +42,8 @@ namespace DartTournament.WPF.Utils.MatchGenerator
                         matchDTO.PlayerAName, 
                         matchDTO.PlayerBName, 
                         roundDTO.RoundNumber, 
-                        roundDTO.Matches.IndexOf(matchDTO));
+                        roundDTO.Matches.IndexOf(matchDTO), 
+                        matchDTO.WinnerId);
                     
                     roundViewModel.Matches.Add(matchViewModel);
                 }

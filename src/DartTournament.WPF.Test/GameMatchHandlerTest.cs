@@ -30,9 +30,9 @@ namespace DartTournament.WPF.Test
         [TestMethod]
         public async Task Test1()
         {
-            var match1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team A", "Team B", 0, 0);
-            var match2 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team C", "Team D", 0, 1);
-            var match3 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 1, 0);
+            var match1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team A", "Team B", 0, 0, Guid.Empty);
+            var match2 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team C", "Team D", 0, 1, Guid.Empty);
+            var match3 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 1, 0, Guid.Empty);
 
             // Arrange
             var matches = new List<MatchViewModel>
@@ -58,9 +58,9 @@ namespace DartTournament.WPF.Test
         [TestMethod]
         public async Task Test2()
         {
-            var match1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team A", "Team B", 0, 0);
-            var match2 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team C", "Team D", 0, 1);
-            var match3 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 1, 0);
+            var match1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team A", "Team B", 0, 0, Guid.Empty);
+            var match2 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "Team C", "Team D", 0, 1, Guid.Empty);
+            var match3 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 1, 0, Guid.Empty);
 
             // Arrange
             var matches = new List<MatchViewModel>
@@ -70,7 +70,7 @@ namespace DartTournament.WPF.Test
                 match3
             };
 
-            var looserMatch1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 0, 0);
+            var looserMatch1 = new MatchViewModel(Guid.NewGuid(), Guid.Empty, Guid.Empty, "", "", 0, 0, Guid.Empty);
             var looserMatches = new List<MatchViewModel>
             {
                 looserMatch1

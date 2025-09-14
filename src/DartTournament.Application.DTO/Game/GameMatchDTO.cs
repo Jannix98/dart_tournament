@@ -11,23 +11,18 @@ namespace DartTournament.Application.DTO.Game
         private Guid _id;
         private Guid _playerAId;
         private Guid _playerBId;
+        private Guid _winnerId;
         private string _playerAName;
         private string _playerBName;
 
-        public GameMatchDTO(Guid id, Guid playerAId, Guid playerBId)
-        {
-            _id = id;
-            _playerAId = playerAId;
-            _playerBId = playerBId;
-        }
-
-        public GameMatchDTO(Guid id, Guid playerAId, Guid playerBId, string playerAName, string playerBName)
+        public GameMatchDTO(Guid id, Guid playerAId, Guid playerBId, Guid winnderId, string playerAName, string playerBName)
         {
             _id = id;
             _playerAId = playerAId;
             _playerBId = playerBId;
             _playerAName = playerAName;
             _playerBName = playerBName;
+            _winnerId = winnderId;
         }
 
         public Guid Id { get => _id; set => _id = value; }
@@ -35,5 +30,6 @@ namespace DartTournament.Application.DTO.Game
         public Guid PlayerBId { get => _playerBId; set => _playerBId = value; }
         public string PlayerAName { get => _playerAName; set => _playerAName = value; }
         public string PlayerBName { get => _playerBName; set => _playerBName = value; }
+        public Guid WinnerId { get => _winnerId; set => _winnerId = value; }
     }
 }
