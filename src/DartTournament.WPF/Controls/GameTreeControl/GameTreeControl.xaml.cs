@@ -17,42 +17,10 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         {
             InitializeComponent();
             _gameMatchHandler = gameMatchHandler;
-            _gameMatchHandler.NotifyMatchChange += GameMatchHandler_NotifyMatchChange;
             this.DataContext = new GameTreeViewModel(gameMatchHandler);
-            Loaded += UserControl_Loaded;
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Find the GameTreePanel in the visual tree
-            Refresh();
-        }
-
-        /// <summary>
-        /// there is a problem with the Data Binding of <see cref="MatchControl"/> and the <see cref="GameTreePanel"/>. Everytime the value
-        /// of some <see cref="MatchViewModel"/> changes, the UI does not render the information. Therefore we have to implement this workaround
-        /// which is refreshing the panel
-        /// </summary>
-        private void Refresh()
-        {
-            Trace.WriteLine("Trigger refresh");
-            //var panel = FindGameTreePanel(this);
-            //if(panel == null)
-            //{
-            //    Trace.WriteLine("Failed to refresh because panel is null");
-            //    return;
-            //}
-
-            //Dispatcher.BeginInvoke(new Action(() =>
-            //{
-            //    this.InvalidateMeasure();
-            //    this.InvalidateArrange();
-            //    this.InvalidateVisual();
-            //    this.UpdateLayout();
-            //}), System.Windows.Threading.DispatcherPriority.Render);
-
-        }
-
+        
         private GameTreePanel FindGameTreePanel(DependencyObject parent)
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
@@ -71,11 +39,6 @@ namespace DartTournament.WPF.Controls.GameTreeControl
         {
             GameTreeControl gameTreeControl = new GameTreeControl(gameMatchHandler);
             return gameTreeControl;
-        }
-
-        private void GameMatchHandler_NotifyMatchChange(object? sender, EventArgs e)
-        {
-            Refresh();
         }
     }
 }
