@@ -15,7 +15,7 @@
             <Setter Property="Margin" Value="4"/>
         </Style>
     </UserControl.Resources>
-    <Border BorderBrush="Gray" Background="Transparent" BorderThickness="1" Padding="4" CornerRadius="10">
+    <materialDesign:Card BorderThickness="1" UniformCornerRadius="8">
         <Grid>
             
             <Grid.ColumnDefinitions>
@@ -40,5 +40,5 @@
     Kind="Edit" />
             </Grid>
         </Grid>
-    </Border>
+    </materialDesign:Card>
 </UserControl>
