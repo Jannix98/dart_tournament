@@ -1,8 +1,4 @@
-using DartTournament.WPF.Controls.TournamentTree;
-using DartTournament.WPF.Models;
-using DartTournament.WPF.Utils.MatchCreator;
 using DartTournament.WPF.Utils.MatchHandler;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;

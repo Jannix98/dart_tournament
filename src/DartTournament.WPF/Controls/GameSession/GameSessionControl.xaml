@@ -35,8 +35,5 @@
                 </TabItem>
             </TabControl>
         </materialDesign:Card>
-        
-        
-
     </Grid>
 </UserControl>
