@@ -18,6 +18,7 @@ namespace DartTournament.WPF.Dialogs.Base
             this.Owner = dialogOwner?.GetApplicationMainWindow();
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             this.WindowStyle = WindowStyle.None;
+            this.ShowInTaskbar = false;
         }
 
 
