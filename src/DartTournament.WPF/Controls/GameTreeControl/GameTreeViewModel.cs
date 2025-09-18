@@ -37,7 +37,7 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             if (result?.DialogResult == false)
                 return;
 
-            await _matchHandler.SetToNextMatch(match.RoundIndex, match.MatchIndex, result);
+            await _matchHandler.SetWinnerToNextMatch(match.RoundIndex, match.MatchIndex, result);
         }
 
         public ICommand SelectWinnerCommand { get; set; }

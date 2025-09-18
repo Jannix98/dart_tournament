@@ -18,8 +18,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
         private List<MatchViewModel> matches;
         protected int _roundCount = 0;
         protected IMatchPresentationService matchPresentationService;
-        protected abstract bool UseWinnerInResult { get;  }
-
+        
         public List<MatchViewModel> Matches { get => matches; set => matches = value; }
 
         protected GameMatchHandlerBase(List<MatchViewModel> matches, IMatchPresentationService matchPresentationService)
@@ -29,72 +28,74 @@ namespace DartTournament.WPF.Utils.MatchHandler
             this.matchPresentationService = matchPresentationService;
         }
 
-        public virtual async Task SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
+        protected async Task SetWinnerToNextMatch(int currentRoundIndex, int currentMatchIndex, SetMatchEntityData matchData)
         {
             // Update the current match with the winner
-            await SetWinnerInCurrentMatch(currentRoundIndex, currentMatchIndex, winnerResult);
-            
+            await SetWinnerInCurrentMatch(currentRoundIndex, currentMatchIndex, matchData);
+            await SetPlayerToNextMatch(currentRoundIndex, currentMatchIndex, matchData);
+        }
+
+        public async Task SetPlayerToNextMatch(int currentRoundIndex, int currentMatchIndex, SetMatchEntityData matchData)
+        {
             var nextMatch = FindNextMatch(currentRoundIndex, currentMatchIndex, Matches);
             if (nextMatch != null)
             {
-                await SetPlayerInMatch(winnerResult, currentMatchIndex, nextMatch);
+                await SetPlayerInMatch(matchData, currentMatchIndex, nextMatch);
             }
         }
 
-        protected async Task SetWinnerInCurrentMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
+        protected async Task SetWinnerInCurrentMatch(int currentRoundIndex, int currentMatchIndex, SetMatchEntityData matchData)
         {
             var currentMatch = Matches.FirstOrDefault(m => m.RoundIndex == currentRoundIndex && m.MatchIndex == currentMatchIndex);
             if (currentMatch != null)
             {
-                currentMatch.WinnerId = winnerResult.WinnerId;
+                currentMatch.WinnerId = matchData.Entityid;
                 
                 GameMatchUpdateDto data = new GameMatchUpdateDto
                 {
                     Id = currentMatch.Id,
                     IdGameEntityA = currentMatch.IdGameEntityA,
                     IdGameEntityB = currentMatch.IdGameEntityB,
-                    WinnerId = winnerResult.WinnerId
+                    WinnerId = matchData.Entityid
                 };
-                Trace.WriteLine($"About to update match {currentMatch.Id} with winner {winnerResult.WinnerId}");
+                Trace.WriteLine($"About to update match {currentMatch.Id} with winner {matchData.Entityid}");
                 await matchPresentationService.UpdateMatchAsync(data);
-                Trace.WriteLine($"Updated match {currentMatch.Id} with winner {winnerResult.WinnerId}");
+                Trace.WriteLine($"Updated match {currentMatch.Id} with winner {matchData.Entityid}");
             }
         }
 
-        protected async Task SetPlayerInMatch(SelectWinnerResult winnerResult, int currentMatchIndex, MatchViewModel nextMatch)
+        private async Task SetPlayerInMatch(SetMatchEntityData matchData, int currentMatchIndex, MatchViewModel nextMatch)
         {
             if (currentMatchIndex % 2 == 0)
             {
-                await UpdateFirstEntityInMatch(winnerResult, nextMatch);
+                await UpdateFirstEntityInMatch(matchData, nextMatch);
             }
             else
             {
-                await UpdateSecondEntityInMatch(winnerResult, nextMatch);
+                await UpdateSecondEntityInMatch(matchData, nextMatch);
             }
 
         }
 
-        private async Task UpdateSecondEntityInMatch(SelectWinnerResult winnerResult, MatchViewModel nextMatch)
+        private async Task UpdateSecondEntityInMatch(SetMatchEntityData matchData, MatchViewModel nextMatch)
         {
             Guid firstId = nextMatch.IdGameEntityA;
-            (Guid secondId, string entityName) = GetEntityFromResult(winnerResult);
-            await UpdateMatch(nextMatch, firstId, secondId);
-            nextMatch.IdGameEntityB = secondId;
-            nextMatch.Player2Name = entityName;
+            await UpdateMatch(nextMatch, firstId, matchData.Entityid);
+            nextMatch.IdGameEntityB = matchData.Entityid;
+            nextMatch.Player2Name = matchData.EntityName;
         }
 
-        private async Task UpdateFirstEntityInMatch(SelectWinnerResult winnerResult, MatchViewModel nextMatch)
+        private async Task UpdateFirstEntityInMatch(SetMatchEntityData matchData, MatchViewModel nextMatch)
         {
-            (Guid firstId, string entityName) = GetEntityFromResult(winnerResult);
             Guid secondId = nextMatch.IdGameEntityB;
-            await UpdateMatch(nextMatch, firstId, secondId);
-            nextMatch.IdGameEntityA = firstId;
-            nextMatch.Player1Name = entityName;
+            await UpdateMatch(nextMatch, matchData.Entityid, secondId);
+            nextMatch.IdGameEntityA = matchData.Entityid;
+            nextMatch.Player1Name = matchData.EntityName;
         }
 
-        private (Guid entityId, string entityName) GetEntityFromResult(SelectWinnerResult winnerResult)
+        protected (Guid entityId, string entityName) GetEntityFromResult(SelectWinnerResult winnerResult, bool useWinnerInResult)
         {
-            if (UseWinnerInResult)
+            if (useWinnerInResult)
             {
                 return (winnerResult.WinnerId, winnerResult.WinnerName);
             }
@@ -119,6 +120,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
         }
 
         protected abstract MatchViewModel FindNextMatch(int currentRoundIndex, int currentMatchIndex, List<MatchViewModel> matches);
+        public abstract Task SetWinnerToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult);
 
         protected int GetNextIndex(int inputIndex)
         {

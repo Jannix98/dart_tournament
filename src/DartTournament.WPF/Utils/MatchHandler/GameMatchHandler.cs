@@ -14,8 +14,6 @@ namespace DartTournament.WPF.Utils.MatchHandler
     {
         LooserGameMatchHandler _looserGameMatchHandler;
 
-        protected override bool UseWinnerInResult => true;
-
         /// <summary>
         /// this events notifies when a match has changed
         /// </summary>
@@ -27,14 +25,23 @@ namespace DartTournament.WPF.Utils.MatchHandler
             _looserGameMatchHandler = looserMatchHandler;
         }
 
-        public override async Task SetToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
+        public override async Task SetWinnerToNextMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
         {
-            await base.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
+            (Guid entityId, string entityName) = GetEntityFromResult(winnerResult, true);
+            SetMatchEntityData winnerMatchData = new SetMatchEntityData(entityId, entityName);
+            await base.SetWinnerToNextMatch(currentRoundIndex, currentMatchIndex, winnerMatchData);
             if (currentRoundIndex == 0 && _looserGameMatchHandler != null)
             {
-                await _looserGameMatchHandler.AddEliminatedPlayer(currentRoundIndex, currentMatchIndex, winnerResult);
+                await SetLooserToLooserMatch(currentRoundIndex, currentMatchIndex, winnerResult);
             }
             NotifyMatchChange?.Invoke(null, null);
+        }
+
+        private async Task SetLooserToLooserMatch(int currentRoundIndex, int currentMatchIndex, SelectWinnerResult winnerResult)
+        {
+            (Guid entityId, string entityName) = GetEntityFromResult(winnerResult, false);
+            SetMatchEntityData looserMatchData = new SetMatchEntityData(entityId, entityName);
+            await _looserGameMatchHandler.SetPlayerToNextMatch(currentRoundIndex, currentMatchIndex, looserMatchData);
         }
 
         protected override MatchViewModel FindNextMatch(int currentRoundIndex, int currentMatchIndex, List<MatchViewModel> matches)

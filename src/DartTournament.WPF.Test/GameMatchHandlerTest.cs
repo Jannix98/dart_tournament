@@ -48,8 +48,8 @@ namespace DartTournament.WPF.Test
             SelectWinnerResult winnerResult1 = new SelectWinnerResult(Guid.Empty, "Team B", Guid.Empty, "Team A", true);
             SelectWinnerResult winnerResult2 = new SelectWinnerResult(Guid.Empty, "Team C", Guid.Empty, "Team D", true);
 
-            await gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
-            await gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
+            await gameMatchHandler.SetWinnerToNextMatch(0, 0, winnerResult1);
+            await gameMatchHandler.SetWinnerToNextMatch(0, 1, winnerResult2);
 
             Assert.AreEqual("Team B", match3.Player1Name);
             Assert.AreEqual("Team C", match3.Player2Name);
@@ -82,8 +82,8 @@ namespace DartTournament.WPF.Test
             SelectWinnerResult winnerResult1 = new SelectWinnerResult(Guid.Empty, "Team B", Guid.Empty, "Team A", true);
             SelectWinnerResult winnerResult2 = new SelectWinnerResult(Guid.Empty, "Team C", Guid.Empty, "Team D", true);
 
-            await gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
-            await gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
+            await gameMatchHandler.SetWinnerToNextMatch(0, 0, winnerResult1);
+            await gameMatchHandler.SetWinnerToNextMatch(0, 1, winnerResult2);
 
             Assert.AreEqual("Team B", match3.Player1Name);
             Assert.AreEqual("Team C", match3.Player2Name);
@@ -128,11 +128,11 @@ namespace DartTournament.WPF.Test
             // Act: Process main tournament matches
             // Player B beats Player A (Player A goes to loser bracket)
             SelectWinnerResult winnerResult1 = new SelectWinnerResult(playerBId, "Player B", playerAId, "Player A", true);
-            await gameMatchHandler.SetToNextMatch(0, 0, winnerResult1);
+            await gameMatchHandler.SetWinnerToNextMatch(0, 0, winnerResult1);
 
             // Player C beats Player D (Player D goes to loser bracket)
             SelectWinnerResult winnerResult2 = new SelectWinnerResult(playerCId, "Player C", playerDId, "Player D", true);
-            await gameMatchHandler.SetToNextMatch(0, 1, winnerResult2);
+            await gameMatchHandler.SetWinnerToNextMatch(0, 1, winnerResult2);
 
             // Assert: Check main tournament progression
             Assert.AreEqual("Player B", mainMatch3.Player1Name);
@@ -149,7 +149,7 @@ namespace DartTournament.WPF.Test
             // Act: Process loser bracket match
             // Player A beats Player D in loser bracket (Player D is eliminated completely)
             SelectWinnerResult looserResult = new SelectWinnerResult(playerAId, "Player A", playerDId, "Player D", true);
-            await looserMatchHandler.SetToNextMatch(0, 0, looserResult);
+            await looserMatchHandler.SetWinnerToNextMatch(0, 0, looserResult);
 
             // Assert: Check loser bracket progression - is set in the correct match
             Assert.AreEqual(playerAId, looserMatch1.WinnerId);
@@ -180,7 +180,7 @@ namespace DartTournament.WPF.Test
 
             // Act: Alice beats Bob in main tournament
             SelectWinnerResult mainTournamentResult = new SelectWinnerResult(playerAId, "Alice", playerBId, "Bob", true);
-            await gameMatchHandler.SetToNextMatch(0, 0, mainTournamentResult);
+            await gameMatchHandler.SetWinnerToNextMatch(0, 0, mainTournamentResult);
 
             // Assert: Bob (the eliminated player) should be placed in the loser bracket as a participant
             // Before the fix: the LooserGameMatchHandler would incorrectly use UseWinnerInResult=false 
