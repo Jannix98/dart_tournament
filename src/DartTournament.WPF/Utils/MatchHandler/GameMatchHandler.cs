@@ -32,7 +32,7 @@ namespace DartTournament.WPF.Utils.MatchHandler
             await base.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
             if (currentRoundIndex == 0 && _looserGameMatchHandler != null)
             {
-                await _looserGameMatchHandler.SetToNextMatch(currentRoundIndex, currentMatchIndex, winnerResult);
+                await _looserGameMatchHandler.AddEliminatedPlayer(currentRoundIndex, currentMatchIndex, winnerResult);
             }
             NotifyMatchChange?.Invoke(null, null);
         }

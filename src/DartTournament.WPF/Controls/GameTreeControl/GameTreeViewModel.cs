@@ -52,8 +52,13 @@ namespace DartTournament.WPF.Controls.GameTreeControl
     public class MatchViewModel : NotifyPropertyChanged
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
-        public Guid IdGameEntityA { get; set; }
-        public Guid IdGameEntityB { get; set; }
+        
+        private Guid _idGameEntityA;
+        public Guid IdGameEntityA { get => _idGameEntityA; set => SetProperty(ref _idGameEntityA, value); }
+        
+        private Guid _idGameEntityB;
+        public Guid IdGameEntityB { get => _idGameEntityB; set => SetProperty(ref _idGameEntityB, value); }
+        
         private string _team1Name = string.Empty;
         public string Player1Name { get => _team1Name; set => SetProperty(ref _team1Name, value); }
         private string _team2Name = string.Empty;
