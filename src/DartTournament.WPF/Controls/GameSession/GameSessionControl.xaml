@@ -18,7 +18,7 @@
 
         <materialDesign:Card Margin="0, 48, 48,0" 
                              BorderThickness="1"
-                             UniformCornerRadius="20"
+                             UniformCornerRadius="8"
                              Height="50"
                              Width="250" 
                              VerticalAlignment="Top" 
