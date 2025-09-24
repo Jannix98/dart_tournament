@@ -17,7 +17,7 @@
             <Setter Property="Height" Value="48"/>
         </Style>
     </UserControl.Resources>
-    <Grid VerticalAlignment="Stretch" Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}">
+    <Grid VerticalAlignment="Stretch" Background="{DynamicResource MaterialDesignCardBackground}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />
@@ -48,7 +48,7 @@
         <!-- Sidebar ListBox -->
 
         <!-- Content Display -->
-        <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignCardBackground}" Margin="2, 2, 0 , 0">
+        <Grid Grid.Column="1" Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}" Margin="2, 2, 0 , 0">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="1" Direction="180" Color="Black" Opacity="0.4" BlurRadius="4"/>
             </Grid.Effect>

@@ -10,7 +10,7 @@
              d:DesignHeight="62" d:DesignWidth="800" d:Background="White">
     <UserControl.Resources>
     </UserControl.Resources>
-    <Grid Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}">
+    <Grid Background="{DynamicResource MaterialDesignCardBackground}">
         <Grid  >
             <!-- Surface Container-->
             <Grid.ColumnDefinitions>
@@ -27,15 +27,15 @@
                RenderOptions.BitmapScalingMode="HighQuality"/>
             </Grid>
 
-            <ToolBarTray Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
-                <ToolBar ToolBarTray.IsLocked="True" Margin="0">
+            <ToolBarTray Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Background="Transparent">
+                <ToolBar ToolBarTray.IsLocked="True" Margin="0" Background="Transparent">
                     <Button Click="AddGameBtn_Click"  Content="{materialDesign:PackIcon Kind=Plus}"/>
                     <Button Click="LoadGamesBtn_Click" Content="{materialDesign:PackIcon Kind=FolderOpen}"/>
                     <Button Click="PeopleBtn_Click" Content="{materialDesign:PackIcon Kind=Person}"/>
                 </ToolBar>
             </ToolBarTray>
-            <ToolBarTray Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
-                <ToolBar ToolBarTray.IsLocked="True">
+            <ToolBarTray Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Background="Transparent">
+                <ToolBar ToolBarTray.IsLocked="True" Background="Transparent">
                     <Button Click="SettingsBtn_Click" Content="{materialDesign:PackIcon Kind=Settings}" HorizontalAlignment="Right"/>
                 </ToolBar>
             </ToolBarTray>
