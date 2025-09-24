@@ -7,7 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:resx="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="62" d:DesignWidth="400" d:Background="White">
+             d:DesignHeight="62" d:DesignWidth="800" d:Background="White">
     <UserControl.Resources>
         <Style x:Key="ToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -22,12 +22,21 @@
             <Setter Property="Height" Value="18"/>
         </Style>
     </UserControl.Resources>
-    <Grid Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}"> <!-- Surface Container-->
+    <Grid Margin="0, 8, 0,0" Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}"> <!-- Surface Container-->
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+        <Grid Grid.Column="0" HorizontalAlignment="Center">
+            <Image Source="pack://application:,,,/DartTournament.WPF;component/Assets/Icons/fackel.png" 
+                   Width="120" 
+                   Height="46" 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+        </Grid>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left">
             <Button x:Name="AddGameBtn" Style="{StaticResource ToolbarButtonStyle}" Click="AddGameBtn_Click">
                 <materialDesign:PackIcon
                     Kind="Plus"/>
@@ -43,7 +52,7 @@
             
 
         </StackPanel>
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
             <Button x:Name="SettingsBtn" Style="{StaticResource ToolbarButtonStyle}" Margin="0,0,5,0" Click="SettingsBtn_Click">
                 <materialDesign:PackIcon
                     Kind="Settings"/>

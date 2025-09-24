@@ -22,6 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Icons\fackel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Controls\RoundControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
