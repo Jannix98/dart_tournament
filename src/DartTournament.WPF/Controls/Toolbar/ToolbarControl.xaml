@@ -36,6 +36,7 @@
             </ToolBarTray>
             <ToolBarTray Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Background="Transparent">
                 <ToolBar ToolBarTray.IsLocked="True" Background="Transparent">
+                    <ToggleButton x:Name="themeToggleButton" Checked="themeToggleButton_Checked" Unchecked="themeToggleButton_Unchecked"/>
                     <Button Click="SettingsBtn_Click" Content="{materialDesign:PackIcon Kind=Settings}" HorizontalAlignment="Right"/>
                 </ToolBar>
             </ToolBarTray>

@@ -29,12 +29,15 @@ namespace DartTournament.WPF.Controls.Toolbar
         GameLoader _gameLoader;
         PlayerManager _playerManager;
 
+        bool _isLightMode = true;
+
         public ToolbarControl()
         {
             InitializeComponent();
             _gameCreator = ServiceManager.Instance.GetRequiredService<GameCreator>();
             _playerManager = new PlayerManager();
             _gameLoader = ServiceManager.Instance.GetRequiredService<GameLoader>();
+            themeToggleButton.IsChecked = _isLightMode;
         }
 
 
@@ -56,6 +59,27 @@ namespace DartTournament.WPF.Controls.Toolbar
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void themeToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            SetTheme();
+        }
+
+        private void SetTheme()
+        {
+            _isLightMode = themeToggleButton.IsChecked == true;
+
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+
+            theme.SetBaseTheme(_isLightMode ? BaseTheme.Light : BaseTheme.Dark);
+            paletteHelper.SetTheme(theme);
+        }
+
+        private void themeToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SetTheme();
         }
     }
 }
