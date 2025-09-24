@@ -9,54 +9,42 @@
              mc:Ignorable="d" 
              d:DesignHeight="62" d:DesignWidth="800" d:Background="White">
     <UserControl.Resources>
-        <Style x:Key="ToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#6750A4"/>
-            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
-            <Setter Property="Margin" Value="24,6,0,6"/>
-            <Setter Property="IsEnabled" Value="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
-        </Style>
-        <Style TargetType="materialDesign:PackIcon">
-            <Setter Property="Width" Value="18"/>
-            <Setter Property="Height" Value="18"/>
-        </Style>
     </UserControl.Resources>
-    <Grid Margin="0, 8, 0,0" Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}"> <!-- Surface Container-->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" HorizontalAlignment="Center">
-            <Image Source="pack://application:,,,/DartTournament.WPF;component/Assets/Icons/fackel.png" 
-                   Width="120" 
-                   Height="46" 
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   RenderOptions.BitmapScalingMode="HighQuality"/>
-        </Grid>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left">
-            <Button x:Name="AddGameBtn" Style="{StaticResource ToolbarButtonStyle}" Click="AddGameBtn_Click">
-                <materialDesign:PackIcon
-                    Kind="Plus"/>
-            </Button>
-            <Button x:Name="LoadGamesBtn" Style="{StaticResource ToolbarButtonStyle}" Click="LoadGamesBtn_Click">
-                <materialDesign:PackIcon
-                    Kind="FolderOpen"/>
-            </Button>
-            <Button x:Name="PeopleBtn" Style="{StaticResource ToolbarButtonStyle}" Click="PeopleBtn_Click">
-                <materialDesign:PackIcon
-                    Kind="Person"/>
-            </Button>
-            
+    <Grid Background="{DynamicResource MaterialDesign.Brush.ToolBar.Background}">
+        <Grid  >
+            <!-- Surface Container-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" HorizontalAlignment="Center" Margin="0, 8, 0,8">
+                <Image Source="pack://application:,,,/DartTournament.WPF;component/Assets/Icons/fackel.png" 
+               Width="120" 
+               Height="46" 
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality"/>
+            </Grid>
 
-        </StackPanel>
-        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button x:Name="SettingsBtn" Style="{StaticResource ToolbarButtonStyle}" Margin="0,0,5,0" Click="SettingsBtn_Click">
-                <materialDesign:PackIcon
-                    Kind="Settings"/>
-            </Button>
-        </StackPanel>
+            <ToolBarTray Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                <ToolBar ToolBarTray.IsLocked="True" Margin="0">
+                    <Button Click="AddGameBtn_Click"  Content="{materialDesign:PackIcon Kind=Plus}"/>
+                    <Button Click="LoadGamesBtn_Click" Content="{materialDesign:PackIcon Kind=FolderOpen}"/>
+                    <Button Click="PeopleBtn_Click" Content="{materialDesign:PackIcon Kind=Person}"/>
+                </ToolBar>
+            </ToolBarTray>
+            <ToolBarTray Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
+                <ToolBar ToolBarTray.IsLocked="True">
+                    <Button Click="SettingsBtn_Click" Content="{materialDesign:PackIcon Kind=Settings}" HorizontalAlignment="Right"/>
+                </ToolBar>
+            </ToolBarTray>
+            <!--<StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="SettingsBtn" Style="{StaticResource ToolbarButtonStyle}" Margin="0,0,5,0" Click="SettingsBtn_Click">
+                    <materialDesign:PackIcon
+                Kind="Settings"/>
+                </Button>
+            </StackPanel>-->
+        </Grid>
     </Grid>
 </UserControl>
