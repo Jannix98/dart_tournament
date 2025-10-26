@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.GameSession"
              xmlns:converters="clr-namespace:DartTournament.WPF.ValueConverter"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -27,10 +28,10 @@
             <TabControl Width="250"
             x:Name="TabControl" 
             SelectedIndex="{Binding SelectedTabIndex}">
-                <TabItem x:Name="GameTab" Header="Game" Width="125">
+                <TabItem x:Name="GameTab" Header="{x:Static resources:Labels.MainGame}" Width="125">
                     <!-- Tab content is now handled by the ContentPresenter below -->
                 </TabItem>
-                <TabItem x:Name="LooserRoundTab" Header="Looser Round" Width="125">
+                <TabItem x:Name="LooserRoundTab" Header="{x:Static resources:Labels.LooserGame}" Width="125">
                     <!-- Tab content is now handled by the ContentPresenter below -->
                 </TabItem>
             </TabControl>

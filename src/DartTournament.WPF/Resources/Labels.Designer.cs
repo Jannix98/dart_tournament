@@ -61,11 +61,137 @@ namespace DartTournament.WPF.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add &quot;Looser Round&quot;:.
+        /// </summary>
+        public static string AddLooserRound {
+            get {
+                return ResourceManager.GetString("AddLooserRound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose Winner.
+        /// </summary>
+        public static string ChooseWinner {
+            get {
+                return ResourceManager.GetString("ChooseWinner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created: {0:dd.MM.yyyy HH:mm}.
+        /// </summary>
+        public static string CreatedDateFormat {
+            get {
+                return ResourceManager.GetString("CreatedDateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Game.
+        /// </summary>
+        public static string CreateGame {
+            get {
+                return ResourceManager.GetString("CreateGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Tournament Session.
+        /// </summary>
+        public static string CreateTournamentSession {
+            get {
+                return ResourceManager.GetString("CreateTournamentSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DeleteTooltip {
+            get {
+                return ResourceManager.GetString("DeleteTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string EditTooltip {
+            get {
+                return ResourceManager.GetString("EditTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Name:.
+        /// </summary>
+        public static string EnterName {
+            get {
+                return ResourceManager.GetString("EnterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load Game.
         /// </summary>
         public static string LoadGame {
             get {
                 return ResourceManager.GetString("LoadGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Looser-Round.
+        /// </summary>
+        public static string LooserGame {
+            get {
+                return ResourceManager.GetString("LooserGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maingame.
+        /// </summary>
+        public static string MainGame {
+            get {
+                return ResourceManager.GetString("MainGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Darttounament.
+        /// </summary>
+        public static string MainWindow {
+            get {
+                return ResourceManager.GetString("MainWindow", resourceCulture);
             }
         }
         
@@ -79,11 +205,83 @@ namespace DartTournament.WPF.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No games found.
+        /// </summary>
+        public static string NoGamesFound {
+            get {
+                return ResourceManager.GetString("NoGamesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Management.
+        /// </summary>
+        public static string PlayerManagement {
+            get {
+                return ResourceManager.GetString("PlayerManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Players.
+        /// </summary>
+        public static string SelectedPlayers {
+            get {
+                return ResourceManager.GetString("SelectedPlayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Winner.
+        /// </summary>
+        public static string SelectWinnerDialog {
+            get {
+                return ResourceManager.GetString("SelectWinnerDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team Overview.
         /// </summary>
         public static string TeamOverview {
             get {
                 return ResourceManager.GetString("TeamOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Players:.
+        /// </summary>
+        public static string TotalPlayers {
+            get {
+                return ResourceManager.GetString("TotalPlayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of Game.
+        /// </summary>
+        public static string TournamentName {
+            get {
+                return ResourceManager.GetString("TournamentName", resourceCulture);
             }
         }
     }

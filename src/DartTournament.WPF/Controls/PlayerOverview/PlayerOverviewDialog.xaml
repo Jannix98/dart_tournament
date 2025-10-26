@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.PlayerOverview"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="900">
     <materialDesign:Card MaxWidth="900" 
@@ -24,7 +25,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" 
-                          Text="Player Management" 
+                          Text="{x:Static resources:Labels.PlayerManagement}" 
                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                           Margin="24,16"/>
 
@@ -44,7 +45,7 @@
                        Orientation="Horizontal" 
                        HorizontalAlignment="Right" 
                        Margin="16">
-                <Button Content="Close" 
+                <Button Content="{x:Static resources:Labels.Close}" 
                        Margin="8,0" 
                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                        Style="{StaticResource MaterialDesignFlatButton}"/>

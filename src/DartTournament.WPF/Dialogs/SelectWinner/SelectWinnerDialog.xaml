@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:DartTournament.WPF.Dialogs.SelectWinner"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dialogManagement="clr-namespace:DartTournament.WPF.Dialogs.Base"
+        xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
         mc:Ignorable="d"
         ShowInTaskbar="False"
-        Title="SelectWinnerDialog" Height="150" Width="400">
+        Title="{x:Static resources:Labels.SelectWinnerDialog}" Height="150" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -22,6 +23,6 @@
         <Button x:Name="btn1" Click="btn1_Click"  Grid.Column="0" Margin="20"></Button>
         <Button x:Name="btn2" Click="btn2_Click" Grid.Column="1" Margin="20"></Button>
 
-        <Button Grid.Column="1" Grid.Row="1" Content="Cancel" Margin="80, 0, 20, 20" Click="Button_Click" Style="{DynamicResource MaterialDesignOutlinedButton}"/> 
+        <Button Grid.Column="1" Grid.Row="1" Content="{x:Static resources:Labels.Cancel}" Width="100" Margin="80, 0, 10, 20" Click="Button_Click" Style="{DynamicResource MaterialDesignOutlinedButton}"/> 
     </Grid>
 </dialogManagement:BaseDialog>

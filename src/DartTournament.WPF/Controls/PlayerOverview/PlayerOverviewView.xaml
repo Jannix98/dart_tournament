@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.PlayerOverview"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:valueConverter="clr-namespace:DartTournament.WPF.ValueConverter"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
@@ -56,7 +57,7 @@
                                     Style="{StaticResource MaterialDesignFlatLightButton}"
                                     Visibility="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Command="{Binding DataContext.EditPlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    ToolTip="MaterialDesignIconButton">
+                                    ToolTip="{x:Static resources:Labels.EditTooltip}">
                                 <materialDesign:PackIcon
                                     Kind="Edit" />
                             </Button>
@@ -64,7 +65,7 @@
                                     Style="{StaticResource MaterialDesignFlatLightButton}"
                                     Visibility="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Command="{Binding DataContext.DeletePlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    ToolTip="MaterialDesignIconButton">
+                                    ToolTip="{x:Static resources:Labels.DeleteTooltip}">
                                 <materialDesign:PackIcon
                                     Kind="Delete" />
                             </Button>
@@ -94,7 +95,7 @@
                     <TextBox Grid.Column="0" Text="{Binding SelectedPlayer.Name}" FontSize="16" IsEnabled="{Binding EditIsEnabled}" />
                 </Grid>
 
-                <Button Margin="24, 0, 24, 24" Content="Speichern" VerticalAlignment="Bottom" Command="{Binding SavePlayerCommand}"/>
+                <Button Margin="24, 0, 24, 24" Content="{x:Static resources:Labels.Save}" VerticalAlignment="Bottom" Command="{Binding SavePlayerCommand}"/>
             </Grid>
         </Grid>
     </Grid>

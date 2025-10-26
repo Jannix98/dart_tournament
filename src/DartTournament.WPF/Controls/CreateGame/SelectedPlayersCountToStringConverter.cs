@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using DartTournament.WPF.Models.Enums;
+using DartTournament.WPF.Resources;
 
 namespace DartTournament.WPF.Controls.CreateGame
 {
@@ -10,7 +11,7 @@ namespace DartTournament.WPF.Controls.CreateGame
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values.Length < 2)
-                return "Select Players";
+                return Labels.SelectedPlayers; 
 
             int selected = values[0] is int s ? s : 0;
             int total = 0;
@@ -24,7 +25,7 @@ namespace DartTournament.WPF.Controls.CreateGame
                     total = (int)tournamentPlayerCount;
             }
 
-            return $"Select Players ({selected}/{total})";
+            return $"{Labels.SelectedPlayers} ({selected}/{total})";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

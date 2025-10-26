@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.GameTreeControl.MatchControl"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converter="clr-namespace:DartTournament.WPF.ValueConverter"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Height="100" Width="200">
     <UserControl.Resources>
@@ -70,7 +71,7 @@
                     BorderThickness="0"
                     Command="{Binding ChooseWinnerCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                     CommandParameter="{Binding ChooseWinnerCommandParameter, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                    ToolTip="Choose Winner"
+                    ToolTip="{x:Static resources:Labels.ChooseWinner}"
                     materialDesign:ButtonAssist.CornerRadius="8"
                     Width="38"
                     Height="38"

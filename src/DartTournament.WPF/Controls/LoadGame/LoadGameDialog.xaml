@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.LoadGame"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:valueConverter="clr-namespace:DartTournament.WPF.ValueConverter"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="450">
     
@@ -40,7 +41,7 @@
                 
                 <TextBlock Grid.Column="0"
                           Margin="16,16,0,16"
-                          Text="Load Game"
+                          Text="{x:Static resources:Labels.LoadGame}"
                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                           VerticalAlignment="Center"/>
                 
@@ -89,7 +90,7 @@
                                     <TextBlock Text="{Binding Name}"
                                               Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                                               FontWeight="Medium"/>
-                                    <TextBlock Text="{Binding CreationDate, StringFormat='Created: {0:dd.MM.yyyy HH:mm}'}"
+                                    <TextBlock Text="{Binding CreationDate, StringFormat={x:Static resources:Labels.CreatedDateFormat}}"
                                               Style="{StaticResource MaterialDesignCaptionTextBlock}"
                                               Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                                               Opacity="0.7"/>
@@ -133,7 +134,7 @@
                                             Width="64" Height="64"
                                             Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                                             HorizontalAlignment="Center"/>
-                    <TextBlock Text="No games found"
+                    <TextBlock Text="{x:Static resources:Labels.NoGamesFound}"
                               Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                               HorizontalAlignment="Center"
                               Margin="0,16,0,8"
@@ -157,7 +158,7 @@
                        IsEnabled="{Binding SelectedGame, Converter={StaticResource NotNullToBool}}">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="FolderOpen" Width="18" Height="18" Margin="0,0,8,0"/>
-                        <TextBlock Text="Open"/>
+                        <TextBlock Text="{x:Static resources:Labels.Open}"/>
                     </StackPanel>
                 </Button>
 
@@ -167,7 +168,7 @@
                        Command="{Binding CloseCommand}">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Close" Width="18" Height="18" Margin="0,0,8,0"/>
-                        <TextBlock Text="Close"/>
+                        <TextBlock Text="{x:Static resources:Labels.Close}"/>
                     </StackPanel>
                 </Button>
             </Grid>

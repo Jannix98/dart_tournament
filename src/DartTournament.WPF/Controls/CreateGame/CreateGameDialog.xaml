@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.CreateGame"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:valueConverter="clr-namespace:DartTournament.WPF.ValueConverter"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="450">
 
@@ -40,7 +41,7 @@
 
                 <TextBlock Grid.Column="0"
                           Margin="16,16,0,16"
-                          Text="Create Tournament Session"
+                          Text="{x:Static resources:Labels.CreateTournamentSession}"
                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                           VerticalAlignment="Center"/>
 
@@ -65,10 +66,10 @@
                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolConverter}}"/>
 
                     <!-- Enter Name -->
-                    <TextBlock Text="Enter Name:" 
+                    <TextBlock Text="{x:Static resources:Labels.EnterName}" 
                               FontWeight="SemiBold" 
                               Margin="0,0,0,8"/>
-                    <TextBox materialDesign:HintAssist.Hint="Tournament Name"
+                    <TextBox materialDesign:HintAssist.Hint="{x:Static resources:Labels.TournamentName}"
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
                             Text="{Binding TournamentName}"
                             Margin="0,0,0,16"/>
@@ -77,7 +78,7 @@
                     <StackPanel Orientation="Horizontal" 
                                VerticalAlignment="Center"
                                Margin="0,0,0,16">
-                        <TextBlock Text="Add Looser Round:" 
+                        <TextBlock Text="{x:Static resources:Labels.AddLooserRound}" 
                                   FontWeight="SemiBold" 
                                   VerticalAlignment="Center"/>
                         <ToggleButton Margin="12,0,0,0"
@@ -86,7 +87,7 @@
                     </StackPanel>
 
                     <!-- Total Players -->
-                    <TextBlock Text="Total Players:" 
+                    <TextBlock Text="{x:Static resources:Labels.TotalPlayers}" 
                               FontWeight="SemiBold" 
                               Margin="0,0,0,8"/>
                     <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
@@ -152,7 +153,7 @@
                 <!-- Create Session Button -->
                 <Button Grid.Column="1"
                        materialDesign:ButtonAssist.CornerRadius="6"
-                       Content="Create Session"
+                       Content="{x:Static resources:Labels.CreateGame}"
                        FontWeight="Bold"
                        Style="{StaticResource MaterialDesignRaisedButton}"
                        Command="{Binding CreateSessionCommand}"
@@ -161,7 +162,7 @@
                 <!-- Cancel Button -->
                 <Button Grid.Column="2"
                        materialDesign:ButtonAssist.CornerRadius="6"
-                       Content="Cancel"
+                       Content="{x:Static resources:Labels.Cancel}"
                        FontWeight="Bold"
                        Style="{StaticResource MaterialDesignOutlinedButton}"
                        Command="{Binding CancelCommand}"/>
