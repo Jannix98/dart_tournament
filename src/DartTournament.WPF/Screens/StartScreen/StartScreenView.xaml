@@ -13,12 +13,14 @@
                  d:Background="White"
                  d:DesignHeight="450"
                  d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <toolbar:ToolbarControl Grid.Row="0"/>
-        <gameNav:GameNavigationRail Grid.Row="1"/>
-    </Grid>
+    <materialDesign:DialogHost Identifier="RootDialogHost">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <toolbar:ToolbarControl Grid.Row="0"/>
+            <gameNav:GameNavigationRail Grid.Row="1"/>
+        </Grid>
+    </materialDesign:DialogHost>
 </base:ScreenBase>

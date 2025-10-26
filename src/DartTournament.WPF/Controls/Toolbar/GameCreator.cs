@@ -1,17 +1,11 @@
 ﻿using DartTournament.Application.DTO.Game;
 using DartTournament.Presentation.Base.Services;
-using DartTournament.WPF.Controls.Game.GameMenue;
+using DartTournament.WPF.Controls.CreateGame;
 using DartTournament.WPF.Controls.GameNavigationRail;
 using DartTournament.WPF.Controls.GameSession;
-using DartTournament.WPF.Dialogs.Base;
-using DartTournament.WPF.Dialogs.CreateGame;
-using DartTournament.WPF.Screens.StartScreen;
 using DartTournament.WPF.Utils;
 using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DartTournament.WPF.Controls.Toolbar
@@ -27,32 +21,41 @@ namespace DartTournament.WPF.Controls.Toolbar
 
         public async void CreateGame()
         {
-            CreateGameViewResult result;
-            bool flowControl = ShowPlayerSelectionDialog(out result);
-            if (!flowControl)
+            var result = await ShowPlayerSelectionDialogAsync();
+            if (result == null || !result.DialogResult)
             {
                 return;
             }
 
-            CreateGameDTO createGame = new CreateGameDTO(result.TournamentName, result.SelectedPlayers.Count, result.SelectedPlayers.Select(x => x.Id).ToList(), result.AddLooserRound);
+            CreateGameDTO createGame = new CreateGameDTO(
+                result.TournamentName, 
+                result.SelectedPlayers.Count, 
+                result.SelectedPlayers.Select(x => x.Id).ToList(), 
+                result.AdvancedMode);
+                
             var guid = await _gamePresentationService.CreateGame(createGame);
             var game = await _gamePresentationService.GetGame(guid);
 
-            //var control = new GameSessionControl(result.TournamentName, result.AddLooserRound, result.SelectedPlayers);
             var control = new GameSessionControl(game);
 
-            Mediator.Notify("AddMenuItem", new GameNavigationItem(result.TournamentName, control, PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false));
+            Mediator.Notify("AddMenuItem", new GameNavigationItem(
+                result.TournamentName, 
+                control, 
+                PackIconKind.ControllerClassicOutline, 
+                PackIconKind.ControllerClassic, 
+                false));
         }
 
-        private static bool ShowPlayerSelectionDialog(out CreateGameViewResult result)
+        private async Task<CreateGameDialogResult> ShowPlayerSelectionDialogAsync()
         {
-            IDialogOwner owner = new DialogOwner(); // TODO: implement interface of CreateGameView
-            CreateGameView createGameView = new CreateGameView(owner);
-            result = createGameView.ShowDialog();
-            if (result.DialogResult == false)
-                return false;
-
-            return true;
+            // Create the dialog content
+            var createGameDialog = new CreateGameDialog();
+            
+            // Show the dialog using DialogHost
+            var result = await DialogHost.Show(createGameDialog, "RootDialogHost");
+            
+            // Return the result or null if dialog was canceled
+            return result as CreateGameDialogResult;
         }
     }
 }

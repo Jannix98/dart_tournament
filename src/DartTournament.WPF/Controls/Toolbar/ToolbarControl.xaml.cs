@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DartTournament.WPF.Controls.PlayerOverview;
 
 namespace DartTournament.WPF.Controls.Toolbar
 {
@@ -37,23 +38,29 @@ namespace DartTournament.WPF.Controls.Toolbar
             _gameCreator = ServiceManager.Instance.GetRequiredService<GameCreator>();
             _playerManager = new PlayerManager();
             _gameLoader = ServiceManager.Instance.GetRequiredService<GameLoader>();
-            themeToggleButton.IsChecked = _isLightMode;
+            //themeToggleButton.IsChecked = _isLightMode;
         }
-
 
         private void AddGameBtn_Click(object sender, RoutedEventArgs e)
         {
             _gameCreator.CreateGame();
         }
 
-        private void LoadGamesBtn_Click(object sender, RoutedEventArgs e)
+        private async void LoadGamesBtn_Click(object sender, RoutedEventArgs e)
         {
             _gameLoader.LoadGame();   
         }
 
-        private void PeopleBtn_Click(object sender, RoutedEventArgs e)
+        private async void PeopleBtn_Click(object sender, RoutedEventArgs e)
         {
-            _playerManager.ShowPlayerDialog();
+            // Create the dialog content
+            var playerDialog = new PlayerOverviewDialog();
+            
+            // Show the dialog using DialogHost
+            var result = await DialogHost.Show(playerDialog, "RootDialogHost");
+            
+            // Handle result if needed (DialogHost returns the result when closed)
+            // The result will be null if closed via CloseDialogCommand or ESC
         }
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
@@ -68,13 +75,13 @@ namespace DartTournament.WPF.Controls.Toolbar
 
         private void SetTheme()
         {
-            _isLightMode = themeToggleButton.IsChecked == true;
+            //_isLightMode = themeToggleButton.IsChecked == true;
 
-            var paletteHelper = new PaletteHelper();
-            var theme = paletteHelper.GetTheme();
+            //var paletteHelper = new PaletteHelper();
+            //var theme = paletteHelper.GetTheme();
 
-            theme.SetBaseTheme(_isLightMode ? BaseTheme.Light : BaseTheme.Dark);
-            paletteHelper.SetTheme(theme);
+            //theme.SetBaseTheme(_isLightMode ? BaseTheme.Light : BaseTheme.Dark);
+            //paletteHelper.SetTheme(theme);
         }
 
         private void themeToggleButton_Unchecked(object sender, RoutedEventArgs e)

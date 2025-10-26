@@ -1,14 +1,10 @@
 ﻿using DartTournament.Presentation.Base.Services;
 using DartTournament.WPF.Controls.GameNavigationRail;
 using DartTournament.WPF.Controls.GameSession;
-using DartTournament.WPF.Dialogs.Base;
-using DartTournament.WPF.Dialogs.LoadGame;
+using DartTournament.WPF.Controls.LoadGame;
 using DartTournament.WPF.Utils;
 using MaterialDesignThemes.Wpf;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DartTournament.WPF.Controls.Toolbar
@@ -24,29 +20,28 @@ namespace DartTournament.WPF.Controls.Toolbar
 
         public async void LoadGame()
         {
-            Guid? guid = ShowGameSelectionDialog();
-            if (guid == null)
+            var selectedGame = await ShowGameSelectionDialogAsync();
+            if (selectedGame == null)
             {
                 return;
             }
-            var game = await _gamePresentationService.GetGame(guid.Value);
+            
+            var game = await _gamePresentationService.GetGame(selectedGame.Id);
             var control = new GameSessionControl(game);
 
             Mediator.Notify("AddMenuItem", new GameNavigationItem(game.Name, control, PackIconKind.ControllerClassicOutline, PackIconKind.ControllerClassic, false));
         }
 
-        private Guid? ShowGameSelectionDialog()
+        private async Task<DartTournament.Application.DTO.Game.GameResult> ShowGameSelectionDialogAsync()
         {
-            LoadGameView dialog = new LoadGameView(new DialogOwner());
-            LoadGameViewResult result = dialog.ShowDialog();
-            if (result.DialogResult == true && result.SelectedGame != null)
-            {
-                return result.SelectedGame.Id;
-            }
-            else
-            {
-                return null;
-            }
+            // Create the dialog content
+            var loadGameDialog = new LoadGameDialog();
+            
+            // Show the dialog using DialogHost
+            var result = await DialogHost.Show(loadGameDialog, "RootDialogHost");
+            
+            // Return the selected game or null if dialog was canceled
+            return result as DartTournament.Application.DTO.Game.GameResult;
         }
     }
 }

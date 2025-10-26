@@ -1,0 +1,171 @@
+<UserControl x:Class="DartTournament.WPF.Controls.CreateGame.CreateGameDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DartTournament.WPF.Controls.CreateGame"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:valueConverter="clr-namespace:DartTournament.WPF.ValueConverter"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="450">
+
+    <UserControl.DataContext>
+        <local:CreateGameDialogVM />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <local:SelectedPlayersCountToStringConverter x:Key="SelectedPlayersCountToStringConverter"/>
+        <local:TournamentPlayerCountToStringConverter x:Key="TournamentPlayerCountToStringConverter"/>
+        <valueConverter:BoolConverter x:Key="BoolConverter"/>
+    </UserControl.Resources>
+
+    <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp8" 
+                         MaxWidth="450"
+                         MinHeight="600"
+                         MinWidth="400"
+                         MaxHeight="700">
+        <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                          Margin="16,16,0,16"
+                          Text="Create Tournament Session"
+                          Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                          VerticalAlignment="Center"/>
+
+                <Button Grid.Column="1" 
+                       Style="{StaticResource MaterialDesignIconButton}" 
+                       Command="{Binding CancelCommand}"
+                       Margin="8">
+                    <materialDesign:PackIcon Kind="Close"/>
+                </Button>
+            </Grid>
+
+            <!-- Content -->
+            <ScrollViewer Grid.Row="1" 
+                         VerticalScrollBarVisibility="Auto"
+                         Margin="16,0">
+                <StackPanel>
+                    <!-- Loading Progress Bar -->
+                    <ProgressBar IsIndeterminate="True"
+                                Style="{StaticResource MaterialDesignLinearProgressBar}"
+                                Height="4"
+                                Margin="0,0,0,16"
+                                Visibility="{Binding IsLoading, Converter={StaticResource BoolConverter}}"/>
+
+                    <!-- Enter Name -->
+                    <TextBlock Text="Enter Name:" 
+                              FontWeight="SemiBold" 
+                              Margin="0,0,0,8"/>
+                    <TextBox materialDesign:HintAssist.Hint="Tournament Name"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding TournamentName}"
+                            Margin="0,0,0,16"/>
+
+                    <!-- Advanced Mode -->
+                    <StackPanel Orientation="Horizontal" 
+                               VerticalAlignment="Center"
+                               Margin="0,0,0,16">
+                        <TextBlock Text="Add Looser Round:" 
+                                  FontWeight="SemiBold" 
+                                  VerticalAlignment="Center"/>
+                        <ToggleButton Margin="12,0,0,0"
+                                     Style="{StaticResource MaterialDesignSwitchToggleButton}" 
+                                     IsChecked="{Binding AdvancedMode}"/>
+                    </StackPanel>
+
+                    <!-- Total Players -->
+                    <TextBlock Text="Total Players:" 
+                              FontWeight="SemiBold" 
+                              Margin="0,0,0,8"/>
+                    <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                             ItemsSource="{Binding TotalPlayersOptions}"
+                             SelectedItem="{Binding SelectedTotalPlayers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,16">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource TournamentPlayerCountToStringConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!-- Select Players -->
+                    <TextBlock FontWeight="SemiBold" 
+                              Margin="0,0,0,8">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource SelectedPlayersCountToStringConverter}">
+                                <Binding Path="SelectedPlayersCount" />
+                                <Binding Path="SelectedTotalPlayers" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <ListBox x:Name="playerList"
+                            ItemsSource="{Binding Players}"
+                            MaxHeight="250"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            RequestBringIntoView="PlayerList_RequestBringIntoView">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                <EventSetter Event="MouseLeftButtonUp" Handler="PlayerListItem_MouseLeftButtonUp"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="8"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" 
+                                           Background="Transparent" 
+                                           Focusable="False">
+                                    <CheckBox IsChecked="{Binding IsSelected}" 
+                                             VerticalAlignment="Center" 
+                                             Focusable="False"/>
+                                    <TextBlock Text="{Binding Name}" 
+                                              Margin="8,0,0,0" 
+                                              VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Action Buttons -->
+            <Grid Grid.Row="2" Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Create Session Button -->
+                <Button Grid.Column="1"
+                       materialDesign:ButtonAssist.CornerRadius="6"
+                       Content="Create Session"
+                       FontWeight="Bold"
+                       Style="{StaticResource MaterialDesignRaisedButton}"
+                       Command="{Binding CreateSessionCommand}"
+                       Margin="0,0,8,0"/>
+
+                <!-- Cancel Button -->
+                <Button Grid.Column="2"
+                       materialDesign:ButtonAssist.CornerRadius="6"
+                       Content="Cancel"
+                       FontWeight="Bold"
+                       Style="{StaticResource MaterialDesignOutlinedButton}"
+                       Command="{Binding CancelCommand}"/>
+            </Grid>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>
