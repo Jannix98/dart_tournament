@@ -38,7 +38,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             AddPlayerCommand = new RelayCommand(() => AddPlayer());
             EditPlayerCommand = new RelayCommand<DartPlayerUI>(player => EditPlayer(player));
             SavePlayerCommand = new RelayCommand(() => SavePlayer());
-            DeletePlayerCommand = new RelayCommand<Guid>(async id => await DeletePlayerAsync(id));
+            DeletePlayerCommand = new RelayCommand<DartPlayerUI>(async player => await DeletePlayerAsync(player));
             EditIsEnabled = false;
         }
 
@@ -99,10 +99,11 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             }
         }
 
-        private async Task DeletePlayerAsync(Guid id)
+        private async Task DeletePlayerAsync(DartPlayerUI player)
         {
             try
             {
+                Guid id = player.Id;
                 await _playerService.DeletePlayerAsync(id);
                 var playerToRemove = PlayerCollection.FirstOrDefault(p => p.Id == id);
                 if (playerToRemove != null)
