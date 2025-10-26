@@ -53,14 +53,7 @@ namespace DartTournament.WPF.Controls.Toolbar
 
         private async void PeopleBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Create the dialog content
-            var playerDialog = new PlayerOverviewDialog();
-            
-            // Show the dialog using DialogHost
-            var result = await DialogHost.Show(playerDialog, "RootDialogHost");
-            
-            // Handle result if needed (DialogHost returns the result when closed)
-            // The result will be null if closed via CloseDialogCommand or ESC
+            _playerManager.ShowPlayerDialog();
         }
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
