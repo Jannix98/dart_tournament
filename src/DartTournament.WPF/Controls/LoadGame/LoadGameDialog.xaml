@@ -45,12 +45,12 @@
                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                           VerticalAlignment="Center"/>
                 
-                <Button Grid.Column="1" 
+                <!--<Button Grid.Column="1" 
                        Style="{StaticResource MaterialDesignIconButton}" 
                        Command="{Binding CloseCommand}"
                        Margin="8">
                     <materialDesign:PackIcon Kind="Close"/>
-                </Button>
+                </Button>-->
             </Grid>
 
             <!-- Game List -->

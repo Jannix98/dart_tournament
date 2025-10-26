@@ -28,7 +28,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
         ICommand _addPlayerCommand;
         private ICommand _editPlayerCommand;
         private ICommand _savePlayerCommand;
-        private ICommand _deletePlayerCommand; // Add this line
+        private ICommand _deletePlayerCommand;
         private bool _editIsEnabled;
 
         public PlayerOverviewVM()
@@ -36,9 +36,9 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             _playerService = SM.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
             _dialogManager = SM.ServiceManager.Instance.GetRequiredService<IDialogManager>();
             AddPlayerCommand = new RelayCommand(() => AddPlayer());
-            EditPlayerCommand = new RelayCommand(() => EditPlayer());
+            EditPlayerCommand = new RelayCommand<DartPlayerUI>(player => EditPlayer(player));
             SavePlayerCommand = new RelayCommand(() => SavePlayer());
-            DeletePlayerCommand = new RelayCommand<Guid>(async id => await DeletePlayerAsync(id)); // Add this line
+            DeletePlayerCommand = new RelayCommand<Guid>(async id => await DeletePlayerAsync(id));
             EditIsEnabled = false;
         }
 
@@ -67,8 +67,12 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             }
         }
 
-        private void EditPlayer()
+        private void EditPlayer(DartPlayerUI player)
         {
+            if (player != null)
+            {
+                SelectedPlayer = player;
+            }
             EditIsEnabled = true;
         }
 

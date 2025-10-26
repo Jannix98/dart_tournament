@@ -8,8 +8,8 @@
              xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="900">
-    <materialDesign:Card MaxWidth="900" 
-                         MaxHeight="600">
+  <materialDesign:Card MaxWidth="900" MinWidth="600" MinHeight="400"
+                       MaxHeight="600">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -29,12 +29,12 @@
                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                           Margin="24,16"/>
 
-                <Button Grid.Column="1" 
+                <!--<Button Grid.Column="1" 
                        Style="{StaticResource MaterialDesignIconButton}" 
                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                        Margin="8">
                     <materialDesign:PackIcon Kind="Close"/>
-                </Button>
+                </Button>-->
             </Grid>
 
             <!-- Content -->
@@ -44,9 +44,8 @@
             <StackPanel Grid.Row="2" 
                        Orientation="Horizontal" 
                        HorizontalAlignment="Right" 
-                       Margin="16">
+                       Margin="16,8,16, 16">
                 <Button Content="{x:Static resources:Labels.Close}" 
-                       Margin="8,0" 
                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                        Style="{StaticResource MaterialDesignFlatButton}"/>
             </StackPanel>
