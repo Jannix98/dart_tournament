@@ -65,8 +65,9 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             if (player == null) return;
 
             // Create edit dialog with existing player name
-            var editDialog = new AddOrEditPlayerDialog(player.Name);
-            
+            var dummy = new DartPlayerUI(player.Name);
+            var editDialog = new AddOrEditPlayerDialog(dummy);
+
             // Show the dialog using a nested DialogHost identifier
             var result = await DialogHost.Show(editDialog, "NestedDialogHost");
             
@@ -97,8 +98,8 @@ namespace DartTournament.WPF.Controls.PlayerOverview
 
         private async Task AddPlayerAsync()
         {
-            // Create add dialog
-            var addDialog = new AddOrEditPlayerDialog();
+            // Create add dialog with dummy empty player
+            var addDialog = new AddOrEditPlayerDialog(new DartPlayerUI());
             
             // Show the dialog using a nested DialogHost identifier
             var result = await DialogHost.Show(addDialog, "NestedDialogHost");

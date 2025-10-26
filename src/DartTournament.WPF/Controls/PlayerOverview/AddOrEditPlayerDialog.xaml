@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DartTournament.WPF.Controls.PlayerOverview"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="350">
@@ -37,12 +38,12 @@
                           VerticalAlignment="Center"
                           Margin="0,0,0,16"/>
                 
-                <Button Grid.Column="1" 
+                <!--<Button Grid.Column="1" 
                        Style="{StaticResource MaterialDesignIconButton}" 
                        Command="{Binding CancelCommand}"
                        Margin="0,0,0,16">
                     <materialDesign:PackIcon Kind="Close"/>
-                </Button>
+                </Button>-->
             </Grid>
 
             <!-- Content -->
@@ -50,7 +51,7 @@
                 <TextBlock Text="Spielername"
                           Style="{StaticResource MaterialDesignBody1TextBlock}"
                           Margin="0,0,0,8" />
-                <TextBox Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Player.Name, UpdateSourceTrigger=PropertyChanged}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
                         Height="48" />
@@ -61,13 +62,14 @@
                        Orientation="Horizontal"
                        HorizontalAlignment="Right"
                        Margin="0,16,0,0">
-                <Button Content="Abbrechen"
+                <Button Content="{x:Static resources:Labels.Save}" 
+                        Margin="0,0,8,0" 
+                        Command="{Binding ConfirmCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                <Button Content="{x:Static resources:Labels.Cancel}"
                        Command="{Binding CancelCommand}"
                        Style="{StaticResource MaterialDesignFlatButton}"
-                       Margin="0,0,8,0" />
-                <Button Content="Bestaetigen"
-                       Command="{Binding ConfirmCommand}"
-                       Style="{StaticResource MaterialDesignRaisedButton}" />
+                       />
             </StackPanel>
         </Grid>
     </materialDesign:Card>

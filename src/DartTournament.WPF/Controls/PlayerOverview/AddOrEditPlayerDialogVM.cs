@@ -3,34 +3,44 @@ using DartTournament.WPF.Models;
 using DartTournament.WPF.NotifyPropertyChange;
 using MaterialDesignThemes.Wpf;
 using System.ComponentModel;
+using System.Numerics;
 using System.Windows.Input;
 
 namespace DartTournament.WPF.Controls.PlayerOverview
 {
     internal class AddOrEditPlayerDialogVM : NotifyPropertyChanged
     {
-        private string _playerName = string.Empty;
+        private DartPlayerUI _player;
         private bool _isEditMode = false;
 
         public AddOrEditPlayerDialogVM()
         {
             ConfirmCommand = new RelayCommand(OnConfirm, CanConfirm);
             CancelCommand = new RelayCommand(OnCancel);
-            
+
             // Listen to property changes to update command state
-            PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(PlayerName))
-                {
-                    ((RelayCommand)ConfirmCommand).NotifyCanExecuteChanged();
-                }
-            };
+            //PropertyChanged += (s, e) =>
+            //{
+            //    if (e.PropertyName == nameof(Player))
+            //    {
+            //        ((RelayCommand)ConfirmCommand).NotifyCanExecuteChanged();
+            //    }
+            //};
+            PropertyChanged += AddOrEditPlayerDialogVM_PropertyChanged;
         }
 
-        public string PlayerName 
-        { 
-            get => _playerName; 
-            set => SetProperty(ref _playerName, value); 
+        private void AddOrEditPlayerDialogVM_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(Player))
+            {
+                Player.PropertyChanged += (s, ev) =>
+                {
+                    if (ev.PropertyName == nameof(DartPlayerUI.Name))
+                    {
+                        ((RelayCommand)ConfirmCommand).NotifyCanExecuteChanged();
+                    }
+                };
+            }
         }
 
         public bool IsEditMode 
@@ -47,17 +57,18 @@ namespace DartTournament.WPF.Controls.PlayerOverview
 
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
+        public DartPlayerUI Player { get => _player; set => SetProperty(ref _player, value); }
 
         private void OnConfirm()
         {
-            if (string.IsNullOrWhiteSpace(PlayerName))
+            if (string.IsNullOrWhiteSpace(Player?.Name))
                 return;
 
             // Create result object with player data
             var result = new AddOrEditPlayerDialogResult
             {
                 DialogResult = true,
-                Player = new DartPlayerUI(PlayerName),
+                Player = this.Player,
                 IsEditMode = IsEditMode
             };
 
@@ -67,7 +78,7 @@ namespace DartTournament.WPF.Controls.PlayerOverview
 
         private bool CanConfirm()
         {
-            return !string.IsNullOrWhiteSpace(PlayerName);
+            return !string.IsNullOrWhiteSpace(Player?.Name);
         }
 
         private void OnCancel()
