@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using DartTournament.WPF.Dialogs.CreateGame;
 using DartTournament.WPF.Models.Enums;
 
 namespace DartTournament.WPF.Controls.CreateGame
