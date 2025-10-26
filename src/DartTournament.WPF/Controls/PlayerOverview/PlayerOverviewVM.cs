@@ -1,27 +1,21 @@
 ﻿using DartTournament.Application.UseCases.Player.Services.Interfaces;
-using DartTournament.WPF.Models; // Updated namespace import
+using DartTournament.WPF.Models;
 using DartTournament.WPF.NotifyPropertyChange;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DartTournament.WPF.Dialogs.Base;
-using DartTournament.WPF.Dialogs.AddPlayer;
 using DartTournament.Presentation.Base.Services;
 using DartTournament.Application.DTO.Player;
-using System.Text.Json.Serialization;
+using MaterialDesignThemes.Wpf;
 
 namespace DartTournament.WPF.Controls.PlayerOverview
 {
     internal class PlayerOverviewVM : NotifyPropertyChanged
     {
         IPlayerPresentationService _playerService;
-        IDialogManager _dialogManager;
         DartPlayerUI _selectedPlayer;
         ObservableCollection<DartPlayerUI> _playerCollection = new ObservableCollection<DartPlayerUI>();
         private bool _isLoading = true;
@@ -34,9 +28,8 @@ namespace DartTournament.WPF.Controls.PlayerOverview
         public PlayerOverviewVM()
         {
             _playerService = SM.ServiceManager.Instance.GetRequiredService<IPlayerPresentationService>();
-            _dialogManager = SM.ServiceManager.Instance.GetRequiredService<IDialogManager>();
-            AddPlayerCommand = new RelayCommand(() => AddPlayer());
-            EditPlayerCommand = new RelayCommand<DartPlayerUI>(player => EditPlayer(player));
+            AddPlayerCommand = new RelayCommand(async () => await AddPlayerAsync());
+            EditPlayerCommand = new RelayCommand<DartPlayerUI>(async player => await EditPlayerAsync(player));
             SavePlayerCommand = new RelayCommand(() => SavePlayer());
             DeletePlayerCommand = new RelayCommand<DartPlayerUI>(async player => await DeletePlayerAsync(player));
             EditIsEnabled = false;
@@ -67,35 +60,68 @@ namespace DartTournament.WPF.Controls.PlayerOverview
             }
         }
 
-        private void EditPlayer(DartPlayerUI player)
+        private async Task EditPlayerAsync(DartPlayerUI player)
         {
-            if (player != null)
+            if (player == null) return;
+
+            // Create edit dialog with existing player name
+            var editDialog = new AddOrEditPlayerDialog(player.Name);
+            
+            // Show the dialog using a nested DialogHost identifier
+            var result = await DialogHost.Show(editDialog, "NestedDialogHost");
+            
+            if (result is AddOrEditPlayerDialogResult dialogResult && 
+                dialogResult.DialogResult && 
+                dialogResult.Player != null)
             {
-                SelectedPlayer = player;
+                // Update the player's name
+                player.Name = dialogResult.Player.Name;
+                
+                // Update in backend
+                var updateDto = new DartPlayerUpdateDto
+                {
+                    Id = player.Id,
+                    Name = player.Name
+                };
+
+                try
+                {
+                    await _playerService.UpdatePlayerAsync(updateDto);
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (e.g., logging, displaying a message)
+                }
             }
-            EditIsEnabled = true;
         }
 
-        private async void AddPlayer()
+        private async Task AddPlayerAsync()
         {
-            AddPlayerResult? result = _dialogManager.ShowDialog<IAddPlayerView>() as AddPlayerResult;
-            if (result?.DialogResult != true || result.Player == null)
-                return;
+            // Create add dialog
+            var addDialog = new AddOrEditPlayerDialog();
+            
+            // Show the dialog using a nested DialogHost identifier
+            var result = await DialogHost.Show(addDialog, "NestedDialogHost");
+            
+            if (result is AddOrEditPlayerDialogResult dialogResult && 
+                dialogResult.DialogResult && 
+                dialogResult.Player != null)
+            {
+                var insertDto = new DartPlayerInsertDto
+                {
+                    Name = dialogResult.Player.Name
+                };
 
-            var insertDto = new DartPlayerInsertDto
-            {
-                Name = result.Player.Name
-            };
-
-            try
-            {
-                var playerDto = await _playerService.CreatePlayerAsync(insertDto);
-                var playerUI = new DartPlayerUI(playerDto.Id, playerDto.Name);
-                PlayerCollection.Add(playerUI);
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions (e.g., logging, displaying a message)
+                try
+                {
+                    var playerDto = await _playerService.CreatePlayerAsync(insertDto);
+                    var playerUI = new DartPlayerUI(playerDto.Id, playerDto.Name);
+                    PlayerCollection.Add(playerUI);
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (e.g., logging, displaying a message)
+                }
             }
         }
 

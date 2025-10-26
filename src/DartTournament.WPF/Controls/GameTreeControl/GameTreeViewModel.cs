@@ -2,11 +2,11 @@ using CommunityToolkit.Mvvm.Input;
 using DartTournament.Application.DTO.Match;
 using DartTournament.Presentation.Base.Services;
 using DartTournament.Presentation.Services;
-using DartTournament.WPF.Dialogs.AddPlayer;
-using DartTournament.WPF.Dialogs.Base;
+using DartTournament.WPF.Controls.Game;
 using DartTournament.WPF.Dialogs.SelectWinner;
 using DartTournament.WPF.NotifyPropertyChange;
 using DartTournament.WPF.Utils.MatchHandler;
+using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -14,7 +14,6 @@ namespace DartTournament.WPF.Controls.GameTreeControl
 {
     public class GameTreeViewModel : NotifyPropertyChanged
     {
-        IDialogManager _dialogManager;
         ObservableCollection<MatchViewModel> _allMatches = new ObservableCollection<MatchViewModel>(); // Initialize to avoid null
         private GameMatchHandler _matchHandler;
         private IMatchPresentationService _matchPresentationService;
@@ -24,20 +23,34 @@ namespace DartTournament.WPF.Controls.GameTreeControl
             _matchHandler = gameMatchHandler;
             var matches = gameMatchHandler.Matches;
             AllMatches = new ObservableCollection<MatchViewModel>(matches);
-            SelectWinnerCommand = new RelayCommand<MatchViewModel>((match) => SelectWinner(match));
-            _dialogManager = SM.ServiceManager.Instance.GetRequiredService<IDialogManager>();
+            SelectWinnerCommand = new RelayCommand<MatchViewModel>(async (match) => await SelectWinnerAsync(match));
             _matchPresentationService = SM.ServiceManager.Instance.GetRequiredService<IMatchPresentationService>();
         }
 
-        private async void SelectWinner(MatchViewModel? match)
+        private async Task SelectWinnerAsync(MatchViewModel? match)
         {
-            SelectWinnerInput input = new SelectWinnerInput(match);
+            if (match == null) return;
 
-            SelectWinnerResult? result = _dialogManager.ShowDialog<ISelectWinnerDialog>(input) as SelectWinnerResult;
-            if (result?.DialogResult == false)
-                return;
+            // Create the new dialog with the match
+            var selectWinnerDialog = new DartTournament.WPF.Controls.Game.SelectWinnerDialog(match);
+            
+            // Show the dialog using DialogHost
+            var result = await DialogHost.Show(selectWinnerDialog, "RootDialogHost");
+            
+            // Check if we got a valid result
+            if (result is DartTournament.WPF.Controls.Game.SelectWinnerDialogResult dialogResult && dialogResult.DialogResult)
+            {
+                // Convert the new result to the old format for compatibility
+                var selectWinnerResult = new SelectWinnerResult(
+                    dialogResult.WinnerId,
+                    dialogResult.WinnerName,
+                    dialogResult.LooserId,
+                    dialogResult.LooserName,
+                    true
+                );
 
-            await _matchHandler.SetWinnerToNextMatch(match.RoundIndex, match.MatchIndex, result);
+                await _matchHandler.SetWinnerToNextMatch(match.RoundIndex, match.MatchIndex, selectWinnerResult);
+            }
         }
 
         public ICommand SelectWinnerCommand { get; set; }

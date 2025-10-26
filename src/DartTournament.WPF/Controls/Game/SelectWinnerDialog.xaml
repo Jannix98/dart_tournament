@@ -1,0 +1,87 @@
+<UserControl x:Class="DartTournament.WPF.Controls.Game.SelectWinnerDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DartTournament.WPF.Controls.Game"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:resources="clr-namespace:DartTournament.WPF.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="450">
+    
+    <UserControl.DataContext>
+        <local:SelectWinnerDialogVM />
+    </UserControl.DataContext>
+
+    <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp8" 
+                         MaxWidth="450"
+                         MinHeight="180"
+                         MinWidth="400"
+                         MaxHeight="220">
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0"
+                          Text="{x:Static resources:Labels.SelectWinnerDialog}"
+                          Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                          VerticalAlignment="Center"
+                          Margin="0,0,0,16"/>
+                
+                <!--<Button Grid.Column="1" 
+                       Style="{StaticResource MaterialDesignIconButton}" 
+                       Command="{Binding CancelCommand}"
+                       Margin="0,0,0,16">
+                    <materialDesign:PackIcon Kind="Close"/>
+                </Button>-->
+            </Grid>
+
+            <!-- Content - Player Selection Buttons -->
+            <Grid Grid.Row="1" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" 
+                       Content="{Binding Player1Name}"
+                       Command="{Binding SelectPlayer1Command}"
+                       Style="{StaticResource MaterialDesignRaisedButton}"
+                       Height="50"
+                       Margin="0,0,8,0"
+                       FontSize="14"
+                       FontWeight="Medium"/>
+                
+                <Button Grid.Column="1" 
+                       Content="{Binding Player2Name}"
+                       Command="{Binding SelectPlayer2Command}"
+                       Style="{StaticResource MaterialDesignRaisedButton}"
+                       Height="50"
+                       Margin="8,0,0,0"
+                       FontSize="14"
+                       FontWeight="Medium"/>
+            </Grid>
+
+            <!-- Cancel Button -->
+            <StackPanel Grid.Row="2" 
+                       Orientation="Horizontal"
+                       HorizontalAlignment="Right"
+                       Margin="0,16,0,0">
+                <Button Content="{x:Static resources:Labels.Cancel}"
+                       Command="{Binding CancelCommand}"
+                       Style="{StaticResource MaterialDesignOutlinedButton}"
+                       MinWidth="100" />
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>
