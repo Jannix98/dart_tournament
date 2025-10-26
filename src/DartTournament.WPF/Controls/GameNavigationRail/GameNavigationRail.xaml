@@ -17,7 +17,7 @@
             <Setter Property="Height" Value="48"/>
         </Style>
     </UserControl.Resources>
-    <Grid VerticalAlignment="Stretch" Background="{DynamicResource MaterialDesignCardBackground}">
+    <Grid VerticalAlignment="Stretch" Background="{DynamicResource MaterialDesignCardBackground}" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />
