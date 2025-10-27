@@ -6,6 +6,7 @@ using DartTournament.Application.UseCases.Player.Services;
 using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Domain.Interfaces;
 using DartTournament.Infrastructure.JSON.Persistence;
+using DartTournament.Logging;
 using DartTournament.Presentation.Base.Services;
 using DartTournament.Presentation.Services;
 using DartTournament.WPF.Controls.PlayerOverview;
@@ -77,6 +78,21 @@ namespace DartTournament.WPF.SM
             // Utilities
             services.AddSingleton<GameCreator>();
             services.AddSingleton<GameLoader>();
+
+            // Logging
+            services.AddSingleton<ILoggerFactory, NLogLoggerFactory>();
+            
+            // Register ILogger as a factory method that creates loggers based on the requesting type
+            services.AddTransient<ILogger>(provider => 
+            {
+                var factory = provider.GetRequiredService<ILoggerFactory>();
+                // Default logger for when type context is not available
+                return factory.CreateLogger("DartTournament.WPF");
+            });
+
+            // Register a generic logger factory method for type-specific loggers
+            services.AddTransient(typeof(ILogger<>), typeof(GenericLogger<>));
+
         }
 
         public T GetRequiredService<T>()
