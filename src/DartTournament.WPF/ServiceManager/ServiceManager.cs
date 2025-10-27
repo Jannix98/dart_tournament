@@ -6,6 +6,7 @@ using DartTournament.Application.UseCases.Player.Services;
 using DartTournament.Application.UseCases.Player.Services.Interfaces;
 using DartTournament.Domain.Interfaces;
 using DartTournament.Infrastructure.JSON.Persistence;
+using DartTournament.Logging;
 using DartTournament.Presentation.Base.Services;
 using DartTournament.Presentation.Services;
 using DartTournament.WPF.Controls.PlayerOverview;
@@ -77,6 +78,9 @@ namespace DartTournament.WPF.SM
             // Utilities
             services.AddSingleton<GameCreator>();
             services.AddSingleton<GameLoader>();
+
+            // logger
+            services.AddSingleton<ILogger, Logger>();
         }
 
         public T GetRequiredService<T>()

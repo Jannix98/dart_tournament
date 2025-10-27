@@ -10,10 +10,17 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="5.2.2-ci935" />
+    <PackageReference Include="NLog" Version="6.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DartTournament.WPF\DartTournament.WPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
